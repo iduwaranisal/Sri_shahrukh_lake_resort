@@ -1,0 +1,287 @@
+"use client";
+
+import { useRef, useState, useEffect, useCallback } from "react";
+import { motion, useInView, AnimatePresence, type Variants } from "framer-motion";
+import Image from "next/image";
+import { Sparkles, ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
+
+interface GalleryImage {
+  src: string;
+  alt: string;
+  category: "Villas & Suites" | "Lake & Nature" | "Wildlife & Heritage" | "Resort Living";
+}
+
+const galleryImages: GalleryImage[] = [
+  { src: "/images/img1.jpg", alt: "Heritage Villa exterior with tropical lush courtyard and plunge pool", category: "Villas & Suites" },
+  { src: "/images/img2.jpg", alt: "Lake Pavilion at golden sunrise with views of Tissa Wewa", category: "Villas & Suites" },
+  { src: "/images/tissa-lake-sunrise.jpg", alt: "Tissa Wewa reservoir at dawn with morning mist and lotus blossoms", category: "Lake & Nature" },
+  { src: "/images/yala-leopard.jpg", alt: "Sri Lankan leopard basking on granite outcrop in Yala National Park", category: "Wildlife & Heritage" },
+  { src: "/images/tissamaharama-stupa.jpg", alt: "Ancient white stupa of Tissamaharama Raja Maha Vihara against sunset", category: "Wildlife & Heritage" },
+  { src: "/images/img3.jpg", alt: "Garden Suite shaded terrace and tropical frangipani pathway", category: "Villas & Suites" },
+  { src: "/images/im 10.png", alt: "Sanctuary Residence private 12m lap pool and dining bale at dusk", category: "Villas & Suites" },
+  { src: "/images/bundala-flamingos.jpg", alt: "Greater Flamingos wading in Bundala UNESCO Ramsar wetland", category: "Wildlife & Heritage" },
+  { src: "/images/kataragama-temple.jpg", alt: "Sacred evening puja ceremony with clay oil lamps at Kataragama", category: "Wildlife & Heritage" },
+  { src: "/images/kirinda-temple.jpg", alt: "Kirinda cliff temple above crashing southern Indian Ocean waves", category: "Wildlife & Heritage" },
+  { src: "/images/im 7.png", alt: "Gourmet Sri Lankan culinary feast with organic local ingredients", category: "Resort Living" },
+  { src: "/images/hero1.jpeg", alt: "Untamed wilderness of Ruhuna dry-zone forest and granite hills", category: "Lake & Nature" },
+  { src: "/images/im 5.png", alt: "Sun loungers by the central lakeside pool overlooking water lilies", category: "Resort Living" },
+  { src: "/images/im 4.png", alt: "Refined artisan interiors with hand-carved Ceylon timber screens", category: "Villas & Suites" },
+  { src: "/images/im 3.png", alt: "Tranquil outdoor rain shower beneath towering rain trees", category: "Villas & Suites" },
+  { src: "/images/hero 4.jpeg", alt: "Arrival entrance surrounded by whispering palms and reflecting pools", category: "Resort Living" },
+];
+
+const categories = [
+  "All Views",
+  "Villas & Suites",
+  "Lake & Nature",
+  "Wildlife & Heritage",
+  "Resort Living",
+] as const;
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+  }),
+};
+
+export default function Gallery() {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [selectedCategory, setSelectedCategory] = useState<string>("All Views");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const filteredImages =
+    selectedCategory === "All Views"
+      ? galleryImages
+      : galleryImages.filter((img) => img.category === selectedCategory);
+
+  const handleNext = useCallback(() => {
+    if (lightboxIndex === null) return;
+    setLightboxIndex((lightboxIndex + 1) % filteredImages.length);
+  }, [lightboxIndex, filteredImages.length]);
+
+  const handlePrev = useCallback(() => {
+    if (lightboxIndex === null) return;
+    setLightboxIndex((lightboxIndex - 1 + filteredImages.length) % filteredImages.length);
+  }, [lightboxIndex, filteredImages.length]);
+
+  // Keyboard navigation listener for lightbox
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxIndex(null);
+      if (e.key === "ArrowRight") handleNext();
+      if (e.key === "ArrowLeft") handlePrev();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxIndex, handleNext, handlePrev]);
+
+  return (
+    <section
+      id="gallery"
+      ref={ref}
+      className="py-24 sm:py-32 md:py-36 relative"
+      style={{ background: "var(--color-ivory-warm)" }}
+      aria-labelledby="gallery-heading"
+    >
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
+        {/* Section Header */}
+        <div className="mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
+          <motion.div
+            custom={0}
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            className="inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-sand" />
+            <p
+              className="text-xs uppercase tracking-[0.35em] font-medium"
+              style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
+            >
+              Visual Chronicles
+            </p>
+          </motion.div>
+
+          <motion.h2
+            id="gallery-heading"
+            custom={1}
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            className="text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            Life at{" "}
+            <span className="italic text-bronze-light">Sri Shahrukh</span>
+          </motion.h2>
+
+          <motion.p
+            custom={2}
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            className="mt-3 text-sm sm:text-base font-light text-stone"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Explore the tranquil lakeside architecture, natural wonders of Ruhuna,
+            and understated luxury moments of our resort.
+          </motion.p>
+        </div>
+
+        {/* Category Filters */}
+        <motion.div
+          custom={3}
+          variants={fadeUp}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="mb-10 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5"
+          role="tablist"
+          aria-label="Gallery category filters"
+        >
+          {categories.map((category) => {
+            const isSelected = selectedCategory === category;
+            return (
+              <button
+                key={category}
+                role="tab"
+                aria-selected={isSelected}
+                onClick={() => {
+                  setSelectedCategory(category);
+                  setLightboxIndex(null);
+                }}
+                className={`px-4 py-2 text-[11px] uppercase tracking-wider transition-all border ${
+                  isSelected
+                    ? "bg-teal-deep text-sand border-teal-deep font-medium shadow-sm"
+                    : "bg-ivory text-stone border-sand/20 hover:border-sand hover:text-teal-deep"
+                }`}
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                {category}
+              </button>
+            );
+          })}
+        </motion.div>
+
+        {/* Responsive Photo Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+          {filteredImages.map((img, i) => (
+            <motion.button
+              key={`${img.src}-${i}`}
+              custom={i}
+              variants={fadeUp}
+              initial="hidden"
+              animate={inView ? "visible" : "hidden"}
+              onClick={() => setLightboxIndex(i)}
+              aria-label={`Enlarge photograph: ${img.alt}`}
+              className="group relative aspect-[4/3] w-full overflow-hidden border border-sand/20 bg-teal-deep focus:outline-none focus:ring-2 focus:ring-sand cursor-pointer"
+            >
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-108"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              />
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center bg-teal-deep/50"
+              >
+                <div className="h-10 w-10 rounded-full border border-sand bg-teal-deep/80 flex items-center justify-center text-sand shadow-lg">
+                  <ZoomIn className="w-5 h-5" />
+                </div>
+              </div>
+              <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <span className="text-[10px] text-ivory bg-teal-deep/90 px-2 py-0.5 uppercase tracking-wider truncate block">
+                  {img.category}
+                </span>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+
+      {/* Accessible Lightbox Modal */}
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+            style={{ background: "rgba(10,24,21,0.96)", backdropFilter: "blur(20px)" }}
+            onClick={() => setLightboxIndex(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Image View Lightbox"
+          >
+            <motion.div
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.94, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="relative max-w-5xl w-full max-h-[85vh] flex flex-col items-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Top bar with count and close */}
+              <div className="w-full flex items-center justify-between pb-3 text-ivory">
+                <span className="text-xs uppercase tracking-[0.25em] text-sand font-medium">
+                  {lightboxIndex + 1} of {filteredImages.length} · {filteredImages[lightboxIndex].category}
+                </span>
+                <button
+                  onClick={() => setLightboxIndex(null)}
+                  className="h-10 w-10 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/15 transition-all"
+                  aria-label="Close Lightbox"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Main Image Container */}
+              <div className="relative aspect-[16/10] w-full max-h-[70vh] overflow-hidden border border-sand/30 shadow-2xl bg-teal-deep">
+                <Image
+                  src={filteredImages[lightboxIndex].src}
+                  alt={filteredImages[lightboxIndex].alt}
+                  fill
+                  className="object-contain"
+                  sizes="100vw"
+                  priority
+                />
+              </div>
+
+              {/* Caption and Navigation Controls */}
+              <div className="w-full pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+                <p className="text-xs sm:text-sm font-light text-ivory/80 max-w-xl">
+                  {filteredImages[lightboxIndex].alt}
+                </p>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handlePrev}
+                    className="h-10 w-10 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/20 transition-all"
+                    aria-label="Previous photograph"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={handleNext}
+                    className="h-10 w-10 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/20 transition-all"
+                    aria-label="Next photograph"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
