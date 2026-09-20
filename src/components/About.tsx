@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Sparkles, Wifi, Car, Coffee, ShieldCheck, Bike, MapPin } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { SmoothImage } from "@/components/ui/SmoothImage";
 
 /* ─── Real Stat definitions ─────────────────────────────────────────── */
 const stats = [
@@ -233,7 +234,7 @@ export default function About({
           {/* ── Image column (static, no parallax) ── */}
           <div className="scroll-reveal stagger-1 lg:col-span-5 relative px-2 sm:px-0">
             <div className="relative aspect-[4/5] w-full overflow-hidden border border-sand/30 shadow-xl bg-teal-deep group">
-              <Image
+              <SmoothImage
                 src={optimizeImage(activeImage.src, {
                   width: 1000,
                   quality: "auto",

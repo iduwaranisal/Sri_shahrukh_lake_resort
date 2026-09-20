@@ -10,6 +10,7 @@ import {
   Sparkles,
   Plane,
 } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 interface MapSectionProps {
   address?: string;
@@ -95,9 +96,12 @@ export default function MapSection({
   address = "135/1 Suduwella Tikiri udanapura, Tissamaharama, Sri Lanka",
   mapUrl = "https://www.google.com/maps/search/?api=1&query=77VQ%2BX6+Tissamaharama",
 }: MapSectionProps) {
+  const sectionRef = useScrollReveal<HTMLElement>();
+
   return (
     <section
       id="location-map"
+      ref={sectionRef}
       className="py-20 sm:py-24 relative overflow-hidden text-ivory"
       style={{
         background: "linear-gradient(180deg, #071512 0%, #0c201c 50%, #06110f 100%)",
@@ -112,7 +116,7 @@ export default function MapSection({
       <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 mb-3.5 px-4 py-1.5 border border-sand/40 bg-sand/10 shadow-lg">
+          <div className="scroll-reveal inline-flex items-center gap-2 mb-3.5 px-4 py-1.5 border border-sand/40 bg-sand/10 shadow-lg">
             <Sparkles className="w-3.5 h-3.5 text-sand animate-twinkle" />
             <p className="text-xs uppercase tracking-[0.3em] font-semibold text-sand-light">
               Interactive Map &amp; Distances
@@ -121,18 +125,18 @@ export default function MapSection({
 
           <h2
             id="map-section-heading"
-            className="text-3xl sm:text-5xl md:text-6xl font-light text-ivory tracking-tight leading-tight"
+            className="scroll-reveal stagger-1 text-3xl sm:text-5xl md:text-6xl font-light text-ivory tracking-tight leading-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             Explore our <span className="italic text-sand font-normal">Location</span>
           </h2>
 
-          <p className="mt-3 text-sm sm:text-base font-light text-ivory/80 max-w-2xl mx-auto leading-relaxed">
+          <p className="scroll-reveal stagger-2 mt-3 text-sm sm:text-base font-light text-ivory/80 max-w-2xl mx-auto leading-relaxed">
             Quietly situated at <strong>135/1 Suduwella Tikiri Udanapura</strong>, Sri Shahrukh Lake Resort offers the perfect central launchpad for southern Sri Lanka&apos;s lakes, stupas, beaches, and safaris.
           </p>
 
           {/* Quick GPS Bar */}
-          <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-3 px-5 py-2.5 bg-teal-deep/90 border border-sand/30 shadow-xl">
+          <div className="scroll-reveal stagger-3 mt-5 inline-flex flex-wrap items-center justify-center gap-3 px-5 py-2.5 bg-teal-deep/90 border border-sand/30 shadow-xl">
             <span className="flex items-center gap-1.5 text-xs text-sand font-medium">
               <MapPin className="w-3.5 h-3.5 text-sand" />
               {address}
@@ -156,7 +160,7 @@ export default function MapSection({
         {/* ── Main Map + Colorful Info Grid ── */}
         <div className="grid gap-8 lg:grid-cols-12 items-stretch">
           {/* Embedded Google Map (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col justify-between border-2 border-sand/30 shadow-2xl overflow-hidden bg-teal-deep relative group">
+          <div className="scroll-reveal stagger-2 lg:col-span-7 flex flex-col justify-between border-2 border-sand/30 shadow-2xl overflow-hidden bg-teal-deep relative group">
             {/* Top Bar on Map */}
             <div className="p-3.5 bg-teal-deep/95 border-b border-sand/25 flex flex-wrap items-center justify-between gap-2 z-10">
               <div className="flex items-center gap-2">
@@ -229,7 +233,7 @@ export default function MapSection({
           </div>
 
           {/* Colorful Surrounding Destinations Cards (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-3">
+          <div className="scroll-reveal stagger-3 lg:col-span-5 flex flex-col justify-between space-y-3">
             <div className="mb-1">
               <h3
                 className="text-lg sm:text-xl font-light text-sand flex items-center gap-2"
@@ -247,7 +251,7 @@ export default function MapSection({
               {landmarks.map((place, idx) => (
                 <div
                   key={idx}
-                  className={`p-3.5 border bg-gradient-to-r ${place.color} transition-all duration-300 hover:scale-[1.01] hover:shadow-lg flex items-center justify-between gap-3`}
+                  className={`scroll-reveal stagger-${Math.min(idx + 1, 8)} p-3.5 border bg-gradient-to-r ${place.color} transition-all duration-300 hover:scale-[1.01] hover:shadow-lg flex items-center justify-between gap-3`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <span className="text-xl flex-shrink-0">{place.icon}</span>
@@ -280,7 +284,7 @@ export default function MapSection({
               href={mapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-shimmer mt-2 flex items-center justify-center gap-2 w-full py-3.5 px-4 bg-gradient-to-r from-sand via-amber-300 to-sand text-teal-deep font-bold text-xs uppercase tracking-[0.2em] shadow-xl hover:brightness-110 transition-all text-center"
+              className="btn-shimmer scroll-reveal stagger-5 mt-2 flex items-center justify-center gap-2 w-full py-3.5 px-4 bg-gradient-to-r from-sand via-amber-300 to-sand text-teal-deep font-bold text-xs uppercase tracking-[0.2em] shadow-xl hover:brightness-110 transition-all text-center"
             >
               <Navigation className="w-4 h-4 text-teal-deep" />
               <span>Get Turn-by-Turn GPS Directions</span>

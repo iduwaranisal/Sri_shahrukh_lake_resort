@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { attractions } from "@/data/explore";
 import { optimizeImage } from "@/lib/imageOptimization";
+import { SmoothImage } from "@/components/ui/SmoothImage";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -53,7 +54,7 @@ export default async function AttractionPage({ params }: Props) {
       <main id="main-content" className="min-h-screen" style={{ background: "var(--color-ivory)" }}>
         {/* ── Hero Banner ── */}
         <div className="relative min-h-[55vh] lg:h-[65vh] w-full overflow-hidden flex flex-col justify-end bg-teal-deep">
-          <Image
+          <SmoothImage
             src={optimizeImage(attraction.heroImage, {
               width: 1920,
               quality: "auto",
@@ -439,7 +440,7 @@ export default async function AttractionPage({ params }: Props) {
                   className="group relative overflow-hidden block border border-sand/20 bg-ivory transition-all duration-300 hover:shadow-xl hover:border-sand"
                 >
                   <div className="relative aspect-[16/10] overflow-hidden bg-teal-deep">
-                    <Image
+                    <SmoothImage
                       src={optimizeImage(other.heroImage, {
                         width: 800,
                         quality: "auto",

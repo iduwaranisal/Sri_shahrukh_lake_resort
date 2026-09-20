@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Sparkles, ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { SmoothImage } from "@/components/ui/SmoothImage";
 
 interface GalleryImage {
   src: string;
@@ -163,7 +164,7 @@ export default function Gallery({
               aria-label={`Enlarge photograph: ${img.alt}`}
               className={`scroll-reveal stagger-${Math.min(i + 1, 6)} group relative aspect-[4/3] w-full overflow-hidden border border-sand/20 bg-teal-deep focus:outline-none focus:ring-2 focus:ring-sand cursor-pointer`}
             >
-              <Image
+              <SmoothImage
                 src={optimizeImage(img.src, {
                   width: 600,
                   quality: "auto",
@@ -231,7 +232,7 @@ export default function Gallery({
 
               {/* Main Image Container */}
               <div className="relative aspect-[16/10] w-full max-h-[70vh] overflow-hidden border border-sand/30 shadow-2xl bg-teal-deep">
-                <Image
+                <SmoothImage
                   src={optimizeImage(filteredImages[lightboxIndex].src, {
                     width: 1600,
                     quality: "auto",

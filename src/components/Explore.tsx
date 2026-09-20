@@ -7,6 +7,7 @@ import { Compass, MapPin, Clock, ArrowUpRight, Calendar } from "lucide-react";
 import { attractions } from "@/data/explore";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { SmoothImage } from "@/components/ui/SmoothImage";
 
 const categories = [
   "All Destinations",
@@ -131,7 +132,7 @@ export default function Explore({
               <Link href={`/explore/${place.slug}`} className="flex flex-col h-full">
                 {/* Image */}
                 <div className="relative aspect-[16/11] w-full overflow-hidden bg-teal-deep">
-                  <Image
+                  <SmoothImage
                     src={optimizeImage(place.heroImage, {
                       width: 800,
                       quality: "auto",

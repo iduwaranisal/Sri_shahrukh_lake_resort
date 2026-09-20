@@ -184,7 +184,12 @@ export default function Hero({
 
           {/* Premium Subtitle: Homestay in Tissamaharama */}
           <div className="mt-3.5 sm:mt-5 inline-flex items-center justify-center gap-3 sm:gap-5">
-            <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-r from-transparent via-sand to-sand/80" />
+            <span
+              className={`h-[1px] w-8 sm:w-16 bg-gradient-to-r from-transparent via-sand to-sand/80 transition-all duration-700 ease-out origin-right ${
+                contentVisible ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
+              }`}
+              style={{ transitionDelay: "0.25s" }}
+            />
             <span
               className="text-xs sm:text-sm md:text-base font-medium uppercase tracking-[0.32em] text-sand-light select-none"
               style={{
@@ -195,7 +200,12 @@ export default function Hero({
             >
               Homestay in Tissamaharama
             </span>
-            <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-l from-transparent via-sand to-sand/80" />
+            <span
+              className={`h-[1px] w-8 sm:w-16 bg-gradient-to-l from-transparent via-sand to-sand/80 transition-all duration-700 ease-out origin-left ${
+                contentVisible ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
+              }`}
+              style={{ transitionDelay: "0.25s" }}
+            />
           </div>
         </div>
 

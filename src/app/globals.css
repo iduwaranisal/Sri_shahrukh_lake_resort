@@ -160,6 +160,7 @@ select {
 
 .scroll-reveal {
   opacity: 0;
+  will-change: opacity, transform;
 }
 
 .scroll-reveal.is-visible {
@@ -173,6 +174,8 @@ select {
 .scroll-reveal.stagger-4.is-visible { animation-delay: 0.32s; }
 .scroll-reveal.stagger-5.is-visible { animation-delay: 0.40s; }
 .scroll-reveal.stagger-6.is-visible { animation-delay: 0.48s; }
+.scroll-reveal.stagger-7.is-visible { animation-delay: 0.56s; }
+.scroll-reveal.stagger-8.is-visible { animation-delay: 0.64s; }
 
 /* ── Subtle Aliveness Animations ── */
 @keyframes softFloat {
@@ -260,6 +263,61 @@ select {
 
 .animate-photo-timer {
   animation: photoTimer 4s linear infinite;
+}
+
+/* ── Image Loading Shimmer Placeholder ── */
+@keyframes skeletonPulse {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.image-placeholder-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(10, 24, 21, 0.75) 0%,
+    rgba(212, 175, 55, 0.12) 50%,
+    rgba(10, 24, 21, 0.75) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ── Smooth Line Expansion ── */
+@keyframes lineExpand {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+.animate-line-expand {
+  animation: lineExpand 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Reduced Motion Accessibility ── */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .animate-float,
+  .animate-float-slow,
+  .glow-pulse,
+  .animate-twinkle,
+  .btn-shimmer::after,
+  .image-placeholder-shimmer,
+  .animate-photo-timer,
+  .animate-line-expand {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 

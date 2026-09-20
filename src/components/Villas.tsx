@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { SmoothImage } from "@/components/ui/SmoothImage";
 
 const homestayPhotos = [
   {
@@ -245,7 +246,7 @@ export default function Villas({
                     }`}
                   >
                     {shouldRender && (
-                      <Image
+                      <SmoothImage
                         src={optimizeImage(photo.src, {
                           width: 1200,
                           quality: "auto",
@@ -354,7 +355,7 @@ export default function Villas({
                     }`}
                     aria-label={`Show ${photo.title}`}
                   >
-                    <Image
+                    <SmoothImage
                       src={optimizeImage(photo.src, {
                         width: 240,
                         height: 160,
