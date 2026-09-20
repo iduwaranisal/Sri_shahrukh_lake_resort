@@ -142,7 +142,7 @@ export default function Villas({
     setSelectedPhotoIndex((prev) => (prev - 1 + activePhotos.length) % activePhotos.length);
   }, [activePhotos.length]);
 
-  // Continuously change photos every 4 seconds
+  // Continuously change photos every 3.5 seconds
   useEffect(() => {
     if (!isPlaying || isHovered || activePhotos.length <= 1) {
       if (timerRef.current) clearInterval(timerRef.current);
@@ -151,7 +151,7 @@ export default function Villas({
 
     timerRef.current = setInterval(() => {
       setSelectedPhotoIndex((prev) => (prev + 1) % activePhotos.length);
-    }, 4000);
+    }, 3500);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);

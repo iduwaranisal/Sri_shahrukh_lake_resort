@@ -306,7 +306,7 @@ select {
 }
 
 .animate-photo-timer {
-  animation: photoTimer 4s linear infinite;
+  animation: photoTimer 3.5s linear infinite;
 }
 
 /* ── Image Loading Shimmer Placeholder ── */

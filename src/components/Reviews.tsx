@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, ChevronLeft, ChevronRight, Sparkles, CheckCircle, MapPin } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Sparkles, CheckCircle, MapPin, Play, Pause } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const reviews = [
@@ -98,19 +98,22 @@ export default function Reviews({
   const activeReviews = initialReviews && initialReviews.length > 0 ? initialReviews : reviews;
   const sectionRef = useScrollReveal<HTMLElement>();
   const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
 
   const next = useCallback(() => {
+    setDirection(1);
     setCurrent((c) => (c + 1) % activeReviews.length);
   }, [activeReviews.length]);
 
   const prev = useCallback(() => {
+    setDirection(-1);
     setCurrent((c) => (c - 1 + activeReviews.length) % activeReviews.length);
   }, [activeReviews.length]);
 
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(next, 7000);
+    const interval = setInterval(next, 3500);
     return () => clearInterval(interval);
   }, [isPaused, next]);
 
@@ -159,9 +162,19 @@ export default function Reviews({
         {/* Carousel Card */}
         <div className="scroll-reveal stagger-3 relative mx-auto max-w-3xl">
           <div
-            className="border border-sand/30 bg-ivory-warm p-6 sm:p-12 md:p-14 shadow-lg text-center relative"
+            className="border border-sand/30 bg-ivory-warm p-6 sm:p-12 md:p-14 shadow-lg text-center relative overflow-hidden"
             aria-live="polite"
           >
+            {/* Slideshow Progress Bar */}
+            {!isPaused && (
+              <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-sand/20 overflow-hidden z-10">
+                <div
+                  key={current}
+                  className="h-full bg-sand animate-photo-timer"
+                />
+              </div>
+            )}
+
             <div
               className="mb-4 text-6xl sm:text-7xl font-serif text-sand/60 select-none leading-none"
               aria-hidden="true"
@@ -169,13 +182,14 @@ export default function Reviews({
               “
             </div>
 
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={current}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                custom={direction}
+                initial={{ opacity: 0, x: direction * 35 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -direction * 35 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
                 <blockquote
                   className="mb-6 text-base sm:text-lg font-light leading-relaxed text-teal-deep font-serif italic"
@@ -202,28 +216,38 @@ export default function Reviews({
               </motion.div>
             </AnimatePresence>
 
-            {/* Controls */}
-            <div className="mt-8 flex items-center justify-center gap-6 pt-4 border-t border-sand/20">
-              <button
-                onClick={prev}
-                aria-label="Previous visitor review"
-                className="flex h-11 w-11 items-center justify-center border border-teal-deep/30 text-teal-deep hover:border-sand hover:text-sand-dark transition-all rounded-none touch-manipulation active:scale-95"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
+            {/* Slideshow Controls Bar */}
+            <div className="mt-8 flex items-center justify-between gap-3 pt-4 border-t border-sand/20">
+              {/* Play / Pause Toggle & Slide Counter */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setIsPaused(!isPaused)}
+                  aria-label={isPaused ? "Resume reviews slideshow" : "Pause reviews slideshow"}
+                  className="h-9 w-9 flex items-center justify-center border border-teal-deep/30 text-teal-deep hover:border-sand hover:text-sand-dark transition-all rounded-none touch-manipulation active:scale-95"
+                >
+                  {isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
+                </button>
+                <span className="text-[11px] font-mono text-stone-light">
+                  {current + 1} / {activeReviews.length}
+                </span>
+              </div>
 
-              <div className="flex items-center gap-2" aria-label="Review pagination">
+              {/* Slide Indicators */}
+              <div className="flex items-center gap-1.5" aria-label="Review pagination">
                 {activeReviews.map((_, i) => (
                   <button
                     key={i}
-                    onClick={() => setCurrent(i)}
+                    onClick={() => {
+                      setDirection(i > current ? 1 : -1);
+                      setCurrent(i);
+                    }}
                     aria-label={`View review ${i + 1}`}
-                    className="h-8 flex items-center justify-center px-1 touch-manipulation"
+                    className="h-8 flex items-center justify-center px-0.5 touch-manipulation"
                   >
                     <span
-                      className="h-[2.5px] transition-all duration-400 block"
+                      className="h-[2.5px] transition-all duration-300 block"
                       style={{
-                        width: i === current ? "2rem" : "0.75rem",
+                        width: i === current ? "1.75rem" : "0.5rem",
                         background:
                           i === current
                             ? "var(--color-teal-deep)"
@@ -234,13 +258,23 @@ export default function Reviews({
                 ))}
               </div>
 
-              <button
-                onClick={next}
-                aria-label="Next visitor review"
-                className="flex h-11 w-11 items-center justify-center border border-teal-deep/30 text-teal-deep hover:border-sand hover:text-sand-dark transition-all rounded-none touch-manipulation active:scale-95"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
+              {/* Prev / Next Buttons */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={prev}
+                  aria-label="Previous visitor review"
+                  className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center border border-teal-deep/30 text-teal-deep hover:border-sand hover:text-sand-dark transition-all rounded-none touch-manipulation active:scale-95"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={next}
+                  aria-label="Next visitor review"
+                  className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center border border-teal-deep/30 text-teal-deep hover:border-sand hover:text-sand-dark transition-all rounded-none touch-manipulation active:scale-95"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
