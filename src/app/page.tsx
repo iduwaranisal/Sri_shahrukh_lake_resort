@@ -5,6 +5,7 @@ import Villas from "@/components/Villas";
 import Explore from "@/components/Explore";
 import Gallery from "@/components/Gallery";
 import Reviews from "@/components/Reviews";
+import FaqSection from "@/components/FaqSection";
 import Contact from "@/components/Contact";
 import MapSection from "@/components/MapSection";
 import Footer from "@/components/Footer";
@@ -62,6 +63,7 @@ export default async function Home() {
           ratingScore={content.ratingScore}
           ratingLabel={content.ratingLabel}
         />
+        <FaqSection />
         <Contact
           phone={content.phone}
           whatsapp={content.whatsapp}

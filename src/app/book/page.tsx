@@ -3,9 +3,18 @@ import type { Metadata } from "next";
 import BookClient from "./BookClient";
 
 export const metadata: Metadata = {
-  title: "Book Your Stay | Sri Shahrukh Lake Resort",
+  title: "Book Your Stay in Tissamaharama | Sri Shahrukh Lake Resort",
   description:
-    "Reserve your stay at Sri Shahrukh Lake Resort in Tissamaharama. Peaceful boutique homestay rated 4.8/5 across all platforms.",
+    "Reserve your direct homestay or luxury room at Sri Shahrukh Lake Resort in Tissamaharama, Hambantota. Best rates guaranteed, free Wi-Fi, breakfast, and Yala safari arrangements.",
+  alternates: {
+    canonical: "https://srishahrukhlakeresort.com/book",
+  },
+  openGraph: {
+    title: "Reserve Your Stay | Sri Shahrukh Lake Resort, Tissamaharama",
+    description:
+      "Direct room reservations for Sri Shahrukh Lake Resort in Tissamaharama near Yala National Park. 4.8★ rated hospitality.",
+    url: "https://srishahrukhlakeresort.com/book",
+  },
 };
 
 export default function BookPage() {

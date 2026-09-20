@@ -24,13 +24,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const attraction = attractions.find((a) => a.slug === slug);
   if (!attraction) return {};
 
+  const pageUrl = `https://srishahrukhlakeresort.com/explore/${attraction.slug}`;
+
   return {
-    title: `${attraction.name} | Sri Shahrukh Lake Resort Excursions`,
-    description: attraction.shortDescription,
+    title: `${attraction.name} Guide | Near Sri Shahrukh Lake Resort Tissamaharama`,
+    description: `${attraction.shortDescription} Located just ${attraction.distance} from Sri Shahrukh Lake Resort in Tissamaharama, Hambantota. Plan your safari and excursions with us.`,
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
-      title: `${attraction.name} — Tissamaharama, Sri Lanka`,
+      title: `${attraction.name} — Excursions from Sri Shahrukh Lake Resort`,
       description: attraction.shortDescription,
-      images: [{ url: attraction.heroImage }],
+      url: pageUrl,
+      images: [{ url: attraction.heroImage, width: 1200, height: 630, alt: attraction.name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${attraction.name} | Sri Shahrukh Lake Resort Tissamaharama`,
+      description: attraction.shortDescription,
+      images: [attraction.heroImage],
     },
   };
 }
