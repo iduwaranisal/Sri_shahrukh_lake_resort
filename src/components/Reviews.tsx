@@ -97,25 +97,39 @@ export default function Reviews({
 }) {
   const activeReviews = initialReviews && initialReviews.length > 0 ? initialReviews : reviews;
   const sectionRef = useScrollReveal<HTMLElement>();
+  const [isPlaying, setIsPlaying] = useState(true);
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const resetInterval = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (isPlaying && activeReviews.length > 1) {
+      intervalRef.current = setInterval(() => {
+        setDirection(1);
+        setCurrent((prev) => (prev + 1) % activeReviews.length);
+      }, 3500);
+    }
+  }, [isPlaying, activeReviews.length]);
+
+  useEffect(() => {
+    resetInterval();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [resetInterval]);
 
   const next = useCallback(() => {
     setDirection(1);
     setCurrent((c) => (c + 1) % activeReviews.length);
-  }, [activeReviews.length]);
+    resetInterval();
+  }, [activeReviews.length, resetInterval]);
 
   const prev = useCallback(() => {
     setDirection(-1);
     setCurrent((c) => (c - 1 + activeReviews.length) % activeReviews.length);
-  }, [activeReviews.length]);
-
-  useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(next, 3500);
-    return () => clearInterval(interval);
-  }, [isPaused, next]);
+    resetInterval();
+  }, [activeReviews.length, resetInterval]);
 
   return (
     <section
@@ -124,10 +138,6 @@ export default function Reviews({
       className="py-20 sm:py-28 md:py-32 relative overflow-hidden"
       style={{ background: "var(--color-ivory)" }}
       aria-labelledby="reviews-heading"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onFocusCapture={() => setIsPaused(true)}
-      onBlurCapture={() => setIsPaused(false)}
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
         {/* Section Header */}
@@ -166,7 +176,7 @@ export default function Reviews({
             aria-live="polite"
           >
             {/* Slideshow Progress Bar */}
-            {!isPaused && (
+            {isPlaying && (
               <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-sand/20 overflow-hidden z-10">
                 <div
                   key={current}
@@ -221,11 +231,11 @@ export default function Reviews({
               {/* Play / Pause Toggle & Slide Counter */}
               <div className="flex items-center gap-1.5">
                 <button
-                  onClick={() => setIsPaused(!isPaused)}
-                  aria-label={isPaused ? "Resume reviews slideshow" : "Pause reviews slideshow"}
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  aria-label={isPlaying ? "Pause reviews slideshow" : "Resume reviews slideshow"}
                   className="h-9 w-9 flex items-center justify-center border border-teal-deep/30 text-teal-deep hover:border-sand hover:text-sand-dark transition-all rounded-none touch-manipulation active:scale-95"
                 >
-                  {isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
+                  {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                 </button>
                 <span className="text-[11px] font-mono text-stone-light">
                   {current + 1} / {activeReviews.length}
