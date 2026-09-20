@@ -151,35 +151,34 @@ export default function AdminClient() {
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  const uploadFileToCloudinary = (file: File): Promise<string | null> => {
-    return new Promise((resolve) => {
-      if (file.size > 10 * 1024 * 1024) {
-        showToast("Image file must be under 10MB");
-        resolve(null);
-        return;
+  const uploadFileToCloudinary = async (file: File): Promise<string | null> => {
+    if (file.size > 15 * 1024 * 1024) {
+      showToast("Image file must be under 15MB");
+      return null;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", "srishahrukh");
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const res = await response.json();
+      if (res.success && res.url) {
+        return res.url;
+      } else {
+        showToast(res.error || "Failed to upload image");
+        return null;
       }
-      const reader = new FileReader();
-      reader.onload = async () => {
-        try {
-          const base64 = reader.result as string;
-          const res = await uploadImageAction(base64);
-          if (res.success && res.url) {
-            resolve(res.url);
-          } else {
-            showToast(res.error || "Failed to upload image");
-            resolve(null);
-          }
-        } catch {
-          showToast("Upload failed");
-          resolve(null);
-        }
-      };
-      reader.onerror = () => {
-        showToast("Could not read image file");
-        resolve(null);
-      };
-      reader.readAsDataURL(file);
-    });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Network error";
+      showToast(`Upload failed: ${msg}`);
+      return null;
+    }
   };
 
   // Check auth on mount
