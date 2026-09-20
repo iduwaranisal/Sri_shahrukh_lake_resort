@@ -14,6 +14,9 @@ interface InquiryPayload {
 
 const DESTINATION_EMAIL = "lakeresortsrishahrukh@gmail.com";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   try {
     const body: InquiryPayload = await req.json();
@@ -56,9 +59,11 @@ export async function POST(req: Request) {
     }
 
     const emailUser = process.env.EMAIL_USER || process.env.GMAIL_USER || DESTINATION_EMAIL;
-    const emailPass = process.env.EMAIL_PASS || process.env.GMAIL_APP_PASSWORD || process.env.SMTP_PASS;
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpPort = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : 587;
+    const rawEmailPass = process.env.EMAIL_PASS || process.env.GMAIL_APP_PASSWORD || process.env.SMTP_PASS;
+    // Strip any accidental spaces from Google 16-character App Passwords (e.g. "abcd efgh ijkl mnop")
+    const emailPass = rawEmailPass ? rawEmailPass.replace(/\s+/g, "") : "";
+    const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
+    const smtpPort = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : 465;
 
     const emailSubject = `New Room Inquiry: ${name} (${checkIn} to ${checkOut})`;
 
@@ -166,23 +171,18 @@ Direct Phone: +94 77 621 9245 · WhatsApp: 0757273416
 
     // Check if email credentials are configured
     if (emailPass) {
-      const transporter = smtpHost
-        ? nodemailer.createTransport({
-            host: smtpHost,
-            port: smtpPort,
-            secure: smtpPort === 465,
-            auth: {
-              user: emailUser,
-              pass: emailPass,
-            },
-          })
-        : nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-              user: emailUser,
-              pass: emailPass,
-            },
-          });
+      const transporter = nodemailer.createTransport({
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpPort === 465,
+        auth: {
+          user: emailUser,
+          pass: emailPass,
+        },
+        connectionTimeout: 10000, // 10s connection timeout for Vercel functions
+        greetingTimeout: 5000,
+        socketTimeout: 15000,
+      });
 
       await transporter.sendMail({
         from: `"Sri Shahrukh Lake Resort Website" <${emailUser}>`,
