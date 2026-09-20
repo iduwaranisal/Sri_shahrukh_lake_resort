@@ -2,7 +2,6 @@
 
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Sparkles, Wifi, Car, Coffee, ShieldCheck, Bike, MapPin } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -212,7 +211,7 @@ export default function About({
               </div>
             </div>
 
-            <div className="scroll-reveal stagger-3 mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+            <div className="scroll-reveal stagger-3 mt-8">
               <a
                 href="#homestay"
                 className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 text-center min-h-[46px]"
@@ -224,14 +223,6 @@ export default function About({
               >
                 The Homestay
               </a>
-
-              <Link
-                href="/book"
-                className="btn-shimmer inline-flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.15em] bg-sand text-teal-deep hover:bg-sand-light transition-all shadow-md active:scale-95 text-center min-h-[46px]"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                Book Now
-              </Link>
             </div>
           </div>
 

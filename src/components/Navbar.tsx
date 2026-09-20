@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, Calendar, Phone, MessageCircle, MapPin } from "lucide-react";
 import { getWhatsAppUrl, getTelUrl } from "@/lib/whatsapp";
 
@@ -10,7 +11,7 @@ const navLinks = [
   { label: "About", href: "/#about", id: "about" },
   { label: "The Homestay", href: "/#homestay", id: "homestay" },
   { label: "Explore", href: "/#explore", id: "explore" },
-  { label: "Gallery", href: "/#gallery", id: "gallery" },
+  { label: "Gallery", href: "/gallery", id: "gallery" },
   { label: "Contact", href: "/#contact", id: "contact" },
 ];
 
@@ -21,6 +22,7 @@ export default function Navbar({
   whatsapp?: string;
   phone?: string;
 } = {}) {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -118,7 +120,8 @@ export default function Navbar({
           {/* Desktop Navigation Links — Clean, uncluttered 5 core items */}
           <ul className="hidden lg:flex items-center gap-7 xl:gap-9" role="menubar">
             {navLinks.map((link) => {
-              const isActive = activeSection === link.id;
+              const isActive =
+                pathname === "/gallery" ? link.id === "gallery" : activeSection === link.id;
               return (
                 <li key={link.href} role="none">
                   <Link
@@ -247,21 +250,25 @@ export default function Navbar({
             {/* Scrollable Links & Actions */}
             <div className="flex-1 overflow-y-auto px-6 py-8 flex flex-col justify-between overscroll-contain pb-[max(2rem,env(safe-area-inset-bottom))]">
               <ul className="flex flex-col gap-3 my-auto text-center py-6">
-                {navLinks.map((link) => (
-                  <li key={link.href} className="w-full">
-                    <Link
-                      href={link.href}
-                      onClick={() => setMenuOpen(false)}
-                      className="inline-flex items-center justify-center min-h-[48px] py-2 px-4 text-2xl font-light tracking-wide transition-colors hover:text-sand touch-manipulation"
-                      style={{
-                        color: activeSection === link.id ? "var(--color-sand)" : "var(--color-ivory)",
-                        fontFamily: "var(--font-serif)",
-                      }}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
+                {navLinks.map((link) => {
+                  const isActive =
+                    pathname === "/gallery" ? link.id === "gallery" : activeSection === link.id;
+                  return (
+                    <li key={link.href} className="w-full">
+                      <Link
+                        href={link.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="inline-flex items-center justify-center min-h-[48px] py-2 px-4 text-2xl font-light tracking-wide transition-colors hover:text-sand touch-manipulation"
+                        style={{
+                          color: isActive ? "var(--color-sand)" : "var(--color-ivory)",
+                          fontFamily: "var(--font-serif)",
+                        }}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
 
               {/* Bottom Quick Action Strip — Clean and focused */}

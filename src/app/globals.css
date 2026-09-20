@@ -309,6 +309,16 @@ select {
   animation: photoTimer 3.5s linear infinite;
 }
 
+/* Hero slide progress indicator */
+@keyframes heroProgress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.animate-hero-progress {
+  animation: heroProgress 4s linear forwards;
+}
+
 /* ── Image Loading Shimmer Placeholder ── */
 @keyframes skeletonPulse {
   0% {
@@ -356,6 +366,7 @@ select {
   .btn-shimmer::after,
   .image-placeholder-shimmer,
   .animate-photo-timer,
+  .animate-hero-progress,
   .animate-line-expand {
     animation: none !important;
     transition: none !important;

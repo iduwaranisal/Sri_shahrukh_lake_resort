@@ -16,8 +16,6 @@ import {
   Compass,
   ChevronLeft,
   ChevronRight,
-  Pause,
-  Play,
 } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -112,6 +110,8 @@ export interface DynamicHomestayImage {
   title: string;
 }
 
+const SLIDE_INTERVAL = 3500;
+
 export default function Villas({
   homestayTitle,
   homestayDescription,
@@ -129,10 +129,10 @@ export default function Villas({
   const activePhotos = homestayImages && homestayImages.length > 0 ? homestayImages : homestayPhotos;
 
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const sectionRef = useScrollReveal<HTMLElement>();
+  const thumbContainerRef = useRef<HTMLDivElement>(null);
 
   const nextPhoto = useCallback(() => {
     setSelectedPhotoIndex((prev) => (prev + 1) % activePhotos.length);
@@ -142,21 +142,58 @@ export default function Villas({
     setSelectedPhotoIndex((prev) => (prev - 1 + activePhotos.length) % activePhotos.length);
   }, [activePhotos.length]);
 
-  // Continuously change photos every 3.5 seconds
+  // Auto-advance slides continuously
   useEffect(() => {
-    if (!isPlaying || isHovered || activePhotos.length <= 1) {
+    if (isHovered || activePhotos.length <= 1) {
       if (timerRef.current) clearInterval(timerRef.current);
       return;
     }
 
     timerRef.current = setInterval(() => {
       setSelectedPhotoIndex((prev) => (prev + 1) % activePhotos.length);
-    }, 3500);
+    }, SLIDE_INTERVAL);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isPlaying, isHovered, activePhotos.length]);
+  }, [isHovered, activePhotos.length]);
+
+  // Auto-scroll thumbnail strip to keep active thumb visible
+  useEffect(() => {
+    if (!thumbContainerRef.current) return;
+    const container = thumbContainerRef.current;
+    const activeThumb = container.children[selectedPhotoIndex] as HTMLElement | undefined;
+    if (activeThumb) {
+      const scrollLeft = activeThumb.offsetLeft - container.offsetWidth / 2 + activeThumb.offsetWidth / 2;
+      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+    }
+  }, [selectedPhotoIndex]);
+
+  // Touch swipe support for mobile
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    setIsHovered(true);
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    setIsHovered(false);
+    const diff = touchStartX.current - touchEndX.current;
+    const threshold = 50;
+    if (Math.abs(diff) > threshold) {
+      if (diff > 0) {
+        nextPhoto();
+      } else {
+        prevPhoto();
+      }
+    }
+  }, [nextPhoto, prevPhoto]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  }, []);
 
   const currentPhoto = activePhotos[selectedPhotoIndex] || activePhotos[0];
 
@@ -164,7 +201,7 @@ export default function Villas({
     <section
       id="homestay"
       ref={sectionRef}
-      className="relative overflow-hidden py-20 sm:py-28 md:py-32"
+      className="relative overflow-hidden py-16 sm:py-24 md:py-28 lg:py-32"
       style={{ background: "var(--color-ivory)" }}
       aria-labelledby="homestay-heading"
     >
@@ -181,13 +218,14 @@ export default function Villas({
         style={{ background: "var(--color-sand)" }}
       />
 
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
+      {/* ── Main Container with consistent side margins ── */}
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 md:px-8 lg:px-10 overflow-hidden">
         {/* Section Header */}
-        <div className="mb-12 sm:mb-16 text-center max-w-3xl mx-auto">
-          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10 shadow-sm">
+        <div className="mb-10 sm:mb-14 md:mb-16 text-center max-w-3xl mx-auto px-1">
+          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10 rounded-full shadow-sm">
             <Sparkles className="w-3 h-3 text-sand animate-twinkle" />
             <p
-              className="text-xs uppercase tracking-[0.3em] font-medium"
+              className="text-[10px] sm:text-xs uppercase tracking-[0.25em] sm:tracking-[0.3em] font-medium"
               style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
             >
               The Homestay
@@ -196,14 +234,14 @@ export default function Villas({
 
           <h2
             id="homestay-heading"
-            className="scroll-reveal stagger-1 text-3xl sm:text-4xl md:text-5xl font-light leading-[1.15]"
+            className="scroll-reveal stagger-1 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-[1.15]"
             style={{ color: "var(--color-teal-deep)", fontFamily: "var(--font-serif)" }}
           >
             {homestayTitle ? (
               homestayTitle
             ) : (
               <>
-                Comfortable Living, <br />
+                Comfortable Living, <br className="hidden sm:block" />
                 <span className="italic text-bronze-light">
                   Quiet Homestay Accommodation
                 </span>
@@ -212,7 +250,7 @@ export default function Villas({
           </h2>
 
           <p
-            className="scroll-reveal stagger-2 mt-3 text-sm sm:text-base font-light leading-relaxed"
+            className="scroll-reveal stagger-2 mt-3 text-[13px] sm:text-sm md:text-base font-light leading-relaxed max-w-2xl mx-auto"
             style={{ color: "var(--color-stone)", fontFamily: "var(--font-sans)" }}
           >
             {homestayDescription ||
@@ -221,15 +259,16 @@ export default function Villas({
         </div>
 
         {/* ── Main Homestay Presentation ── */}
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-14 items-start">
-          {/* Left: Continuous Slideshow Photo Viewer (7 cols) */}
-          <div className="scroll-reveal stagger-3 lg:col-span-7 flex flex-col gap-3.5">
+        <div className="grid gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-14 items-start min-w-0">
+          {/* Left: Photo Viewer */}
+          <div className="scroll-reveal stagger-3 lg:col-span-7 flex flex-col gap-3 min-w-0">
             <div
-              className="relative aspect-[4/3] sm:aspect-[16/10] w-full overflow-hidden border border-sand/30 shadow-2xl bg-teal-deep group select-none"
+              className="relative aspect-[4/3] sm:aspect-[16/10] w-full overflow-hidden rounded-lg sm:rounded-xl border border-sand/25 shadow-2xl bg-teal-deep group select-none"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              onTouchStart={() => setIsHovered(true)}
-              onTouchEnd={() => setIsHovered(false)}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
               role="region"
               aria-label="Homestay Photo Slideshow"
             >
@@ -259,7 +298,7 @@ export default function Villas({
                         fill
                         loading={i === 0 ? "eager" : "lazy"}
                         className="object-cover"
-                        sizes="(max-width: 1024px) 100vw, 58vw"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 58vw"
                       />
                     )}
                   </div>
@@ -271,13 +310,13 @@ export default function Villas({
                 className="absolute inset-0 pointer-events-none z-10"
                 style={{
                   background:
-                    "linear-gradient(180deg, rgba(10,24,21,0.25) 0%, transparent 40%, rgba(10,24,21,0.8) 100%)",
+                    "linear-gradient(180deg, rgba(10,24,21,0.15) 0%, transparent 40%, rgba(10,24,21,0.75) 100%)",
                 }}
               />
 
-              {/* Subtle top animated progress line */}
-              {isPlaying && !isHovered && (
-                <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-teal-deep/50 z-20 overflow-hidden">
+              {/* Auto-progress bar */}
+              {!isHovered && (
+                <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-teal-deep/40 z-20 overflow-hidden rounded-t-lg sm:rounded-t-xl">
                   <div
                     key={selectedPhotoIndex}
                     className="h-full bg-sand animate-photo-timer"
@@ -285,16 +324,16 @@ export default function Villas({
                 </div>
               )}
 
-              {/* Prev / Next manual navigation buttons */}
+              {/* Prev / Next navigation buttons */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   prevPhoto();
                 }}
-                className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-sand/40 bg-teal-deep/80 text-sand flex items-center justify-center opacity-90 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-sand hover:text-teal-deep active:scale-95 shadow-lg touch-manipulation"
+                className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-sand/40 bg-teal-deep/80 text-sand flex items-center justify-center opacity-80 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-sand hover:text-teal-deep active:scale-90 shadow-lg touch-manipulation backdrop-blur-sm"
                 aria-label="Previous homestay photo"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
 
               <button
@@ -302,50 +341,44 @@ export default function Villas({
                   e.stopPropagation();
                   nextPhoto();
                 }}
-                className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-sand/40 bg-teal-deep/80 text-sand flex items-center justify-center opacity-90 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-sand hover:text-teal-deep active:scale-95 shadow-lg touch-manipulation"
+                className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-sand/40 bg-teal-deep/80 text-sand flex items-center justify-center opacity-80 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-sand hover:text-teal-deep active:scale-90 shadow-lg touch-manipulation backdrop-blur-sm"
                 aria-label="Next homestay photo"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
 
-              {/* Top-Right Play/Pause & Counter Badge */}
-              <div className="absolute top-3 right-3 z-20 flex items-center gap-2 bg-teal-deep/85 px-2.5 py-1 border border-sand/30 shadow-md">
-                <button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  aria-label={isPlaying ? "Pause photo slideshow" : "Resume photo slideshow"}
-                  className="text-sand hover:text-sand-light transition-colors touch-manipulation"
+              {/* Photo counter badge */}
+              <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-20 flex items-center gap-1.5 bg-teal-deep/80 backdrop-blur-sm px-2.5 py-1 rounded-full border border-sand/25 shadow-md">
+                <span
+                  className="text-[10px] sm:text-[11px] text-ivory/90 font-medium tabular-nums"
+                  style={{ fontFamily: "var(--font-sans)" }}
                 >
-                  {isPlaying && !isHovered ? (
-                    <Pause className="w-3 h-3" />
-                  ) : (
-                    <Play className="w-3 h-3" />
-                  )}
-                </button>
-                <span className="text-[10px] text-ivory/80 font-mono">
                   {selectedPhotoIndex + 1} / {activePhotos.length}
                 </span>
               </div>
 
               {/* Bottom Caption */}
-              <div className="absolute bottom-4 left-4 right-4 z-20 text-ivory flex items-end justify-between gap-3">
-                <div>
-                  <p className="text-[10px] sm:text-xs uppercase tracking-wider text-sand-light font-medium">
-                    Sri Shahrukh Lake Resort
-                  </p>
-                  <p
-                    key={currentPhoto.title}
-                    className="text-sm sm:text-base font-light font-serif transition-opacity duration-300"
-                    style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}
-                  >
-                    {currentPhoto.title}
-                  </p>
-                </div>
+              <div className="absolute bottom-0 left-0 right-0 z-20 px-3 pb-3 sm:px-4 sm:pb-4">
+                <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-sand-light/80 font-medium">
+                  Sri Shahrukh Lake Resort
+                </p>
+                <p
+                  className="text-[13px] sm:text-base font-light transition-opacity duration-300"
+                  style={{
+                    fontFamily: "var(--font-serif)",
+                    color: "var(--color-ivory)",
+                    textShadow: "0 2px 8px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  {currentPhoto.title}
+                </p>
               </div>
             </div>
 
-            {/* Thumbnails with glowing active state & progress */}
+            {/* Thumbnails strip */}
             <div
-              className="flex gap-2 sm:gap-2.5 overflow-x-auto pb-2 no-scrollbar touch-pan-x overscroll-contain py-1"
+              ref={thumbContainerRef}
+              className="flex gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar touch-pan-x overscroll-contain"
               style={{ WebkitOverflowScrolling: "touch" }}
             >
               {activePhotos.map((photo, i) => {
@@ -354,11 +387,12 @@ export default function Villas({
                   <button
                     key={i}
                     onClick={() => setSelectedPhotoIndex(i)}
-                    className={`relative h-14 sm:h-16 w-20 sm:w-24 flex-shrink-0 overflow-hidden border transition-all duration-300 touch-manipulation ${
+                    className={`relative h-12 sm:h-14 md:h-16 flex-shrink-0 overflow-hidden rounded-md border-2 transition-all duration-300 touch-manipulation ${
                       isSelected
-                        ? "border-sand scale-105 shadow-md shadow-sand/20 ring-2 ring-sand/60"
-                        : "border-sand/25 opacity-70 hover:opacity-100 hover:border-sand/60"
+                        ? "border-sand shadow-md shadow-sand/20 ring-1 ring-sand/50 scale-[1.02]"
+                        : "border-transparent opacity-60 hover:opacity-100 hover:border-sand/30"
                     }`}
+                    style={{ width: isSelected ? "5.5rem" : "4.5rem" }}
                     aria-label={`Show ${photo.title}`}
                   >
                     <SmoothImage
@@ -372,30 +406,27 @@ export default function Villas({
                       alt={photo.title}
                       fill
                       loading="lazy"
-                      className="object-cover"
+                      className="object-cover rounded-[4px]"
                       sizes="96px"
                     />
-                    {isSelected && (
-                      <span className="absolute top-1 right-1 h-1.5 w-1.5 rounded-full bg-sand ring-2 ring-teal-deep shadow" />
-                    )}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Right: Homestay Description & Amenities (5 cols) */}
-          <div className="scroll-reveal stagger-4 lg:col-span-5 flex flex-col justify-between">
+          {/* Right: Description & Amenities */}
+          <div className="scroll-reveal stagger-4 lg:col-span-5 flex flex-col justify-between min-w-0 overflow-hidden">
             <div>
               <h3
-                className="text-2xl sm:text-3xl font-light text-teal-deep mb-3"
+                className="text-xl sm:text-2xl md:text-3xl font-light text-teal-deep mb-2 sm:mb-3"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 Everything You Need for a Relaxing Stay
               </h3>
 
               <p
-                className="text-sm sm:text-base font-light leading-relaxed text-stone mb-6"
+                className="text-[13px] sm:text-sm md:text-base font-light leading-relaxed text-stone mb-5 sm:mb-6"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
                 Our homestay offers a restful retreat after an exciting day exploring
@@ -403,8 +434,8 @@ export default function Villas({
                 private bathrooms with hot water, quiet garden verandahs, and attentive personal care.
               </p>
 
-              {/* Homestay Amenities Grid with lively hover effects */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+              {/* Amenities Grid — responsive: 1 col mobile, 2 col tablet+ */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5 mb-6 sm:mb-8">
                 {activeAmenities.map((item, i) => {
                   const Icon =
                     typeof item.icon === "string"
@@ -413,12 +444,22 @@ export default function Villas({
                   return (
                     <div
                       key={i}
-                      className="p-3 border border-sand/20 bg-ivory-warm/70 flex items-start gap-2.5 transition-all duration-300 hover:border-sand/60 hover:-translate-y-1 hover:shadow-sm"
+                      className="p-2.5 sm:p-3 border border-sand/15 bg-ivory-warm/60 rounded-lg flex items-start gap-2.5 transition-all duration-300 hover:border-sand/50 hover:-translate-y-0.5 hover:shadow-sm active:scale-[0.98]"
                     >
-                      <Icon className="w-4 h-4 text-bronze-light flex-shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-xs text-teal-deep font-medium">{item.title}</p>
-                        <p className="text-[11px] text-stone-light leading-snug mt-0.5">
+                      <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-sand/10 flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-bronze-light" />
+                      </div>
+                      <div className="min-w-0">
+                        <p
+                          className="text-[11px] sm:text-xs text-teal-deep font-semibold leading-tight"
+                          style={{ fontFamily: "var(--font-sans)" }}
+                        >
+                          {item.title}
+                        </p>
+                        <p
+                          className="text-[10px] sm:text-[11px] text-stone-light leading-snug mt-0.5"
+                          style={{ fontFamily: "var(--font-sans)" }}
+                        >
                           {item.desc}
                         </p>
                       </div>
@@ -428,18 +469,18 @@ export default function Villas({
               </div>
             </div>
 
-            {/* Direct Booking & WhatsApp CTAs with shimmer */}
-            <div className="pt-5 border-t border-sand/20 flex flex-col sm:flex-row gap-3">
+            {/* CTA Buttons */}
+            <div className="pt-4 sm:pt-5 border-t border-sand/20 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
               <Link
                 href="/book"
-                className="btn-shimmer flex-1 flex items-center justify-center gap-2 py-3.5 px-5 text-xs font-semibold uppercase tracking-[0.2em] shadow-md shadow-black/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                className="btn-shimmer flex-1 flex items-center justify-center gap-2 py-3 sm:py-3.5 px-5 text-[11px] sm:text-xs font-bold uppercase tracking-[0.18em] sm:tracking-[0.2em] rounded-md shadow-md shadow-black/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
                 style={{
                   background: "var(--color-sand)",
                   color: "var(--color-teal-deep)",
                   fontFamily: "var(--font-sans)",
                 }}
               >
-                <Calendar className="w-4 h-4" />
+                <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span>Book Now</span>
               </Link>
 
@@ -450,10 +491,10 @@ export default function Villas({
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 py-3.5 px-5 border border-teal-deep/30 text-teal-deep hover:bg-teal-deep hover:text-sand transition-all text-xs uppercase tracking-wider font-medium"
+                className="flex-1 flex items-center justify-center gap-2 py-3 sm:py-3.5 px-5 border border-teal-deep/25 text-teal-deep rounded-md hover:bg-teal-deep hover:text-sand transition-all text-[11px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-wider font-medium active:scale-[0.97]"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                <MessageCircle className="w-4 h-4 text-teal-mist" />
+                <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-mist" />
                 <span>Chat on WhatsApp</span>
               </a>
             </div>

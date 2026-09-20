@@ -1,45 +1,11 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import { Sparkles, ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
+import Link from "next/link";
+import { Sparkles, ArrowRight, Camera } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SmoothImage } from "@/components/ui/SmoothImage";
-
-interface GalleryImage {
-  src: string;
-  alt: string;
-  category: "The Homestay" | "Lake & Nature" | "Wildlife & Heritage" | "Homestay Life";
-}
-
-const galleryImages: GalleryImage[] = [
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894680/srishahrukh/img1.jpg", alt: "Peaceful homestay exterior and garden grounds", category: "The Homestay" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894691/srishahrukh/img2.jpg", alt: "Comfortable bedroom with clean linens", category: "The Homestay" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894717/srishahrukh/tissa-lake-sunrise.jpg", alt: "Tissa Wewa reservoir at dawn with morning mist and lotus blossoms", category: "Lake & Nature" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894726/srishahrukh/yala-leopard.jpg", alt: "Sri Lankan leopard basking on granite outcrop in Yala National Park", category: "Wildlife & Heritage" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894722/srishahrukh/tissamaharama-stupa.jpg", alt: "Ancient white stupa of Tissamaharama Raja Maha Vihara against sunset", category: "Wildlife & Heritage" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894702/srishahrukh/img3.jpg", alt: "Garden terrace and peaceful sitting area", category: "The Homestay" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894657/srishahrukh/im_10.png", alt: "Homestay grounds at sunset", category: "The Homestay" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894641/srishahrukh/bundala-flamingos.jpg", alt: "Greater Flamingos wading in Bundala UNESCO Ramsar wetland", category: "Wildlife & Heritage" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894706/srishahrukh/kataragama-temple.jpg", alt: "Sacred evening puja ceremony with clay oil lamps at Kataragama", category: "Wildlife & Heritage" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894710/srishahrukh/kirinda-temple.jpg", alt: "Kirinda cliff temple above crashing southern Indian Ocean waves", category: "Wildlife & Heritage" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894668/srishahrukh/im_7.png", alt: "Fresh home-cooked Sri Lankan breakfast", category: "Homestay Life" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894645/srishahrukh/hero1.jpg", alt: "Untamed wilderness of Ruhuna dry-zone forest and granite hills", category: "Lake & Nature" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894664/srishahrukh/im_5.png", alt: "Garden relaxation area overlooking tropical greenery", category: "Homestay Life" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894662/srishahrukh/im_4.png", alt: "Clean, comfortable room setting", category: "The Homestay" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894660/srishahrukh/im_3.png", alt: "Attached private bathroom with hot water shower", category: "The Homestay" },
-  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894643/srishahrukh/hero_4.jpg", alt: "Homestay entrance surrounded by tropical palms", category: "Homestay Life" },
-];
-
-const categories = [
-  "All Views",
-  "The Homestay",
-  "Lake & Nature",
-  "Wildlife & Heritage",
-  "Homestay Life",
-] as const;
+import { defaultGalleryImages, type GalleryImage } from "@/data/gallery";
 
 export interface DynamicGalleryImage {
   src: string;
@@ -53,58 +19,29 @@ export default function Gallery({
   initialImages?: DynamicGalleryImage[];
 } = {}) {
   const sectionRef = useScrollReveal<HTMLElement>();
-  const [selectedCategory, setSelectedCategory] = useState<string>("All Views");
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const images = (initialImages && initialImages.length > 0 ? initialImages : defaultGalleryImages) as GalleryImage[];
 
-  const allImages = initialImages && initialImages.length > 0 ? initialImages : galleryImages;
-
-  const filteredImages =
-    selectedCategory === "All Views"
-      ? allImages
-      : allImages.filter((img) => img.category === selectedCategory);
-
-  const handleNext = useCallback(() => {
-    if (lightboxIndex === null) return;
-    setLightboxIndex((lightboxIndex + 1) % filteredImages.length);
-  }, [lightboxIndex, filteredImages.length]);
-
-  const handlePrev = useCallback(() => {
-    if (lightboxIndex === null) return;
-    setLightboxIndex((lightboxIndex - 1 + filteredImages.length) % filteredImages.length);
-  }, [lightboxIndex, filteredImages.length]);
-
-  // Keyboard navigation listener for lightbox
-  useEffect(() => {
-    if (lightboxIndex === null) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setLightboxIndex(null);
-      if (e.key === "ArrowRight") handleNext();
-      if (e.key === "ArrowLeft") handlePrev();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [lightboxIndex, handleNext, handlePrev]);
+  // Select 4 high-impact highlight photos representing different categories
+  const previewImages = images.slice(0, 4);
 
   return (
     <section
       id="gallery"
       ref={sectionRef}
-      className="py-24 sm:py-32 md:py-36 relative"
+      className="py-16 sm:py-24 md:py-28 relative overflow-hidden"
       style={{ background: "var(--color-ivory-warm)" }}
       aria-labelledby="gallery-heading"
     >
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 md:px-8 lg:px-10">
         {/* Section Header */}
-        <div className="mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
-          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10">
+        <div className="mb-10 sm:mb-12 text-center max-w-2xl mx-auto">
+          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10 rounded-full shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-sand animate-twinkle" />
             <p
-              className="text-xs uppercase tracking-[0.35em] font-medium"
+              className="text-[10px] sm:text-xs uppercase tracking-[0.3em] font-medium"
               style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
             >
-              Photo Gallery
+              Photo Showcase
             </p>
           </div>
 
@@ -113,56 +50,27 @@ export default function Gallery({
             className="scroll-reveal stagger-1 text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Photos of Our{" "}
-            <span className="italic text-bronze-light">Homestay</span>
+            Moments at{" "}
+            <span className="italic text-bronze-light">Sri Shahrukh</span>
           </h2>
 
           <p
-            className="scroll-reveal stagger-2 mt-3 text-sm sm:text-base font-light text-stone"
+            className="scroll-reveal stagger-2 mt-3 text-sm sm:text-base font-light text-stone leading-relaxed"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Take a look around our rooms, peaceful garden, and the beautiful sights in and around Tissamaharama.
+            A glimpse into our comfortable rooms, quiet gardens, authentic meals, and the
+            wild beauty of Tissamaharama &amp; Yala.
           </p>
         </div>
 
-        {/* Category Filters */}
-        <div
-          className="scroll-reveal stagger-3 mb-8 sm:mb-10 flex items-center gap-2 sm:gap-2.5 overflow-x-auto sm:flex-wrap sm:justify-center no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 py-1"
-          role="tablist"
-          aria-label="Gallery category filters"
-        >
-          {categories.map((category) => {
-            const isSelected = selectedCategory === category;
-            return (
-              <button
-                key={category}
-                role="tab"
-                aria-selected={isSelected}
-                onClick={() => {
-                  setSelectedCategory(category);
-                  setLightboxIndex(null);
-                }}
-                className={`flex-shrink-0 whitespace-nowrap min-h-[40px] px-4 py-2 text-[11px] uppercase tracking-wider transition-all border touch-manipulation ${
-                  isSelected
-                    ? "bg-teal-deep text-sand border-teal-deep font-medium shadow-sm"
-                    : "bg-ivory text-stone border-sand/20 hover:border-sand hover:text-teal-deep"
-                }`}
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                {category}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Responsive Photo Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-          {filteredImages.map((img, i) => (
-            <button
+        {/* 4 Featured Preview Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 mb-10 sm:mb-12">
+          {previewImages.map((img, i) => (
+            <Link
               key={`${img.src}-${i}`}
-              onClick={() => setLightboxIndex(i)}
-              aria-label={`Enlarge photograph: ${img.alt}`}
-              className={`scroll-reveal stagger-${Math.min(i + 1, 6)} group relative aspect-[4/3] w-full overflow-hidden border border-sand/20 bg-teal-deep focus:outline-none focus:ring-2 focus:ring-sand cursor-pointer`}
+              href="/gallery"
+              className={`scroll-reveal stagger-${i + 1} group relative aspect-[4/3] w-full overflow-hidden rounded-lg sm:rounded-xl border border-sand/25 bg-teal-deep shadow-md transition-all duration-300 hover:shadow-xl hover:border-sand/60`}
+              aria-label={`View ${img.alt} in photo gallery`}
             >
               <SmoothImage
                 src={optimizeImage(img.src, {
@@ -174,105 +82,46 @@ export default function Gallery({
                 fill
                 loading="lazy"
                 className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-108"
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
               />
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center bg-teal-deep/50"
-              >
-                <div className="h-10 w-10 rounded-full border border-sand bg-teal-deep/80 flex items-center justify-center text-sand shadow-lg">
-                  <ZoomIn className="w-5 h-5" />
-                </div>
-              </div>
-              <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                <span className="text-[10px] text-ivory bg-teal-deep/90 px-2 py-0.5 uppercase tracking-wider truncate block">
+
+              <div className="absolute inset-0 bg-gradient-to-t from-teal-deep/85 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300" />
+
+              <div className="absolute bottom-2.5 left-2.5 right-2.5 z-10">
+                <span className="inline-block text-[9px] sm:text-[10px] text-sand-light bg-teal-deep/90 backdrop-blur-sm px-2 py-0.5 rounded uppercase tracking-wider font-medium mb-1 shadow-sm">
                   {img.category}
                 </span>
+                <p
+                  className="text-xs font-light text-ivory line-clamp-1 opacity-90 group-hover:opacity-100"
+                  style={{
+                    fontFamily: "var(--font-serif)",
+                    textShadow: "0 1px 4px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  {img.alt}
+                </p>
               </div>
-            </button>
+            </Link>
           ))}
         </div>
-      </div>
 
-      {/* Accessible Lightbox Modal — keeps framer-motion for real animated transition */}
-      <AnimatePresence>
-        {lightboxIndex !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
-            style={{ background: "rgba(10,24,21,0.96)" }}
-            onClick={() => setLightboxIndex(null)}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Image View Lightbox"
+        {/* Action Button to Dedicated Gallery Page */}
+        <div className="text-center scroll-reveal stagger-4">
+          <Link
+            href="/gallery"
+            className="btn-shimmer inline-flex items-center justify-center gap-2.5 min-h-[50px] px-8 py-3 text-xs font-bold uppercase tracking-[0.2em] rounded-md shadow-lg shadow-black/15 transition-all duration-300 hover:scale-[1.03] active:scale-[0.98]"
+            style={{
+              background: "var(--color-sand)",
+              color: "var(--color-teal-deep)",
+              fontFamily: "var(--font-sans)",
+            }}
           >
-            <motion.div
-              initial={{ scale: 0.94, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.94, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="relative max-w-5xl w-full max-h-[85vh] flex flex-col items-center"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Top bar with count and close */}
-              <div className="w-full flex items-center justify-between pb-3 text-ivory">
-                <span className="text-xs uppercase tracking-[0.25em] text-sand font-medium">
-                  {lightboxIndex + 1} of {filteredImages.length} · {filteredImages[lightboxIndex].category}
-                </span>
-                <button
-                  onClick={() => setLightboxIndex(null)}
-                  className="h-11 w-11 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/15 transition-all touch-manipulation active:scale-95"
-                  aria-label="Close Lightbox"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Main Image Container */}
-              <div className="relative aspect-[4/3] sm:aspect-[16/10] w-full max-h-[65vh] sm:max-h-[70vh] overflow-hidden border border-sand/30 shadow-2xl bg-teal-deep">
-                <SmoothImage
-                  src={optimizeImage(filteredImages[lightboxIndex].src, {
-                    width: 1600,
-                    quality: "auto",
-                    format: "auto",
-                  })}
-                  alt={filteredImages[lightboxIndex].alt}
-                  fill
-                  className="object-contain"
-                  sizes="100vw"
-                  priority
-                />
-              </div>
-
-              {/* Caption and Navigation Controls */}
-              <div className="w-full pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-                <p className="text-xs sm:text-sm font-light text-ivory/80 max-w-xl">
-                  {filteredImages[lightboxIndex].alt}
-                </p>
-
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={handlePrev}
-                    className="h-11 w-11 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/20 transition-all touch-manipulation active:scale-95"
-                    aria-label="Previous photograph"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={handleNext}
-                    className="h-11 w-11 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/20 transition-all touch-manipulation active:scale-95"
-                    aria-label="Next photograph"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <Camera className="w-4 h-4" />
+            <span>Explore Full Gallery ({images.length}+ Photos)</span>
+            <ArrowRight className="w-4 h-4 ml-0.5" />
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }
