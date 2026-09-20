@@ -127,7 +127,7 @@ export default function About({
           obs.disconnect();
         }
       },
-      { rootMargin: "-60px" }
+      { rootMargin: "0px 0px -20px 0px", threshold: 0.05 }
     );
     obs.observe(el);
     return () => obs.disconnect();

@@ -40,8 +40,10 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   max-width: 100%;
   overflow-x: clip;
 }
@@ -146,11 +148,11 @@ select {
   }
 }
 
-/* ── Lightweight CSS scroll-reveal (replaces JS-driven framer-motion) ── */
+/* ── Featherlight CSS scroll-reveal & typography entrance ── */
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translate3d(0, 24px, 0);
+    transform: translate3d(0, 16px, 0);
   }
   to {
     opacity: 1;
@@ -164,18 +166,31 @@ select {
 }
 
 .scroll-reveal.is-visible {
-  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: fadeUp 0.62s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Stagger delays for child elements */
-.scroll-reveal.stagger-1.is-visible { animation-delay: 0.08s; }
-.scroll-reveal.stagger-2.is-visible { animation-delay: 0.16s; }
-.scroll-reveal.stagger-3.is-visible { animation-delay: 0.24s; }
-.scroll-reveal.stagger-4.is-visible { animation-delay: 0.32s; }
-.scroll-reveal.stagger-5.is-visible { animation-delay: 0.40s; }
-.scroll-reveal.stagger-6.is-visible { animation-delay: 0.48s; }
-.scroll-reveal.stagger-7.is-visible { animation-delay: 0.56s; }
-.scroll-reveal.stagger-8.is-visible { animation-delay: 0.64s; }
+/* Snappy staggered reveals for instant, fluid cascade */
+.scroll-reveal.stagger-1.is-visible { animation-delay: 0.04s; }
+.scroll-reveal.stagger-2.is-visible { animation-delay: 0.08s; }
+.scroll-reveal.stagger-3.is-visible { animation-delay: 0.12s; }
+.scroll-reveal.stagger-4.is-visible { animation-delay: 0.16s; }
+.scroll-reveal.stagger-5.is-visible { animation-delay: 0.20s; }
+.scroll-reveal.stagger-6.is-visible { animation-delay: 0.24s; }
+.scroll-reveal.stagger-7.is-visible { animation-delay: 0.28s; }
+.scroll-reveal.stagger-8.is-visible { animation-delay: 0.32s; }
+
+/* Dedicated text-appear utility for smooth inline typography transitions */
+.text-appear {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.text-appear.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
 
 /* ── Subtle Aliveness Animations ── */
 @keyframes softFloat {
