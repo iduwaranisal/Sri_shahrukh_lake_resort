@@ -68,6 +68,10 @@ export default async function Home() {
           email={content.email}
           address={content.address}
           mapUrl={content.mapUrl}
+          facebookUrl={content.facebookUrl}
+          instagramUrl={content.instagramUrl}
+          tiktokUrl={content.tiktokUrl}
+          youtubeUrl={content.youtubeUrl}
         />
         <MapSection address={content.address} mapUrl={content.mapUrl} />
       </main>
@@ -78,6 +82,10 @@ export default async function Home() {
         address={content.address}
         mapUrl={content.mapUrl}
         ratingScore={content.ratingScore}
+        facebookUrl={content.facebookUrl}
+        instagramUrl={content.instagramUrl}
+        tiktokUrl={content.tiktokUrl}
+        youtubeUrl={content.youtubeUrl}
       />
       <MobileBottomBar whatsapp={content.whatsapp} phone={content.phone} />
     </>

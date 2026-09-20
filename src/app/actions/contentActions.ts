@@ -38,6 +38,10 @@ export interface SerializedSiteContent {
   homestayImages: IHomestayImage[];
   galleryImages: IGalleryImage[];
   exploreImages: IExploreImage[];
+  facebookUrl?: string;
+  instagramUrl?: string;
+  tiktokUrl?: string;
+  youtubeUrl?: string;
 }
 
 export async function getSiteContent(): Promise<SerializedSiteContent> {
@@ -59,6 +63,10 @@ export async function getSiteContent(): Promise<SerializedSiteContent> {
       email: doc.email,
       address: doc.address,
       mapUrl: doc.mapUrl,
+      facebookUrl: doc.facebookUrl || "https://www.facebook.com",
+      instagramUrl: doc.instagramUrl || "https://www.instagram.com",
+      tiktokUrl: doc.tiktokUrl || "https://www.tiktok.com",
+      youtubeUrl: doc.youtubeUrl || "",
       ratingScore: doc.ratingScore,
       ratingLabel: doc.ratingLabel,
       heroTitle: doc.heroTitle,

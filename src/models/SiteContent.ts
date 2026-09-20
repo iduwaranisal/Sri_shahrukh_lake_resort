@@ -74,6 +74,10 @@ export interface ISiteContent extends Document {
   homestayImages: IHomestayImage[];
   galleryImages: IGalleryImage[];
   exploreImages: IExploreImage[];
+  facebookUrl?: string;
+  instagramUrl?: string;
+  tiktokUrl?: string;
+  youtubeUrl?: string;
   updatedAt: Date;
 }
 
@@ -137,6 +141,10 @@ const SiteContentSchema = new Schema<ISiteContent>(
     email: { type: String, default: "lakeresortsrishahrukh@gmail.com" },
     address: { type: String, default: "135/1 Suduwella Tikiri Udanapura, Tissamaharama" },
     mapUrl: { type: String, default: "https://maps.google.com/maps?q=77VQ%2BX6+Tissamaharama" },
+    facebookUrl: { type: String, default: "https://www.facebook.com" },
+    instagramUrl: { type: String, default: "https://www.instagram.com" },
+    tiktokUrl: { type: String, default: "https://www.tiktok.com" },
+    youtubeUrl: { type: String, default: "" },
     ratingScore: { type: String, default: "4.8" },
     ratingLabel: { type: String, default: "Rating Across All Platforms" },
     heroTitle: { type: String, default: "Sri Shahrukh Lake Resort" },

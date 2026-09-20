@@ -44,6 +44,7 @@ import {
   type SerializedBooking,
 } from "@/app/actions/bookingActions";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
+import SocialLinks, { FacebookIcon, InstagramIcon, TikTokIcon, YouTubeIcon } from "@/components/ui/SocialLinks";
 import {
   getSiteContent,
   updateSiteContent,
@@ -1266,6 +1267,92 @@ export default function AdminClient() {
                       value={content.address}
                       onChange={(e) => setContent({ ...content, address: e.target.value })}
                       className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Social Media Links Section */}
+              <div className="p-6 border border-sand/25 bg-teal-mid space-y-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-sand/15 pb-3">
+                  <div>
+                    <h3
+                      className="text-lg font-light uppercase gold-text-gradient"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      Social Media Profiles
+                    </h3>
+                    <p className="text-xs text-ivory/70 mt-0.5">
+                      Configure your official social media channels. Displayed with elegant gold badges in the footer and contact sections.
+                    </p>
+                  </div>
+
+                  {/* Live Preview */}
+                  <div className="flex items-center gap-2 bg-teal-deep/80 px-3 py-1.5 border border-sand/20">
+                    <span className="text-[10px] uppercase tracking-wider text-sand font-medium">Live Preview:</span>
+                    <SocialLinks
+                      facebookUrl={content.facebookUrl}
+                      instagramUrl={content.instagramUrl}
+                      tiktokUrl={content.tiktokUrl}
+                      youtubeUrl={content.youtubeUrl}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-sand font-medium mb-1">
+                      <FacebookIcon className="w-3.5 h-3.5 text-[#1877F2]" />
+                      <span>Facebook Page URL</span>
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://www.facebook.com/..."
+                      value={content.facebookUrl || ""}
+                      onChange={(e) => setContent({ ...content, facebookUrl: e.target.value })}
+                      className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand placeholder:text-ivory/30"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-sand font-medium mb-1">
+                      <InstagramIcon className="w-3.5 h-3.5 text-[#E4405F]" />
+                      <span>Instagram Profile URL</span>
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://www.instagram.com/..."
+                      value={content.instagramUrl || ""}
+                      onChange={(e) => setContent({ ...content, instagramUrl: e.target.value })}
+                      className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand placeholder:text-ivory/30"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-sand font-medium mb-1">
+                      <TikTokIcon className="w-3.5 h-3.5 text-sand" />
+                      <span>TikTok Profile URL</span>
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://www.tiktok.com/@..."
+                      value={content.tiktokUrl || ""}
+                      onChange={(e) => setContent({ ...content, tiktokUrl: e.target.value })}
+                      className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand placeholder:text-ivory/30"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-sand font-medium mb-1">
+                      <YouTubeIcon className="w-3.5 h-3.5 text-[#FF0000]" />
+                      <span>YouTube Channel URL (Optional)</span>
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://www.youtube.com/@..."
+                      value={content.youtubeUrl || ""}
+                      onChange={(e) => setContent({ ...content, youtubeUrl: e.target.value })}
+                      className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand placeholder:text-ivory/30"
                     />
                   </div>
                 </div>

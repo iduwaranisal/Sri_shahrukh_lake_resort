@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { MapPin, Phone, Mail, MessageCircle, Navigation } from "lucide-react";
 import { getWhatsAppUrl, getTelUrl } from "@/lib/whatsapp";
+import SocialLinks from "@/components/ui/SocialLinks";
 
 const quickLinks = [
   { label: "About the Homestay", href: "/#about", targetBlank: false },
@@ -31,6 +32,10 @@ interface FooterProps {
   address?: string;
   mapUrl?: string;
   ratingScore?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  tiktokUrl?: string;
+  youtubeUrl?: string;
 }
 
 export default function Footer({
@@ -40,6 +45,10 @@ export default function Footer({
   address = "135/1 Suduwella Tikiri udanapura, Tissamaharama",
   mapUrl = "https://www.google.com/maps/search/?api=1&query=77VQ%2BX6+Tissamaharama",
   ratingScore = "4.8",
+  facebookUrl,
+  instagramUrl,
+  tiktokUrl,
+  youtubeUrl,
 }: FooterProps = {}) {
   const currentYear = new Date().getFullYear();
 
@@ -84,13 +93,29 @@ export default function Footer({
               Rated {ratingScore}/5 across all platforms. Free Wi-Fi, private parking, and friendly Sri Lankan hospitality.
             </p>
 
-            <div className="pt-2">
+            <div className="pt-2 flex items-center justify-between flex-wrap gap-3">
               <Link
                 href="/book"
                 className="inline-flex items-center gap-1.5 text-xs text-sand hover:text-sand-light uppercase tracking-wider font-semibold underline underline-offset-4"
               >
                 <span>Book Now →</span>
               </Link>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="pt-3">
+              <p
+                className="text-[10px] uppercase tracking-[0.22em] text-sand font-medium mb-2"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                Connect With Us
+              </p>
+              <SocialLinks
+                facebookUrl={facebookUrl}
+                instagramUrl={instagramUrl}
+                tiktokUrl={tiktokUrl}
+                youtubeUrl={youtubeUrl}
+              />
             </div>
           </div>
 
@@ -199,10 +224,16 @@ export default function Footer({
         </div>
 
         {/* Bottom Legal Bar */}
-        <div className="mt-12 pt-6 border-t border-sand/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-ivory/60 font-light">
+        <div className="mt-12 pt-6 border-t border-sand/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-ivory/60 font-light">
           <p>
             &copy; {currentYear} Sri Shahrukh Lake Resort. All rights reserved.
           </p>
+          <SocialLinks
+            facebookUrl={facebookUrl}
+            instagramUrl={instagramUrl}
+            tiktokUrl={tiktokUrl}
+            youtubeUrl={youtubeUrl}
+          />
           <div className="flex gap-4">
             <span>Budget Homestay</span>
             <span>·</span>

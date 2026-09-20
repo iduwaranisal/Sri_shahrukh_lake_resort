@@ -6,6 +6,7 @@ import { z } from "zod";
 import { MapPin, Phone, Mail, Clock, MessageCircle, Send, CheckCircle2, Sparkles, Navigation } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { getWhatsAppUrl, getTelUrl } from "@/lib/whatsapp";
+import SocialLinks from "@/components/ui/SocialLinks";
 
 const schema = z.object({
   name: z.string().min(2, "Please enter your name"),
@@ -22,6 +23,10 @@ interface ContactProps {
   email?: string;
   address?: string;
   mapUrl?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  tiktokUrl?: string;
+  youtubeUrl?: string;
 }
 
 export default function Contact({
@@ -30,6 +35,10 @@ export default function Contact({
   email = "lakeresortsrishahrukh@gmail.com",
   address = "135/1 Suduwella Tikiri udanapura, Tissamaharama, Sri Lanka",
   mapUrl = "https://www.google.com/maps/search/?api=1&query=77VQ%2BX6+Tissamaharama",
+  facebookUrl,
+  instagramUrl,
+  tiktokUrl,
+  youtubeUrl,
 }: ContactProps = {}) {
   const sectionRef = useScrollReveal<HTMLElement>();
 
@@ -189,6 +198,25 @@ export default function Contact({
                 <span>Chat on WhatsApp</span>
               </a>
             </div>
+
+            {/* Social Media Profiles Card */}
+            {(facebookUrl || instagramUrl || tiktokUrl || youtubeUrl) && (
+              <div className="p-5 border border-sand/20 bg-teal-mid text-ivory">
+                <p
+                  className="text-xs uppercase tracking-[0.22em] text-sand font-medium mb-3"
+                  style={{ fontFamily: "var(--font-sans)" }}
+                >
+                  Follow Us on Social Media
+                </p>
+                <SocialLinks
+                  facebookUrl={facebookUrl}
+                  instagramUrl={instagramUrl}
+                  tiktokUrl={tiktokUrl}
+                  youtubeUrl={youtubeUrl}
+                  variant="contact"
+                />
+              </div>
+            )}
           </div>
 
           {/* Contact Form */}
