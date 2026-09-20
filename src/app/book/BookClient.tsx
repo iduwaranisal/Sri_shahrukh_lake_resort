@@ -405,15 +405,14 @@ export default function BookClient() {
                   </button>
 
                   <div className="text-center pt-1">
-                    <span className="text-[11px] text-ivory/60">Prefer instant booking on WhatsApp? </span>
+                    
                     <a
                       href={whatsAppUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[11px] text-sand underline underline-offset-4 hover:text-sand-light inline-flex items-center gap-1 font-medium"
-                    >
+                    ><span className="text-[11px] text-ivory/60"> Send a message on WhatsApp </span>
                       <MessageCircle className="w-3.5 h-3.5" />
-                      <span>Chat on WhatsApp (0757273416)</span>
                     </a>
                   </div>
                 </div>

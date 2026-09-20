@@ -149,127 +149,131 @@ export default function Booking() {
         }}
       />
 
-      <div className="relative mx-auto max-w-5xl px-5 sm:px-6 lg:px-10">
+      <div className="relative mx-auto max-w-4xl px-5 sm:px-6 lg:px-10">
         {/* Section Header */}
-        <div className="mb-10 sm:mb-14 text-center">
+        <div className="mb-10 sm:mb-12 text-center">
           <div
-            className="inline-flex items-center gap-2 mb-3 px-3.5 py-1.5 border border-sand/30 bg-sand/10"
+            className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mb-5 px-4 py-2 rounded-full border border-sand/30 bg-sand/10"
           >
-            <Sparkles className="w-3.5 h-3.5 text-sand" />
-            <p
-              className="text-xs uppercase tracking-[0.25em] text-sand-light font-medium"
-              style={{ fontFamily: "var(--font-sans)" }}
-            >
-              Only 3 Private Rooms
-            </p>
-            <span className="text-sand/40">|</span>
-            <div className="flex items-center gap-1 text-xs text-sand font-semibold">
+            <div className="inline-flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-sand" />
+              <p
+                className="text-xs tracking-wide text-sand-light font-medium"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                3 private rooms
+              </p>
+            </div>
+            <span className="hidden sm:inline text-sand/40">|</span>
+            <div className="flex items-center gap-1.5 text-xs text-sand font-medium">
               <Star className="w-3.5 h-3.5 fill-sand text-sand" />
-              <span>4.8 / 5.0 Across All Platforms</span>
+              <span>Rated 4.8/5 across booking platforms</span>
             </div>
           </div>
 
           <h2
             id="booking-heading"
-            className="text-3xl sm:text-4xl md:text-5xl font-light text-ivory"
+            className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-ivory"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Check Room Availability &amp;{" "}
-            <em className="not-italic text-sand">Safari Packages</em>
+            Check room availability &amp;{" "}
+            <em className="not-italic text-sand">Yala safari packages</em>
           </h2>
 
           <p
-            className="mx-auto mt-3 max-w-xl text-sm sm:text-base font-light leading-relaxed text-ivory/80"
+            className="mx-auto mt-4 max-w-xl text-sm sm:text-base font-light leading-relaxed text-ivory/80"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Enjoy warm personal care and custom Yala safari tour arrangements at Sri Shahrukh Lake Resort.
-            Inquiries are delivered directly to <strong>lakeresortsrishahrukh@gmail.com</strong>.
+            Tell us your dates and we&apos;ll confirm availability and help arrange your Yala safari.
+            Your request goes straight to our reservations team at{" "}
+            <strong className="font-medium text-ivory">lakeresortsrishahrukh@gmail.com</strong>.
           </p>
 
           <div
-            className="mt-4"
+            className="mt-6"
           >
             <Link
               href="/book"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-[0.2em] shadow-lg hover:scale-105 transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-sand text-teal-deep text-sm font-semibold shadow-lg shadow-black/20 hover:bg-sand-light transition-colors"
             >
               <Calendar className="w-4 h-4" />
-              <span>Book Now</span>
+              <span>Book now</span>
             </Link>
           </div>
         </div>
 
         {selectedVillaNotice && (
           <div
-            className="mb-6 p-3 bg-sand/20 border border-sand text-center text-xs text-sand-pale font-medium uppercase tracking-wider"
+            className="mb-6 px-4 py-3 rounded-md bg-sand/20 border border-sand/60 text-center text-sm text-ivory font-medium"
+            role="status"
           >
-            ✓ Selected room updated to: {selectedVillaNotice}
+            ✓ Room selected: {selectedVillaNotice}
           </div>
         )}
 
         {/* Form Container */}
         <div
-          className="border border-sand/25 p-6 sm:p-10 md:p-12 shadow-2xl shadow-black/40"
-          style={{ background: "#0a1815" }}
+          className="rounded-xl border border-sand/30 border-t-4 border-t-sand p-6 sm:p-10 md:p-12 shadow-2xl shadow-black/30"
+          style={{ background: "#fdfbf7" }}
         >
           {isSuccess && submittedData ? (
             <div
-              className="py-10 sm:py-14 text-center"
+              className="py-8 sm:py-12 text-center"
               aria-live="polite"
             >
-              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center border border-sand text-sand rounded-full bg-sand/10">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-sand/60 bg-sand/15 text-teal-mid">
                 <CheckCircle2 className="w-7 h-7" />
               </div>
               <h3
-                className="mb-2 text-2xl sm:text-3xl font-light text-ivory"
+                className="mb-3 text-2xl sm:text-3xl font-light text-teal-deep"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                Inquiry Sent to Resort
+                Inquiry sent
               </h3>
               <p
-                className="max-w-md mx-auto text-sm sm:text-base font-light text-ivory/80 mb-6"
+                className="max-w-md mx-auto text-sm sm:text-base font-light leading-relaxed text-teal-deep/75 mb-8"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                Your inquiry has been emailed directly to{" "}
-                <strong className="text-sand">lakeresortsrishahrukh@gmail.com</strong>. We will review
-                room availability and reply with reservation and safari details.
+                Thank you. Your inquiry has been emailed to{" "}
+                <strong className="font-semibold text-teal-deep">lakeresortsrishahrukh@gmail.com</strong>.
+                We&apos;ll check room availability and reply with reservation and safari details.
               </p>
 
               {/* Inquiry Summary Box */}
-              <div className="max-w-md mx-auto mb-8 p-4 border border-sand/30 bg-teal-deep/90 text-left text-xs space-y-2 text-ivory/80">
-                <div className="flex justify-between border-b border-sand/15 pb-1.5">
-                  <span className="text-sand-light font-medium">Guest:</span>
-                  <span className="text-ivory font-medium">{submittedData.name}</span>
+              <div className="max-w-md mx-auto mb-8 p-5 rounded-lg border border-teal-deep/10 bg-teal-deep/[0.04] text-left text-sm space-y-2.5 text-teal-deep/70">
+                <div className="flex justify-between gap-4 border-b border-teal-deep/10 pb-2.5">
+                  <span className="text-teal-deep/60">Guest name</span>
+                  <span className="text-teal-deep font-medium text-right">{submittedData.name}</span>
                 </div>
-                <div className="flex justify-between border-b border-sand/15 pb-1.5">
-                  <span className="text-sand-light font-medium">Email:</span>
-                  <span className="text-ivory font-medium">{submittedData.email}</span>
+                <div className="flex justify-between gap-4 border-b border-teal-deep/10 pb-2.5">
+                  <span className="text-teal-deep/60">Email</span>
+                  <span className="text-teal-deep font-medium text-right break-all">{submittedData.email}</span>
                 </div>
-                <div className="flex justify-between border-b border-sand/15 pb-1.5">
-                  <span className="text-sand-light font-medium">Selected Room:</span>
-                  <span className="text-sand font-medium">{submittedData.villa}</span>
+                <div className="flex justify-between gap-4 border-b border-teal-deep/10 pb-2.5">
+                  <span className="text-teal-deep/60">Room</span>
+                  <span className="text-teal-deep font-medium text-right">{submittedData.villa}</span>
                 </div>
-                <div className="flex justify-between border-b border-sand/15 pb-1.5">
-                  <span className="text-sand-light font-medium">Travel Dates:</span>
-                  <span className="text-ivory font-medium">
+                <div className="flex justify-between gap-4 border-b border-teal-deep/10 pb-2.5">
+                  <span className="text-teal-deep/60">Dates</span>
+                  <span className="text-teal-deep font-medium text-right">
                     {submittedData.checkIn} to {submittedData.checkOut}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-sand-light font-medium">Guests:</span>
-                  <span className="text-ivory font-medium">{submittedData.guests}</span>
+                <div className="flex justify-between gap-4">
+                  <span className="text-teal-deep/60">Guests</span>
+                  <span className="text-teal-deep font-medium text-right">{submittedData.guests}</span>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a
                   href={whatsAppUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-[0.2em] shadow-lg hover:scale-105 transition-all"
+                  className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3 rounded-md bg-teal-deep text-ivory text-sm font-semibold shadow-md hover:bg-teal-mid transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>Instant WhatsApp Follow-up (0757273416)</span>
+                  <span>Follow up on WhatsApp</span>
                 </a>
 
                 <button
@@ -278,10 +282,10 @@ export default function Booking() {
                     setIsSuccess(false);
                     setSubmittedData(null);
                   }}
-                  className="inline-flex items-center justify-center gap-1.5 w-full sm:w-auto px-5 py-3 border border-sand/30 text-sand text-xs uppercase tracking-wider hover:bg-teal-mid transition-colors"
+                  className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-md border border-teal-deep/25 text-teal-deep text-sm font-medium hover:bg-teal-deep/5 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
-                  <span>New Inquiry</span>
+                  <span>Send another inquiry</span>
                 </button>
               </div>
             </div>
@@ -292,18 +296,18 @@ export default function Booking() {
               aria-label="Homestay room reservation inquiry form"
             >
               {submissionError && (
-                <div className="mb-6 p-4 border border-error/50 bg-error/15 text-ivory text-xs flex items-start gap-2.5">
+                <div className="mb-8 p-4 rounded-md border border-error/40 bg-error/10 text-teal-deep text-sm flex items-start gap-3">
                   <AlertCircle className="w-4 h-4 text-error flex-shrink-0 mt-0.5" />
                   <div className="space-y-1">
-                    <p className="font-semibold text-error">Unable to send inquiry email</p>
-                    <p className="text-ivory/80">{submissionError}</p>
-                    <p className="text-[11px] pt-1">
-                      You can also message us directly on WhatsApp at{" "}
+                    <p className="font-semibold text-error">We couldn&apos;t send your inquiry</p>
+                    <p className="text-teal-deep/80">{submissionError}</p>
+                    <p className="text-xs pt-1 text-teal-deep/80">
+                      You can still reach us on WhatsApp at{" "}
                       <a
                         href={whatsAppUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sand underline"
+                        className="text-teal-deep font-medium underline underline-offset-2"
                       >
                         0757273416
                       </a>{" "}
@@ -314,13 +318,13 @@ export default function Booking() {
               )}
 
               {/* Dates Row */}
-              <div className="grid gap-5 sm:grid-cols-2 mb-6">
+              <div className="grid gap-5 sm:grid-cols-2 mb-5">
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="booking-check-in"
-                    className="text-[11px] uppercase tracking-[0.25em] text-sand-light font-medium"
+                    className="text-sm font-medium text-teal-deep"
                   >
-                    Check-In Date *
+                    Check-in date *
                   </label>
                   <input
                     id="booking-check-in"
@@ -329,139 +333,139 @@ export default function Booking() {
                     {...register("checkIn", {
                       onChange: (e) => setCheckInDate(e.target.value),
                     })}
-                    className="border border-sand/30 bg-teal-deep/80 px-4 py-3 text-sm text-ivory outline-none transition-all focus:border-sand"
+                    className="w-full rounded-md border border-teal-deep/20 bg-[#ffffff] px-4 py-3 text-sm text-teal-deep [color-scheme:light] outline-none transition-colors hover:border-teal-deep/40 focus:border-teal-mid focus:ring-2 focus:ring-sand/50 aria-[invalid=true]:border-error"
                     aria-invalid={!!errors.checkIn}
                   />
                   {errors.checkIn && (
-                    <p className="text-xs text-error font-light">{errors.checkIn.message}</p>
+                    <p className="text-xs text-error font-medium">{errors.checkIn.message}</p>
                   )}
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="booking-check-out"
-                    className="text-[11px] uppercase tracking-[0.25em] text-sand-light font-medium"
+                    className="text-sm font-medium text-teal-deep"
                   >
-                    Check-Out Date *
+                    Check-out date *
                   </label>
                   <input
                     id="booking-check-out"
                     type="date"
                     min={minCheckOutDate}
                     {...register("checkOut")}
-                    className="border border-sand/30 bg-teal-deep/80 px-4 py-3 text-sm text-ivory outline-none transition-all focus:border-sand"
+                    className="w-full rounded-md border border-teal-deep/20 bg-[#ffffff] px-4 py-3 text-sm text-teal-deep [color-scheme:light] outline-none transition-colors hover:border-teal-deep/40 focus:border-teal-mid focus:ring-2 focus:ring-sand/50 aria-[invalid=true]:border-error"
                     aria-invalid={!!errors.checkOut}
                   />
                   {errors.checkOut && (
-                    <p className="text-xs text-error font-light">{errors.checkOut.message}</p>
+                    <p className="text-xs text-error font-medium">{errors.checkOut.message}</p>
                   )}
                 </div>
               </div>
 
               {/* Room & Guests Row */}
-              <div className="grid gap-5 sm:grid-cols-2 mb-6">
+              <div className="grid gap-5 sm:grid-cols-2 mb-5">
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="booking-villa"
-                    className="text-[11px] uppercase tracking-[0.25em] text-sand-light font-medium"
+                    className="text-sm font-medium text-teal-deep"
                   >
-                    Select Room *
+                    Room *
                   </label>
                   <select
                     id="booking-villa"
                     {...register("villa", {
                       onChange: (e) => setVillaSelected(e.target.value),
                     })}
-                    className="border border-sand/30 bg-teal-deep px-4 py-3 text-sm text-ivory outline-none transition-all focus:border-sand appearance-none"
+                    className="w-full cursor-pointer rounded-md border border-teal-deep/20 bg-[#ffffff] px-4 py-3 text-sm text-teal-deep outline-none transition-colors hover:border-teal-deep/40 focus:border-teal-mid focus:ring-2 focus:ring-sand/50 aria-[invalid=true]:border-error"
                     aria-invalid={!!errors.villa}
                   >
                     {roomOptions.map((opt) => (
-                      <option key={opt} value={opt} className="bg-teal-deep text-ivory">
+                      <option key={opt} value={opt} className="bg-[#ffffff] text-teal-deep">
                         {opt}
                       </option>
                     ))}
                   </select>
                   {errors.villa && (
-                    <p className="text-xs text-error font-light">{errors.villa.message}</p>
+                    <p className="text-xs text-error font-medium">{errors.villa.message}</p>
                   )}
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="booking-guests"
-                    className="text-[11px] uppercase tracking-[0.25em] text-sand-light font-medium"
+                    className="text-sm font-medium text-teal-deep"
                   >
-                    Number of Guests *
+                    Guests *
                   </label>
                   <select
                     id="booking-guests"
                     {...register("guests", {
                       onChange: (e) => setGuestsCount(e.target.value),
                     })}
-                    className="border border-sand/30 bg-teal-deep px-4 py-3 text-sm text-ivory outline-none transition-all focus:border-sand appearance-none"
+                    className="w-full cursor-pointer rounded-md border border-teal-deep/20 bg-[#ffffff] px-4 py-3 text-sm text-teal-deep outline-none transition-colors hover:border-teal-deep/40 focus:border-teal-mid focus:ring-2 focus:ring-sand/50 aria-[invalid=true]:border-error"
                     aria-invalid={!!errors.guests}
                   >
-                    <option value="1 Guest" className="bg-teal-deep text-ivory">
+                    <option value="1 Guest" className="bg-[#ffffff] text-teal-deep">
                       1 Guest
                     </option>
-                    <option value="2 Guests" className="bg-teal-deep text-ivory">
+                    <option value="2 Guests" className="bg-[#ffffff] text-teal-deep">
                       2 Guests
                     </option>
-                    <option value="3 Guests" className="bg-teal-deep text-ivory">
+                    <option value="3 Guests" className="bg-[#ffffff] text-teal-deep">
                       3 Guests
                     </option>
-                    <option value="4 Guests" className="bg-teal-deep text-ivory">
+                    <option value="4 Guests" className="bg-[#ffffff] text-teal-deep">
                       4 Guests
                     </option>
-                    <option value="5+ Guests" className="bg-teal-deep text-ivory">
+                    <option value="5+ Guests" className="bg-[#ffffff] text-teal-deep">
                       5+ Guests
                     </option>
                   </select>
                   {errors.guests && (
-                    <p className="text-xs text-error font-light">{errors.guests.message}</p>
+                    <p className="text-xs text-error font-medium">{errors.guests.message}</p>
                   )}
                 </div>
               </div>
 
               {/* Name & Email Row */}
-              <div className="grid gap-5 sm:grid-cols-2 mb-6">
+              <div className="grid gap-5 sm:grid-cols-2 mb-5">
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="booking-name"
-                    className="text-[11px] uppercase tracking-[0.25em] text-sand-light font-medium"
+                    className="text-sm font-medium text-teal-deep"
                   >
-                    Your Name *
+                    Full name *
                   </label>
                   <input
                     id="booking-name"
                     type="text"
-                    placeholder="e.g. David Miller"
+                    placeholder="Your full name"
                     {...register("name")}
-                    className="border border-sand/30 bg-teal-deep/80 px-4 py-3 text-sm text-ivory placeholder:text-ivory/40 outline-none transition-all focus:border-sand"
+                    className="w-full rounded-md border border-teal-deep/20 bg-[#ffffff] px-4 py-3 text-sm text-teal-deep placeholder:text-teal-deep/40 outline-none transition-colors hover:border-teal-deep/40 focus:border-teal-mid focus:ring-2 focus:ring-sand/50 aria-[invalid=true]:border-error"
                     aria-invalid={!!errors.name}
                   />
                   {errors.name && (
-                    <p className="text-xs text-error font-light">{errors.name.message}</p>
+                    <p className="text-xs text-error font-medium">{errors.name.message}</p>
                   )}
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="booking-email"
-                    className="text-[11px] uppercase tracking-[0.25em] text-sand-light font-medium"
+                    className="text-sm font-medium text-teal-deep"
                   >
-                    Email Address *
+                    Email address *
                   </label>
                   <input
                     id="booking-email"
                     type="email"
-                    placeholder="your@email.com"
+                    placeholder="you@example.com"
                     {...register("email")}
-                    className="border border-sand/30 bg-teal-deep/80 px-4 py-3 text-sm text-ivory placeholder:text-ivory/40 outline-none transition-all focus:border-sand"
+                    className="w-full rounded-md border border-teal-deep/20 bg-[#ffffff] px-4 py-3 text-sm text-teal-deep placeholder:text-teal-deep/40 outline-none transition-colors hover:border-teal-deep/40 focus:border-teal-mid focus:ring-2 focus:ring-sand/50 aria-[invalid=true]:border-error"
                     aria-invalid={!!errors.email}
                   />
                   {errors.email && (
-                    <p className="text-xs text-error font-light">{errors.email.message}</p>
+                    <p className="text-xs text-error font-medium">{errors.email.message}</p>
                   )}
                 </div>
               </div>
@@ -471,32 +475,34 @@ export default function Booking() {
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="booking-phone"
-                    className="text-[11px] uppercase tracking-[0.25em] text-sand-light font-medium"
+                    className="text-sm font-medium text-teal-deep"
                   >
-                    Phone / WhatsApp (Optional)
+                    Phone / WhatsApp{" "}
+                    <span className="font-normal text-teal-deep/50">(optional)</span>
                   </label>
                   <input
                     id="booking-phone"
                     type="tel"
-                    placeholder="+94 77 ... or international"
+                    placeholder="+94 77 123 4567 or international"
                     {...register("phone")}
-                    className="border border-sand/30 bg-teal-deep/80 px-4 py-3 text-sm text-ivory placeholder:text-ivory/40 outline-none transition-all focus:border-sand"
+                    className="w-full rounded-md border border-teal-deep/20 bg-[#ffffff] px-4 py-3 text-sm text-teal-deep placeholder:text-teal-deep/40 outline-none transition-colors hover:border-teal-deep/40 focus:border-teal-mid focus:ring-2 focus:ring-sand/50"
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="booking-requests"
-                    className="text-[11px] uppercase tracking-[0.25em] text-sand-light font-medium"
+                    className="text-sm font-medium text-teal-deep"
                   >
-                    Safari or Special Requests (Optional)
+                    Safari or special requests{" "}
+                    <span className="font-normal text-teal-deep/50">(optional)</span>
                   </label>
                   <input
                     id="booking-requests"
                     type="text"
-                    placeholder="Yala safari booking, airport pickup, dietary needs..."
+                    placeholder="Yala safari, airport pickup, dietary needs"
                     {...register("specialRequests")}
-                    className="border border-sand/30 bg-teal-deep/80 px-4 py-3 text-sm text-ivory placeholder:text-ivory/40 outline-none transition-all focus:border-sand"
+                    className="w-full rounded-md border border-teal-deep/20 bg-[#ffffff] px-4 py-3 text-sm text-teal-deep placeholder:text-teal-deep/40 outline-none transition-colors hover:border-teal-deep/40 focus:border-teal-mid focus:ring-2 focus:ring-sand/50"
                   />
                 </div>
               </div>
@@ -507,42 +513,40 @@ export default function Booking() {
                   id="booking-submit"
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+                  className="flex items-center justify-center gap-2 w-full sm:w-auto sm:min-w-[320px] min-h-[52px] px-9 py-3.5 rounded-md bg-teal-deep text-ivory text-sm font-semibold tracking-wide shadow-md transition-all duration-200 hover:bg-teal-mid hover:shadow-lg active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand"
                   style={{
-                    background: "var(--color-sand)",
-                    color: "var(--color-teal-deep)",
                     fontFamily: "var(--font-sans)",
                   }}
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
                       <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                      Sending to lakeresortsrishahrukh@gmail.com…
+                      Sending your inquiry…
                     </span>
                   ) : (
                     <>
                       <Calendar className="w-4 h-4" />
-                      <span>Check Room &amp; Safari Availability</span>
+                      <span>Check availability</span>
                     </>
                   )}
                 </button>
 
-                <div className="flex items-center gap-2 text-xs text-ivory/80 pt-1">
-                  <span>Prefer fast answer?</span>
+                <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm text-teal-deep/70">
+                  <span>Prefer a faster answer?</span>
                   <a
                     href={whatsAppUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sand underline underline-offset-4 hover:text-sand-light inline-flex items-center gap-1 font-medium"
+                    className="text-teal-deep underline underline-offset-4 decoration-sand hover:text-teal-mid inline-flex items-center gap-1.5 font-medium"
                   >
                     <MessageCircle className="w-3.5 h-3.5" />
                     <span>Chat on WhatsApp (0757273416)</span>
                   </a>
                 </div>
 
-                <div className="flex items-center gap-2 text-[11px] text-ivory/60 mt-1 font-light">
-                  <ShieldCheck className="w-3.5 h-3.5 text-sand" />
-                  <span>Rated 4.8 / 5.0 Across Platforms · Free Wi-Fi &amp; Parking</span>
+                <div className="flex items-center justify-center gap-2 w-full pt-5 mt-1 border-t border-teal-deep/10 text-xs text-teal-deep/60">
+                  <ShieldCheck className="w-3.5 h-3.5 text-teal-mid" />
+                  <span>Rated 4.8/5 across booking platforms · Free Wi-Fi &amp; parking</span>
                 </div>
               </div>
             </form>
