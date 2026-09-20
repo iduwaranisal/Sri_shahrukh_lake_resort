@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Phone, MessageCircle, MapPin, X, Calendar } from "lucide-react";
@@ -27,28 +27,37 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = null;
+        const currentScroll = window.scrollY;
+        setScrolled(currentScroll > 30);
 
-      const sections = navLinks.map((l) => document.getElementById(l.id));
-      const scrollPos = window.scrollY + 200;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const sec = sections[i];
-        if (sec && sec.offsetTop <= scrollPos) {
-          setActiveSection(navLinks[i].id);
+        if (currentScroll < 250) {
+          setActiveSection("");
           return;
         }
-      }
-      if (window.scrollY < 250) {
-        setActiveSection("");
-      }
+
+        const scrollPos = currentScroll + 200;
+        for (let i = navLinks.length - 1; i >= 0; i--) {
+          const sec = document.getElementById(navLinks[i].id);
+          if (sec && sec.offsetTop <= scrollPos) {
+            setActiveSection(navLinks[i].id);
+            return;
+          }
+        }
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   // Lock body scroll when mobile menu is open & listen for Esc
@@ -75,16 +84,12 @@ export default function Navbar() {
         Skip to main content
       </a>
 
-      <motion.nav
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled ? "py-3 shadow-lg shadow-black/20" : "py-4 sm:py-5 lg:py-6"
         }`}
         style={{
-          background: scrolled ? "rgba(10,24,21,0.96)" : "rgba(10,24,21,0.45)",
-          backdropFilter: scrolled ? "blur(16px)" : "blur(8px)",
+          background: scrolled ? "#0a1815" : "rgba(10,24,21,0.75)",
           borderBottom: scrolled
             ? "1px solid rgba(212,175,55,0.2)"
             : "1px solid rgba(212,175,55,0.08)",
@@ -172,26 +177,29 @@ export default function Navbar() {
               aria-controls="mobile-drawer-menu"
             >
               <div className="flex flex-col gap-[5px]">
-                <motion.span
-                  animate={menuOpen ? { rotate: 45, y: 6.5 } : { rotate: 0, y: 0 }}
-                  className="block h-[1.5px] w-5 origin-center transition-all"
+                <span
+                  className={`block h-[1.5px] w-5 origin-center transition-all duration-300 ${
+                    menuOpen ? "rotate-45 translate-y-[6.5px]" : ""
+                  }`}
                   style={{ background: "var(--color-sand-pale)" }}
                 />
-                <motion.span
-                  animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-                  className="block h-[1.5px] w-5"
+                <span
+                  className={`block h-[1.5px] w-5 transition-opacity duration-300 ${
+                    menuOpen ? "opacity-0" : "opacity-100"
+                  }`}
                   style={{ background: "var(--color-sand-pale)" }}
                 />
-                <motion.span
-                  animate={menuOpen ? { rotate: -45, y: -6.5 } : { rotate: 0, y: 0 }}
-                  className="block h-[1.5px] w-5 origin-center transition-all"
+                <span
+                  className={`block h-[1.5px] w-5 origin-center transition-all duration-300 ${
+                    menuOpen ? "-rotate-45 -translate-y-[6.5px]" : ""
+                  }`}
                   style={{ background: "var(--color-sand-pale)" }}
                 />
               </div>
             </button>
           </div>
         </div>
-      </motion.nav>
+      </header>
 
       {/* Mobile Drawer Menu */}
       <AnimatePresence>
@@ -201,11 +209,10 @@ export default function Navbar() {
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
-            transition={{ type: "tween", duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ type: "tween", duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-50 flex flex-col lg:hidden"
             style={{
-              background: "rgba(10,24,21,0.98)",
-              backdropFilter: "blur(20px)",
+              background: "#0a1815",
             }}
             role="dialog"
             aria-modal="true"
@@ -243,14 +250,8 @@ export default function Navbar() {
             {/* Scrollable Links & Actions */}
             <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col justify-between">
               <ul className="flex flex-col gap-3.5 my-auto text-center py-4">
-                {mobileNavLinks.map((link, i) => (
-                  <motion.li
-                    key={link.href}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.03, duration: 0.25 }}
-                    className="w-full"
-                  >
+                {mobileNavLinks.map((link) => (
+                  <li key={link.href} className="w-full">
                     <Link
                       href={link.href}
                       onClick={() => setMenuOpen(false)}
@@ -262,7 +263,7 @@ export default function Navbar() {
                     >
                       {link.label}
                     </Link>
-                  </motion.li>
+                  </li>
                 ))}
               </ul>
 

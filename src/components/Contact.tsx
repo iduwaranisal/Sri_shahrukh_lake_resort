@@ -1,11 +1,10 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView, type Variants } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { MapPin, Phone, Mail, Clock, MessageCircle, Send, CheckCircle2, Sparkles, Navigation } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const schema = z.object({
   name: z.string().min(2, "Please enter your name"),
@@ -15,15 +14,6 @@ const schema = z.object({
 });
 
 type ContactForm = z.infer<typeof schema>;
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
-  }),
-};
 
 interface ContactProps {
   phone?: string;
@@ -40,8 +30,7 @@ export default function Contact({
   address = "135/1 Suduwella Tikiri udanapura, Tissamaharama, Sri Lanka",
   mapUrl = "https://www.google.com/maps/search/?api=1&query=77VQ%2BX6+Tissamaharama",
 }: ContactProps = {}) {
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const sectionRef = useScrollReveal<HTMLElement>();
 
   const cleanWaNumber = whatsapp.replace(/[^0-9]/g, "").replace(/^0/, "94");
   const cleanPhone = phone.replace(/[^0-9+]/g, "");
@@ -85,7 +74,6 @@ export default function Contact({
     },
   ];
 
-
   const {
     register,
     handleSubmit,
@@ -102,7 +90,7 @@ export default function Contact({
   return (
     <section
       id="contact"
-      ref={ref}
+      ref={sectionRef}
       className="py-20 sm:py-28 md:py-32 relative overflow-hidden"
       style={{ background: "var(--color-ivory)" }}
       aria-labelledby="contact-heading"
@@ -110,13 +98,7 @@ export default function Contact({
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
         {/* Section Header */}
         <div className="mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
-          <motion.div
-            custom={0}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10"
-          >
+          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10">
             <Sparkles className="w-3.5 h-3.5 text-sand" />
             <p
               className="text-xs uppercase tracking-[0.3em] font-medium"
@@ -124,43 +106,29 @@ export default function Contact({
             >
               Contact &amp; Location
             </p>
-          </motion.div>
+          </div>
 
-          <motion.h2
+          <h2
             id="contact-heading"
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
+            className="scroll-reveal stagger-1 text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             Get in Touch with Our{" "}
             <span className="italic text-bronze-light">Homestay</span>
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="mt-2.5 text-sm sm:text-base font-light text-stone"
+          <p
+            className="scroll-reveal stagger-2 mt-2.5 text-sm sm:text-base font-light text-stone"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Contact Geeth and the team for room bookings, Yala safari jeep arrangements,
             or directions to 135/1 Suduwella Tikiri Udanapura.
-          </motion.p>
+          </p>
         </div>
 
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-14 items-start">
           {/* Contact Details Column */}
-          <motion.div
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="lg:col-span-5 space-y-4"
-          >
+          <div className="scroll-reveal stagger-2 lg:col-span-5 space-y-4">
             <ul className="space-y-3">
               {contactDetails.map((detail, idx) => {
                 const Icon = detail.icon;
@@ -219,16 +187,10 @@ export default function Contact({
                 <span>Message on WhatsApp</span>
               </a>
             </div>
-          </motion.div>
+          </div>
 
           {/* Contact Form */}
-          <motion.div
-            custom={3}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="lg:col-span-7 border border-sand/25 bg-ivory-warm p-6 sm:p-8 md:p-10 shadow-md"
-          >
+          <div className="scroll-reveal stagger-3 lg:col-span-7 border border-sand/25 bg-ivory-warm p-6 sm:p-8 md:p-10 shadow-md">
             {isSubmitSuccessful ? (
               <div className="py-12 text-center" aria-live="polite">
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-sand text-sand">
@@ -351,7 +313,7 @@ export default function Contact({
                 </button>
               </form>
             )}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Pause, Play, Calendar, Sparkles, MessageCircle, MapPin, Star } from "lucide-react";
@@ -56,8 +56,13 @@ export default function Hero({
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [contentVisible, setContentVisible] = useState(false);
 
-  const heroRef = useRef<HTMLElement>(null);
+  // Show content after a short delay for entrance animation
+  useEffect(() => {
+    const timer = setTimeout(() => setContentVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (!isPlaying || slidesToRender.length <= 1) {
@@ -79,7 +84,6 @@ export default function Hero({
   return (
     <section
       id="home"
-      ref={heroRef}
       className="relative min-h-[100dvh] w-full overflow-hidden flex flex-col justify-between"
       aria-label="Hero — Sri Shahrukh Lake Resort"
     >
@@ -88,7 +92,6 @@ export default function Hero({
         {slidesToRender.map((slide, idx) => {
           const isActive = idx === current;
           const isNext = idx === (current + 1) % slidesToRender.length;
-          // Only render first, active, and next slide to avoid downloading all slides upfront on initial page load
           const shouldRender = idx === 0 || isActive || isNext;
           const optimizedSrc = optimizeImage(slide.src, {
             width: 1920,
@@ -135,18 +138,16 @@ export default function Hero({
         }}
       />
 
-      {/* ── Center Content (z-20) ── */}
+      {/* ── Center Content (z-20) — CSS-driven entrance instead of framer-motion ── */}
       <div className="relative z-20 flex flex-1 flex-col items-center justify-center px-4 sm:px-6 text-center pt-28 sm:pt-32 pb-16 sm:pb-20 max-w-5xl mx-auto">
         {/* Resort Location & Accommodation Type Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-4 sm:mb-6 inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-4 py-2 border shadow-2xl shadow-black/80"
+        <div
+          className={`mb-4 sm:mb-6 inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-4 py-2 border shadow-2xl shadow-black/80 transition-all duration-700 ease-out ${
+            contentVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+          }`}
           style={{
-            background: "rgba(10,24,21,0.88)",
+            background: "rgba(10,24,21,0.92)",
             borderColor: "rgba(212,175,55,0.45)",
-            backdropFilter: "blur(12px)",
           }}
         >
           <span className="flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-sand-light drop-shadow">
@@ -161,14 +162,14 @@ export default function Hero({
             <Star className="w-3 h-3 fill-sand text-sand" />
             <strong className="font-semibold text-sand">4.8 / 5.0 Rating</strong>
           </span>
-        </motion.div>
+        </div>
 
         {/* Main Headline */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-5 sm:mb-7 flex flex-col items-center"
+        <div
+          className={`mb-5 sm:mb-7 flex flex-col items-center transition-all duration-900 ease-out ${
+            contentVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          }`}
+          style={{ transitionDelay: "0.15s" }}
         >
           <h1
             className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light leading-[1.08] tracking-tight text-center"
@@ -196,32 +197,31 @@ export default function Hero({
             </span>
             <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-l from-transparent via-sand to-sand/80" />
           </div>
-        </motion.div>
+        </div>
 
         {/* Subtitle with genuine, accurate details */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-8 sm:mb-10 max-w-2xl text-sm sm:text-base md:text-lg font-normal leading-relaxed text-ivory px-4 py-2 rounded shadow-lg"
+        <p
+          className={`mb-8 sm:mb-10 max-w-2xl text-sm sm:text-base md:text-lg font-normal leading-relaxed text-ivory px-4 py-2 rounded shadow-lg transition-all duration-900 ease-out ${
+            contentVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+          }`}
           style={{
             fontFamily: "var(--font-sans)",
             textShadow: "0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.95)",
-            background: "rgba(10,24,21,0.45)",
-            backdropFilter: "blur(6px)",
+            background: "rgba(10,24,21,0.55)",
             border: "1px solid rgba(212,175,55,0.2)",
+            transitionDelay: "0.3s",
           }}
         >
           {heroSubtitle ||
             "A peaceful, friendly homestay in Tissamaharama. Enjoy clean comfortable rooms, tranquil garden views, free Wi-Fi, free private parking, fresh daily breakfast, and Yala safari tour arrangements."}
-        </motion.p>
+        </p>
 
         {/* Primary Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto max-w-sm sm:max-w-none"
+        <div
+          className={`flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto max-w-sm sm:max-w-none transition-all duration-900 ease-out ${
+            contentVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+          }`}
+          style={{ transitionDelay: "0.45s" }}
         >
           <Link
             href="/book"
@@ -249,13 +249,12 @@ export default function Hero({
               borderColor: "rgba(250,248,245,0.45)",
               color: "var(--color-ivory)",
               fontFamily: "var(--font-sans)",
-              backdropFilter: "blur(8px)",
             }}
           >
             <MessageCircle className="w-4 h-4 text-sand-light" />
             <span>WhatsApp: {whatsapp}</span>
           </a>
-        </motion.div>
+        </div>
       </div>
 
       {/* ── Bottom Controls Bar ── */}
@@ -264,8 +263,7 @@ export default function Hero({
         <div
           className="text-left max-w-xs sm:max-w-md px-3.5 py-2 border border-sand/30 shadow-xl"
           style={{
-            background: "rgba(10,24,21,0.85)",
-            backdropFilter: "blur(10px)",
+            background: "rgba(10,24,21,0.9)",
           }}
         >
           <p
@@ -286,7 +284,7 @@ export default function Hero({
         </div>
 
         {/* Slide Indicators & Play/Pause Button */}
-        <div className="flex items-center gap-2 sm:gap-3 bg-teal-deep/70 backdrop-blur-md px-3 py-1.5 border border-sand/20">
+        <div className="flex items-center gap-2 sm:gap-3 bg-teal-deep/80 px-3 py-1.5 border border-sand/20">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
             aria-label={isPlaying ? "Pause background slideshow" : "Play background slideshow"}

@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, useInView, useScroll, useTransform, type Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Sparkles, Wifi, Car, Coffee, ShieldCheck, Bike, MapPin } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 /* ─── Real Stat definitions ─────────────────────────────────────────── */
 const stats = [
@@ -64,11 +64,8 @@ function StatCard({
   const count = useCountUp(typeof stat.numeric === "number" ? stat.numeric : null, 1500 + index * 150, active);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={active ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: index * 0.12, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="flex flex-col items-center py-6 px-3 sm:py-8 sm:px-4 text-center border-r border-b border-sand/20 last:border-r-0"
+    <div
+      className={`scroll-reveal stagger-${index + 1} flex flex-col items-center py-6 px-3 sm:py-8 sm:px-4 text-center border-r border-b border-sand/20 last:border-r-0`}
       style={{ background: "var(--color-ivory)" }}
     >
       <span
@@ -83,18 +80,9 @@ function StatCard({
       >
         {stat.label}
       </span>
-    </motion.div>
+    </div>
   );
 }
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 32 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.12, duration: 0.9, ease: [0.22, 1, 0.36, 1] as const },
-  }),
-};
 
 export interface DynamicAboutImage {
   src: string;
@@ -123,20 +111,31 @@ export default function About({
     { numeric: null, suffix: "", label: ratingLabel, symbol: `${ratingScore}★` },
   ];
 
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const sectionRef = useScrollReveal<HTMLElement>();
+  const [statsVisible, setStatsVisible] = useState(false);
 
-  const imageContainerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: imageContainerRef,
-    offset: ["start end", "end start"],
-  });
-  const imageY = useTransform(scrollYProgress, [0, 1], ["4%", "-4%"]);
+  // Simple IntersectionObserver for stats count-up
+  const statsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = statsRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStatsVisible(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "-60px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <section
       id="about"
-      ref={ref}
+      ref={sectionRef}
       className="relative overflow-hidden py-20 sm:py-28 md:py-32"
       style={{ background: "var(--color-ivory-warm)" }}
       aria-labelledby="about-heading"
@@ -151,13 +150,7 @@ export default function About({
 
           {/* ── Text column (7 cols on desktop) ── */}
           <div className="lg:col-span-7">
-            <motion.div
-              custom={0}
-              variants={fadeUp}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
-              className="inline-flex items-center gap-2 mb-3"
-            >
+            <div className="scroll-reveal inline-flex items-center gap-2 mb-3">
               <Sparkles className="w-3.5 h-3.5 text-sand" />
               <p
                 className="text-xs font-medium uppercase tracking-[0.3em]"
@@ -165,29 +158,21 @@ export default function About({
               >
                 Property Overview
               </p>
-            </motion.div>
+            </div>
 
-            <motion.h2
+            <h2
               id="about-heading"
-              custom={1}
-              variants={fadeUp}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
-              className="mb-6 text-3xl sm:text-4xl md:text-5xl font-light leading-[1.15]"
+              className="scroll-reveal stagger-1 mb-6 text-3xl sm:text-4xl md:text-5xl font-light leading-[1.15]"
               style={{ color: "var(--color-teal-deep)", fontFamily: "var(--font-serif)" }}
             >
               Sri Shahrukh Lake Resort <br />
               <em className="not-italic text-bronze-light text-2xl sm:text-3xl md:text-4xl">
                 Warm Hospitality in Tissamaharama
               </em>
-            </motion.h2>
+            </h2>
 
-            <motion.div
-              custom={2}
-              variants={fadeUp}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
-              className="space-y-4 text-sm sm:text-base font-light leading-relaxed"
+            <div
+              className="scroll-reveal stagger-2 space-y-4 text-sm sm:text-base font-light leading-relaxed"
               style={{ color: "var(--color-stone)", fontFamily: "var(--font-sans)" }}
             >
               {aboutStory ? (
@@ -205,7 +190,7 @@ export default function About({
                   </p>
                 </>
               )}
-            </motion.div>
+            </div>
 
             {/* Quick Amenities List */}
             <div id="amenities" className="mt-6 pt-6 border-t border-sand/20">
@@ -222,13 +207,7 @@ export default function About({
               </div>
             </div>
 
-            <motion.div
-              custom={3}
-              variants={fadeUp}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
-              className="mt-8 flex flex-wrap items-center gap-4"
-            >
+            <div className="scroll-reveal stagger-3 mt-8 flex flex-wrap items-center gap-4">
               <a
                 href="#homestay"
                 className="inline-flex items-center gap-2.5 px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition-all hover:scale-105"
@@ -248,36 +227,24 @@ export default function About({
               >
                 Book Now
               </Link>
-            </motion.div>
+            </div>
           </div>
 
-          {/* ── Image column ── */}
-          <motion.div
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="lg:col-span-5 relative px-2 sm:px-0"
-            ref={imageContainerRef}
-          >
+          {/* ── Image column (static, no parallax) ── */}
+          <div className="scroll-reveal stagger-1 lg:col-span-5 relative px-2 sm:px-0">
             <div className="relative aspect-[4/5] w-full overflow-hidden border border-sand/30 shadow-xl bg-teal-deep">
-              <motion.div
-                style={{ y: imageY }}
-                className="absolute inset-0 w-full h-[112%] -top-[6%]"
-              >
-                <Image
-                  src={optimizeImage(activeImage.src, {
-                    width: 1000,
-                    quality: "auto",
-                    format: "auto",
-                  })}
-                  alt={activeImage.alt}
-                  fill
-                  loading="lazy"
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 42vw"
-                />
-              </motion.div>
+              <Image
+                src={optimizeImage(activeImage.src, {
+                  width: 1000,
+                  quality: "auto",
+                  format: "auto",
+                })}
+                alt={activeImage.alt}
+                fill
+                loading="lazy"
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 42vw"
+              />
 
               <div
                 className="absolute inset-x-0 bottom-0 h-1/2 pointer-events-none"
@@ -321,16 +288,17 @@ export default function About({
                 Tissamaharama
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* ── Real Distance Stats Row ── */}
         <div
+          ref={statsRef}
           className="mt-14 sm:mt-20 grid grid-cols-2 md:grid-cols-4 border border-sand/30 shadow-sm"
           style={{ background: "var(--color-ivory)" }}
         >
           {dynamicStats.map((stat, i) => (
-            <StatCard key={stat.label} stat={stat} index={i} active={inView} />
+            <StatCard key={stat.label} stat={stat} index={i} active={statsVisible} />
           ))}
         </div>
       </div>

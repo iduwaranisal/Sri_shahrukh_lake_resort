@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, useInView, type Variants } from "framer-motion";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -17,6 +16,7 @@ import {
   Compass,
 } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const homestayPhotos = [
   {
@@ -84,15 +84,6 @@ const homestayAmenities = [
   },
 ];
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
-  }),
-};
-
 export interface DynamicAmenity {
   title: string;
   desc: string;
@@ -129,13 +120,12 @@ export default function Villas({
   const activeAmenities = amenities && amenities.length > 0 ? amenities : homestayAmenities;
   const activePhotos = homestayImages && homestayImages.length > 0 ? homestayImages : homestayPhotos;
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const sectionRef = useScrollReveal<HTMLElement>();
 
   return (
     <section
       id="homestay"
-      ref={ref}
+      ref={sectionRef}
       className="relative overflow-hidden py-20 sm:py-28 md:py-32"
       style={{ background: "var(--color-ivory)" }}
       aria-labelledby="homestay-heading"
@@ -156,13 +146,7 @@ export default function Villas({
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
         {/* Section Header */}
         <div className="mb-12 sm:mb-16 text-center max-w-3xl mx-auto">
-          <motion.div
-            custom={0}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10"
-          >
+          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10">
             <Sparkles className="w-3 h-3 text-sand" />
             <p
               className="text-xs uppercase tracking-[0.3em] font-medium"
@@ -170,15 +154,11 @@ export default function Villas({
             >
               The Homestay
             </p>
-          </motion.div>
+          </div>
 
-          <motion.h2
+          <h2
             id="homestay-heading"
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="text-3xl sm:text-4xl md:text-5xl font-light leading-[1.15]"
+            className="scroll-reveal stagger-1 text-3xl sm:text-4xl md:text-5xl font-light leading-[1.15]"
             style={{ color: "var(--color-teal-deep)", fontFamily: "var(--font-serif)" }}
           >
             {homestayTitle ? (
@@ -191,31 +171,21 @@ export default function Villas({
                 </span>
               </>
             )}
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="mt-3 text-sm sm:text-base font-light leading-relaxed"
+          <p
+            className="scroll-reveal stagger-2 mt-3 text-sm sm:text-base font-light leading-relaxed"
             style={{ color: "var(--color-stone)", fontFamily: "var(--font-sans)" }}
           >
             {homestayDescription ||
               "Sri Shahrukh Lake Resort welcomes you with peaceful garden surroundings, clean and comfortable rooms, and warm Sri Lankan hospitality right here in Tissamaharama."}
-          </motion.p>
+          </p>
         </div>
 
         {/* ── Main Homestay Presentation ── */}
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-14 items-start">
           {/* Left: Photos (7 cols) */}
-          <motion.div
-            custom={3}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="lg:col-span-7 flex flex-col gap-3"
-          >
+          <div className="scroll-reveal stagger-3 lg:col-span-7 flex flex-col gap-3">
             <div className="relative aspect-[16/10] w-full overflow-hidden border border-sand/30 shadow-xl bg-teal-deep">
               <Image
                 src={optimizeImage(
@@ -274,16 +244,10 @@ export default function Villas({
                 </button>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Right: Homestay Description & Amenities (5 cols) */}
-          <motion.div
-            custom={4}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="lg:col-span-5 flex flex-col justify-between"
-          >
+          <div className="scroll-reveal stagger-4 lg:col-span-5 flex flex-col justify-between">
             <div>
               <h3
                 className="text-2xl sm:text-3xl font-light text-teal-deep mb-3"
@@ -352,7 +316,7 @@ export default function Villas({
                 <span>WhatsApp: 0757273416</span>
               </a>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

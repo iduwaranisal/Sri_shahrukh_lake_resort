@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
+/* Fonts loaded non-blocking via <link> in layout.tsx */
 
 @import "tailwindcss";
 
@@ -43,7 +43,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -54,7 +54,7 @@ body {
   line-height: 1.65;
   letter-spacing: -0.01em;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
 }
 
@@ -139,4 +139,38 @@ select {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .scroll-reveal {
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+  }
 }
+
+/* ── Lightweight CSS scroll-reveal (replaces JS-driven framer-motion) ── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.scroll-reveal {
+  opacity: 0;
+}
+
+.scroll-reveal.is-visible {
+  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Stagger delays for child elements */
+.scroll-reveal.stagger-1.is-visible { animation-delay: 0.08s; }
+.scroll-reveal.stagger-2.is-visible { animation-delay: 0.16s; }
+.scroll-reveal.stagger-3.is-visible { animation-delay: 0.24s; }
+.scroll-reveal.stagger-4.is-visible { animation-delay: 0.32s; }
+.scroll-reveal.stagger-5.is-visible { animation-delay: 0.40s; }
+.scroll-reveal.stagger-6.is-visible { animation-delay: 0.48s; }
+

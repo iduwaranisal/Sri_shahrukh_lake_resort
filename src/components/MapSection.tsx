@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   MapPin,
   Navigation,
@@ -192,7 +191,7 @@ export default function MapSection({
               />
 
               {/* Colorful floating pin banner */}
-              <div className="absolute bottom-4 left-4 right-4 sm:left-6 sm:right-auto bg-teal-deep/95 backdrop-blur-md p-3 sm:p-4 border border-sand/40 shadow-2xl max-w-sm">
+              <div className="absolute bottom-4 left-4 right-4 sm:left-6 sm:right-auto bg-teal-deep/95 p-3 sm:p-4 border border-sand/40 shadow-2xl max-w-sm">
                 <div className="flex items-start gap-3">
                   <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-sand to-amber-300 text-teal-deep flex items-center justify-center font-bold text-sm shadow">
                     SRK

@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, useInView, AnimatePresence, type Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Star, ChevronLeft, ChevronRight, Sparkles, CheckCircle, MapPin } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const reviews = [
   {
@@ -75,15 +76,6 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
-  }),
-};
-
 export interface ReviewItem {
   id?: string | number;
   name: string;
@@ -104,8 +96,7 @@ export default function Reviews({
   ratingLabel?: string;
 }) {
   const activeReviews = initialReviews && initialReviews.length > 0 ? initialReviews : reviews;
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const sectionRef = useScrollReveal<HTMLElement>();
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -126,7 +117,7 @@ export default function Reviews({
   return (
     <section
       id="reviews"
-      ref={ref}
+      ref={sectionRef}
       className="py-20 sm:py-28 md:py-32 relative overflow-hidden"
       style={{ background: "var(--color-ivory)" }}
       aria-labelledby="reviews-heading"
@@ -138,13 +129,7 @@ export default function Reviews({
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
         {/* Section Header */}
         <div className="mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
-          <motion.div
-            custom={0}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10"
-          >
+          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10">
             <Sparkles className="w-3.5 h-3.5 text-sand" />
             <p
               className="text-xs uppercase tracking-[0.3em] font-medium"
@@ -152,41 +137,27 @@ export default function Reviews({
             >
               Visitor Feedback
             </p>
-          </motion.div>
+          </div>
 
-          <motion.h2
+          <h2
             id="reviews-heading"
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
+            className="scroll-reveal stagger-1 text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             Guest Experiences &amp;{" "}
             <span className="italic text-bronze-light">Reviews</span>
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="mt-2.5 text-sm sm:text-base font-light text-stone"
+          <p
+            className="scroll-reveal stagger-2 mt-2.5 text-sm sm:text-base font-light text-stone"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Rated <strong className="font-semibold text-teal-deep">{ratingScore} / 5.0 {ratingLabel}</strong>. Real reviews from guests who stayed with us in Tissamaharama.
-          </motion.p>
+          </p>
         </div>
 
         {/* Carousel Card */}
-        <motion.div
-          custom={3}
-          variants={fadeUp}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="relative mx-auto max-w-3xl"
-        >
+        <div className="scroll-reveal stagger-3 relative mx-auto max-w-3xl">
           <div
             className="border border-sand/30 bg-ivory-warm p-8 sm:p-12 md:p-14 shadow-lg text-center relative"
             aria-live="polite"
@@ -272,16 +243,10 @@ export default function Reviews({
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Real Overview Metric Strip */}
-        <motion.div
-          custom={4}
-          variants={fadeUp}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="mt-12 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-center"
-        >
+        <div className="scroll-reveal stagger-4 mt-12 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-center">
           {[
             { metric: "4.8 / 5.0", label: "Rating Across All Platforms", icon: Star },
             { metric: "Tissamaharama", label: "Quiet & Peaceful Homestay", icon: MapPin },
@@ -301,7 +266,7 @@ export default function Reviews({
               </div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, useInView, type Variants } from "framer-motion";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Compass, MapPin, Clock, ArrowUpRight, Calendar } from "lucide-react";
 import { attractions } from "@/data/explore";
 import { optimizeImage } from "@/lib/imageOptimization";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const categories = [
   "All Destinations",
@@ -15,15 +15,6 @@ const categories = [
   "UNESCO Wetland & Avifauna",
   "Nature & Heritage",
 ];
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.07, duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
-  }),
-};
 
 export interface DynamicExploreImage {
   id: string;
@@ -37,8 +28,7 @@ export default function Explore({
   customImages?: DynamicExploreImage[];
 } = {}) {
   const [activeCategory, setActiveCategory] = useState("All Destinations");
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const sectionRef = useScrollReveal<HTMLElement>();
 
   const mergedAttractions = attractions.map((item) => {
     const override = customImages?.find((c) => c.id === item.slug);
@@ -55,7 +45,7 @@ export default function Explore({
   return (
     <section
       id="explore"
-      ref={ref}
+      ref={sectionRef}
       className="py-24 sm:py-32 md:py-36 relative overflow-hidden"
       style={{ background: "var(--color-teal-deep)" }}
       aria-labelledby="explore-heading"
@@ -73,13 +63,7 @@ export default function Explore({
       <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
         {/* Header */}
         <div className="mb-12 sm:mb-16 text-center max-w-3xl mx-auto">
-          <motion.div
-            custom={0}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10"
-          >
+          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10">
             <Compass className="w-3.5 h-3.5 text-sand" />
             <p
               className="text-xs uppercase tracking-[0.35em] text-sand font-medium"
@@ -87,43 +71,31 @@ export default function Explore({
             >
               Places to Visit Nearby
             </p>
-          </motion.div>
+          </div>
 
-          <motion.h2
+          <h2
             id="explore-heading"
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="text-3xl sm:text-5xl md:text-6xl font-light text-ivory leading-[1.15]"
+            className="scroll-reveal stagger-1 text-3xl sm:text-5xl md:text-6xl font-light text-ivory leading-[1.15]"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             Explore Around{" "}
             <span className="italic gold-text-gradient font-normal">
               Tissamaharama
             </span>
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="mt-4 text-sm sm:text-base font-light leading-relaxed text-ivory/80"
+          <p
+            className="scroll-reveal stagger-2 mt-4 text-sm sm:text-base font-light leading-relaxed text-ivory/80"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Conveniently situated near Tissa Wewa (2.5 km), Tissamaharama Stupa (2.2 km),
             Ranminitenna Cinema Village (7.5 km), and the safari gates of Yala and Bundala.
-          </motion.p>
+          </p>
         </div>
 
         {/* Category Filters */}
-        <motion.div
-          custom={3}
-          variants={fadeUp}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="mb-10 sm:mb-12 flex flex-wrap items-center justify-center gap-2 sm:gap-3"
+        <div
+          className="scroll-reveal stagger-3 mb-10 sm:mb-12 flex flex-wrap items-center justify-center gap-2 sm:gap-3"
           role="tablist"
           aria-label="Excursion categories"
         >
@@ -146,18 +118,14 @@ export default function Explore({
               </button>
             );
           })}
-        </motion.div>
+        </div>
 
         {/* Cards Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredAttractions.map((place, i) => (
-            <motion.article
+            <article
               key={place.slug}
-              custom={i}
-              variants={fadeUp}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
-              className="group relative flex flex-col overflow-hidden border border-sand/25 bg-teal-mid/70 backdrop-blur-md transition-all duration-500 hover:border-sand hover:-translate-y-1.5 shadow-lg shadow-black/20"
+              className={`scroll-reveal stagger-${Math.min(i + 1, 6)} group relative flex flex-col overflow-hidden border border-sand/25 bg-teal-mid/70 transition-all duration-500 hover:border-sand hover:-translate-y-1.5 shadow-lg shadow-black/20`}
               aria-labelledby={`explore-${place.slug}-name`}
             >
               <Link href={`/explore/${place.slug}`} className="flex flex-col h-full">
@@ -247,18 +215,12 @@ export default function Explore({
                   </div>
                 </div>
               </Link>
-            </motion.article>
+            </article>
           ))}
         </div>
 
         {/* Bottom Destination Info & Resort Booking Banner */}
-        <motion.div
-          custom={6}
-          variants={fadeUp}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="mt-14 sm:mt-18 p-8 sm:p-10 border border-sand/30 bg-teal-mid/80 flex flex-col md:flex-row items-center justify-between gap-6"
-        >
+        <div className="scroll-reveal stagger-6 mt-14 sm:mt-18 p-8 sm:p-10 border border-sand/30 bg-teal-mid/80 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
             <h4
               className="text-2xl sm:text-3xl font-light text-ivory mb-2"
@@ -283,7 +245,7 @@ export default function Explore({
             <Calendar className="w-4 h-4" />
             <span>Book Now</span>
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

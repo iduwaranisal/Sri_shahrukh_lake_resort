@@ -1,10 +1,11 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, useInView, AnimatePresence, type Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Sparkles, ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 interface GalleryImage {
   src: string;
@@ -39,15 +40,6 @@ const categories = [
   "Homestay Life",
 ] as const;
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
-  }),
-};
-
 export interface DynamicGalleryImage {
   src: string;
   alt: string;
@@ -59,8 +51,7 @@ export default function Gallery({
 }: {
   initialImages?: DynamicGalleryImage[];
 } = {}) {
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const sectionRef = useScrollReveal<HTMLElement>();
   const [selectedCategory, setSelectedCategory] = useState<string>("All Views");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -98,7 +89,7 @@ export default function Gallery({
   return (
     <section
       id="gallery"
-      ref={ref}
+      ref={sectionRef}
       className="py-24 sm:py-32 md:py-36 relative"
       style={{ background: "var(--color-ivory-warm)" }}
       aria-labelledby="gallery-heading"
@@ -106,13 +97,7 @@ export default function Gallery({
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
         {/* Section Header */}
         <div className="mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
-          <motion.div
-            custom={0}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10"
-          >
+          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10">
             <Sparkles className="w-3.5 h-3.5 text-sand" />
             <p
               className="text-xs uppercase tracking-[0.35em] font-medium"
@@ -120,40 +105,28 @@ export default function Gallery({
             >
               Photo Gallery
             </p>
-          </motion.div>
+          </div>
 
-          <motion.h2
+          <h2
             id="gallery-heading"
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
+            className="scroll-reveal stagger-1 text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             Photos of Our{" "}
             <span className="italic text-bronze-light">Homestay</span>
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            className="mt-3 text-sm sm:text-base font-light text-stone"
+          <p
+            className="scroll-reveal stagger-2 mt-3 text-sm sm:text-base font-light text-stone"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Take a look around our rooms, peaceful garden, and the beautiful sights in and around Tissamaharama.
-          </motion.p>
+          </p>
         </div>
 
         {/* Category Filters */}
-        <motion.div
-          custom={3}
-          variants={fadeUp}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="mb-10 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5"
+        <div
+          className="scroll-reveal stagger-3 mb-10 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5"
           role="tablist"
           aria-label="Gallery category filters"
         >
@@ -179,20 +152,16 @@ export default function Gallery({
               </button>
             );
           })}
-        </motion.div>
+        </div>
 
         {/* Responsive Photo Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
           {filteredImages.map((img, i) => (
-            <motion.button
+            <button
               key={`${img.src}-${i}`}
-              custom={i}
-              variants={fadeUp}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
               onClick={() => setLightboxIndex(i)}
               aria-label={`Enlarge photograph: ${img.alt}`}
-              className="group relative aspect-[4/3] w-full overflow-hidden border border-sand/20 bg-teal-deep focus:outline-none focus:ring-2 focus:ring-sand cursor-pointer"
+              className={`scroll-reveal stagger-${Math.min(i + 1, 6)} group relative aspect-[4/3] w-full overflow-hidden border border-sand/20 bg-teal-deep focus:outline-none focus:ring-2 focus:ring-sand cursor-pointer`}
             >
               <Image
                 src={optimizeImage(img.src, {
@@ -218,12 +187,12 @@ export default function Gallery({
                   {img.category}
                 </span>
               </div>
-            </motion.button>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Accessible Lightbox Modal */}
+      {/* Accessible Lightbox Modal — keeps framer-motion for real animated transition */}
       <AnimatePresence>
         {lightboxIndex !== null && (
           <motion.div
@@ -232,7 +201,7 @@ export default function Gallery({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
-            style={{ background: "rgba(10,24,21,0.96)", backdropFilter: "blur(20px)" }}
+            style={{ background: "rgba(10,24,21,0.96)" }}
             onClick={() => setLightboxIndex(null)}
             role="dialog"
             aria-modal="true"

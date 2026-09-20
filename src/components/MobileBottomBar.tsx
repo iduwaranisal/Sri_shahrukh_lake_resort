@@ -1,19 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { MessageCircle, Phone, Calendar } from "lucide-react";
 
 export default function MobileBottomBar() {
   const [visible, setVisible] = useState(false);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setVisible(window.scrollY > 350);
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = null;
+        setVisible(window.scrollY > 350);
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   if (!visible) return null;
@@ -22,8 +30,7 @@ export default function MobileBottomBar() {
     <div
       className="fixed bottom-0 left-0 right-0 z-40 lg:hidden px-4 py-3 border-t border-sand/30 shadow-2xl transition-all duration-300"
       style={{
-        background: "rgba(10,24,21,0.96)",
-        backdropFilter: "blur(16px)",
+        background: "#0a1815",
       }}
       role="region"
       aria-label="Mobile quick reservations and contact bar"

@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, useInView, type Variants } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -46,18 +45,8 @@ const schema = z
 
 type BookingForm = z.infer<typeof schema>;
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
-  }),
-};
-
 export default function Booking() {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
   const [selectedVillaNotice, setSelectedVillaNotice] = useState<string | null>(null);
 
   const todayStr = new Date().toISOString().split("T")[0];
@@ -161,11 +150,7 @@ export default function Booking() {
       <div className="relative mx-auto max-w-5xl px-5 sm:px-6 lg:px-10">
         {/* Section Header */}
         <div className="mb-10 sm:mb-14 text-center">
-          <motion.div
-            custom={0}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
+          <div
             className="inline-flex items-center gap-2 mb-3 px-3.5 py-1.5 border border-sand/30 bg-sand/10"
           >
             <Sparkles className="w-3.5 h-3.5 text-sand" />
@@ -180,38 +165,26 @@ export default function Booking() {
               <Star className="w-3.5 h-3.5 fill-sand text-sand" />
               <span>4.8 / 5.0 Across All Platforms</span>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.h2
+          <h2
             id="booking-heading"
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
             className="text-3xl sm:text-4xl md:text-5xl font-light text-ivory"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             Check Room Availability &amp;{" "}
             <em className="not-italic text-sand">Safari Packages</em>
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
+          <p
             className="mx-auto mt-3 max-w-xl text-sm sm:text-base font-light leading-relaxed text-ivory/80"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Enjoy warm personal care and custom Yala safari tour arrangements at Sri Shahrukh Lake Resort.
             Inquiries are delivered directly to <strong>lakeresortsrishahrukh@gmail.com</strong>.
-          </motion.p>
+          </p>
 
-          <motion.div
-            custom={3}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
+          <div
             className="mt-4"
           >
             <Link
@@ -221,33 +194,24 @@ export default function Booking() {
               <Calendar className="w-4 h-4" />
               <span>Book Now</span>
             </Link>
-          </motion.div>
+          </div>
         </div>
 
         {selectedVillaNotice && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
+          <div
             className="mb-6 p-3 bg-sand/20 border border-sand text-center text-xs text-sand-pale font-medium uppercase tracking-wider"
           >
             ✓ Selected room updated to: {selectedVillaNotice}
-          </motion.div>
+          </div>
         )}
 
         {/* Form Container */}
-        <motion.div
-          custom={3}
-          variants={fadeUp}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="border border-sand/25 p-6 sm:p-10 md:p-12 backdrop-blur-xl shadow-2xl shadow-black/40"
-          style={{ background: "rgba(10,24,21,0.85)" }}
+        <div
+          className="border border-sand/25 p-6 sm:p-10 md:p-12 shadow-2xl shadow-black/40"
+          style={{ background: "#0a1815" }}
         >
           {isSuccess && submittedData ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+            <div
               className="py-10 sm:py-14 text-center"
               aria-live="polite"
             >
@@ -318,7 +282,7 @@ export default function Booking() {
                   <span>New Inquiry</span>
                 </button>
               </div>
-            </motion.div>
+            </div>
           ) : (
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -581,7 +545,7 @@ export default function Booking() {
               </div>
             </form>
           )}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
