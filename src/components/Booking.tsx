@@ -5,14 +5,21 @@ import { motion, useInView, type Variants } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Calendar, CheckCircle2, MessageCircle, Sparkles, ShieldCheck, AlertCircle, RefreshCw } from "lucide-react";
+import Link from "next/link";
+import {
+  Calendar,
+  CheckCircle2,
+  MessageCircle,
+  Sparkles,
+  ShieldCheck,
+  AlertCircle,
+  RefreshCw,
+  Star,
+  ExternalLink,
+} from "lucide-react";
 
 const roomOptions = [
-  "Deluxe Double Room (Lake & Garden View)",
-  "Standard Double Room",
-  "Triple Room (Garden View)",
-  "Budget Family Room",
-  "Not sure — advise me on best room",
+  "Homestay Stay",
 ];
 
 const schema = z
@@ -56,7 +63,7 @@ export default function Booking() {
   const todayStr = new Date().toISOString().split("T")[0];
 
   const [checkInDate, setCheckInDate] = useState(todayStr);
-  const [villaSelected, setVillaSelected] = useState("Deluxe Double Room (Lake & Garden View)");
+  const [villaSelected, setVillaSelected] = useState("Homestay Stay");
   const [guestsCount, setGuestsCount] = useState("2 Guests");
 
   const [submissionError, setSubmissionError] = useState<string | null>(null);
@@ -74,7 +81,7 @@ export default function Booking() {
     defaultValues: {
       checkIn: todayStr,
       guests: "2 Guests",
-      villa: "Deluxe Double Room (Lake & Garden View)",
+      villa: "Homestay Stay",
     },
   });
 
@@ -127,7 +134,7 @@ export default function Booking() {
   };
 
   const whatsAppUrl = `https://wa.me/94757273416?text=${encodeURIComponent(
-    "Hello Sri Shahrukh Lake Resort, I would like to check availability and rates for:\n• Room: " +
+    "Hello Sri Shahrukh Lake Resort, I would like to check room availability for:\n• Room: " +
     ((submittedData?.villa || villaSelected) || "Any Room") +
     "\n• Check-in: " +
     ((submittedData?.checkIn || checkInDate) || "Upcoming") +
@@ -159,15 +166,20 @@ export default function Booking() {
             variants={fadeUp}
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
-            className="inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10"
+            className="inline-flex items-center gap-2 mb-3 px-3.5 py-1.5 border border-sand/30 bg-sand/10"
           >
             <Sparkles className="w-3.5 h-3.5 text-sand" />
             <p
-              className="text-xs uppercase tracking-[0.3em] text-sand-light font-medium"
+              className="text-xs uppercase tracking-[0.25em] text-sand-light font-medium"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Direct Room Inquiries
+              Only 3 Private Rooms
             </p>
+            <span className="text-sand/40">|</span>
+            <div className="flex items-center gap-1 text-xs text-sand font-semibold">
+              <Star className="w-3.5 h-3.5 fill-sand text-sand" />
+              <span>4.8 / 5.0 Across All Platforms</span>
+            </div>
           </motion.div>
 
           <motion.h2
@@ -191,9 +203,25 @@ export default function Booking() {
             className="mx-auto mt-3 max-w-xl text-sm sm:text-base font-light leading-relaxed text-ivory/80"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Send us your travel dates for direct homestay rates and affordable Yala safari packages.
+            Enjoy warm personal care and custom Yala safari tour arrangements at Sri Shahrukh Lake Resort.
             Inquiries are delivered directly to <strong>lakeresortsrishahrukh@gmail.com</strong>.
           </motion.p>
+
+          <motion.div
+            custom={3}
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            className="mt-4"
+          >
+            <Link
+              href="/book"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-[0.2em] shadow-lg hover:scale-105 transition-all"
+            >
+              <Calendar className="w-4 h-4" />
+              <span>Book Now</span>
+            </Link>
+          </motion.div>
         </div>
 
         {selectedVillaNotice && (
@@ -238,7 +266,7 @@ export default function Booking() {
               >
                 Your inquiry has been emailed directly to{" "}
                 <strong className="text-sand">lakeresortsrishahrukh@gmail.com</strong>. We will review
-                room availability and reply with our best direct rates and safari details.
+                room availability and reply with reservation and safari details.
               </p>
 
               {/* Inquiry Summary Box */}
@@ -528,7 +556,7 @@ export default function Booking() {
                   ) : (
                     <>
                       <Calendar className="w-4 h-4" />
-                      <span>Inquire Room &amp; Safari Rates</span>
+                      <span>Check Room &amp; Safari Availability</span>
                     </>
                   )}
                 </button>
@@ -548,7 +576,7 @@ export default function Booking() {
 
                 <div className="flex items-center gap-2 text-[11px] text-ivory/60 mt-1 font-light">
                   <ShieldCheck className="w-3.5 h-3.5 text-sand" />
-                  <span>Free Wi-Fi · Free Parking · Yala Safari Arrangements</span>
+                  <span>Rated 4.8 / 5.0 Across Platforms · Free Wi-Fi &amp; Parking</span>
                 </div>
               </div>
             </form>

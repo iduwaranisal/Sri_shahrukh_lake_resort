@@ -35,12 +35,32 @@ export async function POST(req: Request) {
       );
     }
 
+    // Connect and save booking to MongoDB
+    try {
+      const { connectToDatabase } = await import("@/lib/mongodb");
+      const { Booking } = await import("@/models/Booking");
+      await connectToDatabase();
+      await Booking.create({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        phone: phone?.trim(),
+        checkIn,
+        checkOut,
+        guests,
+        villa: villa || "Homestay Stay",
+        specialRequests: specialRequests?.trim(),
+        status: "pending",
+      });
+    } catch (dbErr) {
+      console.error("[MongoDB Save Booking Error in API route]", dbErr);
+    }
+
     const emailUser = process.env.EMAIL_USER || process.env.GMAIL_USER || DESTINATION_EMAIL;
     const emailPass = process.env.EMAIL_PASS || process.env.GMAIL_APP_PASSWORD || process.env.SMTP_PASS;
     const smtpHost = process.env.SMTP_HOST;
     const smtpPort = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : 587;
 
-    const emailSubject = `New Room Inquiry: ${villa} (${checkIn} to ${checkOut}) - ${name}`;
+    const emailSubject = `New Room Inquiry: ${name} (${checkIn} to ${checkOut})`;
 
     const plainText = `
 =====================================================
@@ -130,7 +150,7 @@ Direct Phone: +94 77 621 9245 · WhatsApp: 0757273416
       ` : ""}
 
       <div class="cta-row">
-        <a href="mailto:${email}?subject=Booking%20Confirmation%20%26%20Rates%20-%20Sri%20Shahrukh%20Lake%20Resort" class="btn">
+        <a href="mailto:${email}?subject=Booking%20Confirmation%20-%20Sri%20Shahrukh%20Lake%20Resort" class="btn">
           Reply to Guest (${email})
         </a>
       </div>

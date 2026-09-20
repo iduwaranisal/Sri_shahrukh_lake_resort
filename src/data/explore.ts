@@ -113,7 +113,7 @@ export const attractions: Attraction[] = [
       "We arrange affordable shared and private 4x4 safari jeeps directly from our homestay"
     ],
     conciergeTips: [
-      "Our homestay can arrange custom 4x4 safari jeeps with local experienced drivers at reasonable rates.",
+      "Our homestay can arrange custom 4x4 safari jeeps with local experienced drivers.",
       "Morning safaris depart early (around 05:00 AM) to reach the park gates by 06:00 AM opening.",
       "Wear neutral clothing and bring sunscreen, water, and camera gear."
     ],

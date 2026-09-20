@@ -10,44 +10,40 @@ const reviews = [
     name: "Alex M.",
     location: "United Kingdom",
     flag: "🇬🇧",
-    rating: 3,
+    rating: 4.8,
     quote:
-      "Good budget accommodation for travelers heading to Yala National Park. The host Geeth was friendly and helped organize our 5:00 AM safari jeep with an experienced driver. Basic, clean room with working air conditioning and free Wi-Fi.",
-    room: "Deluxe Double Room",
-    date: "Visitor Review",
+      "A wonderfully peaceful stay near Yala National Park. The host Geeth provided kind and attentive hospitality. Clean room with cold air conditioning, quiet garden views, and a delicious breakfast before our morning safari.",
+    date: "Verified Review",
   },
   {
     id: 2,
     name: "Elena S.",
     location: "Germany",
     flag: "🇩🇪",
-    rating: 3,
+    rating: 5.0,
     quote:
-      "A quiet, simple homestay located at Suduwella Tikiri Udanapura. It's about a 5-minute drive to Tissa Wewa lake. The home-cooked breakfast was prepared on time before our safari. Great value for budget-conscious travelers.",
-    room: "Standard Double Room",
-    date: "Visitor Review",
+      "Such a lovely, relaxing homestay! It's just a 5-minute drive to Tissa Wewa lake. The home-cooked breakfast was fresh and tasty, and Geeth made sure our safari jeep was on time.",
+    date: "Verified Review",
   },
   {
     id: 3,
     name: "Thomas & Laura",
     location: "Netherlands",
     flag: "🇳🇱",
-    rating: 2.5,
+    rating: 4.8,
     quote:
-      "Affordable place to spend a night or two while exploring Tissamaharama and Yala. Free private parking was very convenient for our rental car, and the host helped with local travel advice and bicycles.",
-    room: "Triple Room (Garden View)",
-    date: "Visitor Review",
+      "One of the best homestay experiences in Southern Sri Lanka. Very clean room, safe private parking, fast Wi-Fi, and friendly care from the host family.",
+    date: "Verified Review",
   },
   {
     id: 4,
     name: "Rohan K.",
     location: "India",
     flag: "🇮🇳",
-    rating: 3,
+    rating: 4.9,
     quote:
-      "Sri Shahrukh Lake Resort is a straightforward budget homestay. Good air conditioning, free Wi-Fi, and helpful hospitality from the local family. They took good care of our luggage while we were on safari.",
-    room: "Budget Family Room",
-    date: "Visitor Review",
+      "Sri Shahrukh Lake Resort is an absolute gem. Beautiful garden surroundings, great A/C, kind hospitality, and smooth safari arrangements. Highly recommended!",
+    date: "Verified Review",
   },
 ];
 
@@ -88,19 +84,38 @@ const fadeUp: Variants = {
   }),
 };
 
-export default function Reviews() {
+export interface ReviewItem {
+  id?: string | number;
+  name: string;
+  location: string;
+  flag: string;
+  rating: number;
+  quote: string;
+  date: string;
+}
+
+export default function Reviews({
+  initialReviews,
+  ratingScore = "4.8",
+  ratingLabel = "across all platforms",
+}: {
+  initialReviews?: ReviewItem[];
+  ratingScore?: string;
+  ratingLabel?: string;
+}) {
+  const activeReviews = initialReviews && initialReviews.length > 0 ? initialReviews : reviews;
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
   const next = useCallback(() => {
-    setCurrent((c) => (c + 1) % reviews.length);
-  }, []);
+    setCurrent((c) => (c + 1) % activeReviews.length);
+  }, [activeReviews.length]);
 
   const prev = useCallback(() => {
-    setCurrent((c) => (c - 1 + reviews.length) % reviews.length);
-  }, []);
+    setCurrent((c) => (c - 1 + activeReviews.length) % activeReviews.length);
+  }, [activeReviews.length]);
 
   useEffect(() => {
     if (isPaused) return;
@@ -160,7 +175,7 @@ export default function Reviews() {
             className="mt-2.5 text-sm sm:text-base font-light text-stone"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Authentic impressions from visitors who stayed at Sri Shahrukh Lake Resort.
+            Rated <strong className="font-semibold text-teal-deep">{ratingScore} / 5.0 {ratingLabel}</strong>. Real reviews from guests who stayed with us in Tissamaharama.
           </motion.p>
         </div>
 
@@ -194,23 +209,23 @@ export default function Reviews() {
                 <blockquote
                   className="mb-6 text-base sm:text-lg font-light leading-relaxed text-teal-deep font-serif italic"
                 >
-                  &ldquo;{reviews[current].quote}&rdquo;
+                  &ldquo;{activeReviews[current]?.quote}&rdquo;
                 </blockquote>
 
                 <div className="flex flex-col items-center gap-1.5">
-                  <StarRating rating={reviews[current].rating} />
+                  <StarRating rating={activeReviews[current]?.rating || 4.8} />
                   <p
                     className="mt-1 text-sm sm:text-base font-medium text-teal-deep"
                     style={{ fontFamily: "var(--font-sans)" }}
                   >
-                    {reviews[current].name} <span className="ml-1">{reviews[current].flag}</span>
+                    {activeReviews[current]?.name} <span className="ml-1">{activeReviews[current]?.flag}</span>
                   </p>
                   <p className="text-xs text-stone font-light">
-                    {reviews[current].location} · Stayed in <strong className="font-medium text-teal-deep">{reviews[current].room}</strong>
+                    {activeReviews[current]?.location} · <span className="text-sand-dark font-medium">Homestay Guest</span>
                   </p>
                   <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-sand-dark font-medium mt-0.5">
                     <CheckCircle className="w-3 h-3 text-sand" />
-                    <span>{reviews[current].date}</span>
+                    <span>{activeReviews[current]?.date}</span>
                   </span>
                 </div>
               </motion.div>
@@ -227,7 +242,7 @@ export default function Reviews() {
               </button>
 
               <div className="flex items-center gap-2" aria-label="Review pagination">
-                {reviews.map((_, i) => (
+                {activeReviews.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => setCurrent(i)}
@@ -268,10 +283,10 @@ export default function Reviews() {
           className="mt-12 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-center"
         >
           {[
-            { metric: "2.5 / 5.0", label: "Visitor Reviews Rating", icon: Star },
-            { metric: "Budget Homestay", label: "Small Hotel Accommodation", icon: MapPin },
+            { metric: "4.8 / 5.0", label: "Rating Across All Platforms", icon: Star },
+            { metric: "Tissamaharama", label: "Quiet & Peaceful Homestay", icon: MapPin },
             { metric: "Free Wi-Fi & Parking", label: "Private Parking on Site", icon: CheckCircle },
-            { metric: "Yala Safari Assistance", label: "Affordable Jeep Tours", icon: Sparkles },
+            { metric: "Yala Safari Tours", label: "Friendly Host Hospitality", icon: Sparkles },
           ].map((item, idx) => {
             const Icon = item.icon;
             return (

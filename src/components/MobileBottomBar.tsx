@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { MessageCircle, Phone, Calendar } from "lucide-react";
 
 export default function MobileBottomBar() {
@@ -8,18 +9,7 @@ export default function MobileBottomBar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const pastHero = window.scrollY > 400;
-
-      const bookingEl = document.getElementById("booking");
-      let nearBooking = false;
-      if (bookingEl) {
-        const rect = bookingEl.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          nearBooking = true;
-        }
-      }
-
-      setVisible(pastHero && !nearBooking);
+      setVisible(window.scrollY > 350);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -60,8 +50,8 @@ export default function MobileBottomBar() {
         </a>
 
         {/* Inquire / Book Room */}
-        <a
-          href="#booking"
+        <Link
+          href="/book"
           className="flex-1 flex items-center justify-center gap-2 h-11 px-4 text-xs font-semibold uppercase tracking-[0.18em] shadow-lg shadow-black/20 transition-transform active:scale-95"
           style={{
             background: "var(--color-sand)",
@@ -70,8 +60,8 @@ export default function MobileBottomBar() {
           }}
         >
           <Calendar className="w-3.5 h-3.5" />
-          <span>Inquire / Book</span>
-        </a>
+          <span>Book Now</span>
+        </Link>
       </div>
     </div>
   );

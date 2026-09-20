@@ -4,13 +4,14 @@ import Link from "next/link";
 import { MapPin, Phone, Mail, ExternalLink, MessageCircle, Navigation } from "lucide-react";
 
 const quickLinks = [
-  { label: "About the Homestay", href: "/#about" },
-  { label: "Rooms & Rates", href: "/#rooms" },
-  { label: "Amenities & Services", href: "/#amenities" },
-  { label: "Nearby Attractions", href: "/#explore" },
-  { label: "Photo Gallery", href: "/#gallery" },
-  { label: "Visitor Reviews", href: "/#reviews" },
-  { label: "Contact & Location", href: "/#contact" },
+  { label: "About the Homestay", href: "/#about", targetBlank: false },
+  { label: "The Homestay", href: "/#homestay", targetBlank: false },
+  { label: "Book Now", href: "/book", targetBlank: false },
+  { label: "Amenities & Services", href: "/#amenities", targetBlank: false },
+  { label: "Nearby Attractions", href: "/#explore", targetBlank: false },
+  { label: "Photo Gallery", href: "/#gallery", targetBlank: false },
+  { label: "Guest Reviews (4.8★)", href: "/#reviews", targetBlank: false },
+  { label: "Contact & Location", href: "/#contact", targetBlank: false },
 ];
 
 const nearbyPlaces = [
@@ -22,8 +23,27 @@ const nearbyPlaces = [
   { label: "Mattala Airport (HRI)", dist: "29 km" },
 ];
 
-export default function Footer() {
+interface FooterProps {
+  phone?: string;
+  whatsapp?: string;
+  email?: string;
+  address?: string;
+  mapUrl?: string;
+  ratingScore?: string;
+}
+
+export default function Footer({
+  phone = "077 621 9245",
+  whatsapp = "0757273416",
+  email = "lakeresortsrishahrukh@gmail.com",
+  address = "135/1 Suduwella Tikiri udanapura, Tissamaharama",
+  mapUrl = "https://www.google.com/maps/search/?api=1&query=77VQ%2BX6+Tissamaharama",
+  ratingScore = "4.8",
+}: FooterProps = {}) {
   const currentYear = new Date().getFullYear();
+  const cleanWaNumber = whatsapp.replace(/[^0-9]/g, "").replace(/^0/, "94");
+  const cleanPhone = phone.replace(/[^0-9+]/g, "");
+
 
   return (
     <footer
@@ -95,12 +115,17 @@ export default function Footer() {
             </Link>
 
             <p className="text-xs sm:text-sm font-light leading-relaxed text-ivory/80">
-              A budget homestay and small hotel located at 135/1 Suduwella Tikiri Udanapura in Tissamaharama.
-              Free Wi-Fi, private parking, garden views, and affordable Yala safari assistance.
+              A peaceful homestay located at {address} in Tissamaharama.
+              Rated {ratingScore}/5 across all platforms. Free Wi-Fi, private parking, and friendly Sri Lankan hospitality.
             </p>
 
-            <div className="pt-2 text-xs text-sand-light font-medium flex items-center gap-1.5">
-              
+            <div className="pt-2">
+              <Link
+                href="/book"
+                className="inline-flex items-center gap-1.5 text-xs text-sand hover:text-sand-light uppercase tracking-wider font-semibold underline underline-offset-4"
+              >
+                <span>Book Now →</span>
+              </Link>
             </div>
           </div>
 
@@ -115,12 +140,14 @@ export default function Footer() {
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <a
+                  <Link
                     href={link.href}
+                    target={link.targetBlank ? "_blank" : undefined}
+                    rel={link.targetBlank ? "noopener noreferrer" : undefined}
                     className="text-xs sm:text-sm font-light text-ivory/75 hover:text-sand transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -138,13 +165,13 @@ export default function Footer() {
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-sand mt-0.5 flex-shrink-0" />
                 <span className="text-ivory/80 leading-snug">
-                  135/1 Suduwella Tikiri udanapura, Tissamaharama
+                  {address}
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Navigation className="w-4 h-4 text-sand flex-shrink-0" />
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=77VQ%2BX6+Tissamaharama"
+                  href={mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-ivory/80 hover:text-sand transition-colors"
@@ -155,30 +182,30 @@ export default function Footer() {
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-sand flex-shrink-0" />
                 <a
-                  href="tel:+94776219245"
+                  href={`tel:${cleanPhone.startsWith("+") ? cleanPhone : "+94" + cleanPhone.replace(/^0/, "")}`}
                   className="text-ivory/80 hover:text-sand transition-colors"
                 >
-                  077 621 9245
+                  {phone}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <MessageCircle className="w-4 h-4 text-sand flex-shrink-0" />
                 <a
-                  href="https://wa.me/94757273416?text=Hello%20Sri%20Shahrukh%20Lake%20Resort"
+                  href={`https://wa.me/${cleanWaNumber}?text=Hello%20Sri%20Shahrukh%20Lake%20Resort`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-ivory/80 hover:text-sand transition-colors"
                 >
-                  WhatsApp: 0757273416
+                  WhatsApp: {whatsapp}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-sand flex-shrink-0" />
                 <a
-                  href="mailto:lakeresortsrishahrukh@gmail.com"
+                  href={`mailto:${email}`}
                   className="text-ivory/80 hover:text-sand transition-colors break-all"
                 >
-                  lakeresortsrishahrukh@gmail.com
+                  {email}
                 </a>
               </li>
             </ul>

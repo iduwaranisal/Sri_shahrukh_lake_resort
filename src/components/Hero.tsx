@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { Pause, Play, Calendar, Sparkles, MessageCircle, MapPin } from "lucide-react";
+import Link from "next/link";
+import { Pause, Play, Calendar, Sparkles, MessageCircle, MapPin, Star } from "lucide-react";
 
 const slides = [
   {
@@ -28,10 +29,18 @@ const slides = [
   },
 ];
 
-export default function Hero() {
+export default function Hero({
+  heroTitle,
+  heroSubtitle,
+  whatsapp = "0757273416",
+}: {
+  heroTitle?: string;
+  heroSubtitle?: string;
+  whatsapp?: string;
+}) {
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   /* Parallax — background scrolls smoothly */
   const heroRef = useRef<HTMLElement>(null);
@@ -126,9 +135,12 @@ export default function Hero() {
             135/1 Suduwella Tikiri Udanapura · Tissamaharama
           </span>
           <span className="hidden sm:inline text-sand/40">|</span>
-          <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-ivory/80 font-light">
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-ivory/90 font-light">
             <Sparkles className="w-3 h-3 text-sand" />
-            Budget Homestay · Tissamaharama, Sri Lanka
+            <span>Homestay in Tissamaharama</span>
+            <span>·</span>
+            <Star className="w-3 h-3 fill-sand text-sand" />
+            <strong className="font-semibold text-sand">4.8 / 5.0 Rating</strong>
           </span>
         </motion.div>
 
@@ -142,7 +154,7 @@ export default function Hero() {
         >
           Sri Shahrukh Lake Resort <br />
           <span className="italic gold-text-gradient font-normal text-2xl sm:text-4xl md:text-5xl">
-            Homestay & Safari Gateway
+            Homestay in Tissamaharama
           </span>
         </motion.h1>
 
@@ -151,11 +163,11 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-8 sm:mb-10 max-w-2xl text-sm sm:text-base md:text-lg font-light leading-relaxed text-ivory/90 px-2"
+          className="mb-8 sm:mb-10 max-w-2xl text-sm sm:text-base md:text-lg font-light leading-relaxed text-ivory/90 px-2 whitespace-pre-line"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          A welcoming budget homestay located in Tissamaharama. Enjoy quiet garden and outdoor views,
-          free Wi-Fi, free private parking, daily breakfast, and affordable Yala safari tour arrangements.
+          {heroSubtitle ||
+            "A peaceful, friendly homestay in Tissamaharama. Enjoy clean comfortable rooms, tranquil garden views, free Wi-Fi, free private parking, fresh daily breakfast, and Yala safari tour arrangements."}
         </motion.p>
 
         {/* Primary Action Buttons */}
@@ -165,8 +177,8 @@ export default function Hero() {
           transition={{ delay: 0.8, duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto max-w-sm sm:max-w-none"
         >
-          <a
-            href="#booking"
+          <Link
+            href="/book"
             id="hero-cta-booking"
             className="flex items-center justify-center gap-2.5 w-full sm:w-auto min-h-[50px] px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-xl shadow-black/30"
             style={{
@@ -176,11 +188,13 @@ export default function Hero() {
             }}
           >
             <Calendar className="w-4 h-4" />
-            <span>Check Room Availability</span>
-          </a>
+            <span>Book Now</span>
+          </Link>
 
           <a
-            href="https://wa.me/94757273416?text=Hello%20Sri%20Shahrukh%20Lake%20Resort,%20I%20would%20like%20to%20inquire%20about%20staying%20and%20safari%20prices."
+            href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+              "Hello Sri Shahrukh Lake Resort, I would like to inquire about room availability."
+            )}`}
             target="_blank"
             rel="noopener noreferrer"
             id="hero-cta-whatsapp"
@@ -193,7 +207,7 @@ export default function Hero() {
             }}
           >
             <MessageCircle className="w-4 h-4 text-sand-light" />
-            <span>WhatsApp: 0757273416</span>
+            <span>WhatsApp: {whatsapp}</span>
           </a>
         </motion.div>
       </div>

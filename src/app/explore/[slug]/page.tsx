@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Clock, MapPin, Calendar, Sparkles, MessageCircle } from "lucide-react";
+import { ArrowLeft, Clock, MapPin, Calendar, Sparkles, Compass } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { attractions } from "@/data/explore";
@@ -44,10 +44,6 @@ export default async function AttractionPage({ params }: Props) {
   const otherAttractions = attractions
     .filter((a) => a.slug !== attraction.slug)
     .slice(0, 3);
-
-  const whatsappInquiryUrl = `https://wa.me/94757273416?text=${encodeURIComponent(
-    `Hello Sri Shahrukh Lake Resort, I would like to inquire about visiting ${attraction.name}.`
-  )}`;
 
   return (
     <>
@@ -138,7 +134,7 @@ export default async function AttractionPage({ params }: Props) {
         <div className="lg:hidden border-b border-sand/25 bg-ivory-warm p-5">
           <div className="mx-auto max-w-7xl">
             <p className="text-[10px] uppercase tracking-[0.3em] font-semibold text-sand-dark mb-3">
-              Fast Excursion Facts
+              Travel Details
             </p>
             <div className="grid grid-cols-2 gap-3 text-xs mb-4">
               <div className="p-3 bg-ivory border border-sand/20">
@@ -154,15 +150,13 @@ export default async function AttractionPage({ params }: Props) {
                 <p className="font-semibold text-teal-deep mt-0.5">{attraction.bestTimeToVisit}</p>
               </div>
             </div>
-            <a
-              href={whatsappInquiryUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-3.5 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-widest shadow-md"
+            <Link
+              href="/book"
+              className="flex items-center justify-center gap-2 w-full py-3.5 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-widest shadow-md hover:bg-sand-light transition-all"
             >
-              <MessageCircle className="w-4 h-4" />
-              <span>Arrange Private Excursion</span>
-            </a>
+              <Calendar className="w-4 h-4" />
+              <span>Book Now</span>
+            </Link>
           </div>
         </div>
 
@@ -370,29 +364,24 @@ export default async function AttractionPage({ params }: Props) {
                     </div>
                   </div>
 
-                  {/* Booking CTA */}
-                  <div className="pt-6 space-y-3">
-                    <p className="text-xs font-light text-stone leading-relaxed">
-                      Our private guest concierge arranges dedicated 4x4 safaris, chauffeured transfers,
-                      and resident naturalists.
-                    </p>
-
-                    <a
-                      href={whatsappInquiryUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full py-4 text-center text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.02] bg-sand text-teal-deep shadow-md"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      <span>Arrange with Concierge</span>
-                    </a>
+                  {/* Hotel Reservation CTA */}
+                  <div className="pt-6 space-y-3.5">
+                    <div className="p-3.5 border border-sand/25 bg-ivory text-xs text-stone leading-relaxed">
+                      <p className="font-semibold text-teal-deep mb-1 flex items-center gap-1.5">
+                        <Compass className="w-3.5 h-3.5 text-sand-dark" />
+                        <span>Visitor Information</span>
+                      </p>
+                      <p className="text-[11px] text-stone">
+                        This destination is easy to visit while staying at Sri Shahrukh Lake Resort. You can visit independently or with local transport.
+                      </p>
+                    </div>
 
                     <Link
-                      href="/#booking"
-                      className="flex items-center justify-center gap-2 w-full py-3 text-center text-xs font-light uppercase tracking-[0.2em] border border-teal-deep text-teal-deep hover:bg-teal-deep/5 transition-colors"
+                      href="/book"
+                      className="flex items-center justify-center gap-2 w-full py-3.5 text-center text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.02] bg-sand text-teal-deep shadow-md hover:bg-sand-light"
                     >
                       <Calendar className="w-3.5 h-3.5" />
-                      <span>Reserve Resort Stay</span>
+                      <span>Book Now</span>
                     </Link>
                   </div>
                 </div>

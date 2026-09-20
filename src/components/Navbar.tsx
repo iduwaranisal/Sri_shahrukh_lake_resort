@@ -7,7 +7,7 @@ import { Phone, MessageCircle, MapPin, X, Calendar } from "lucide-react";
 
 const navLinks = [
   { label: "About", href: "/#about", id: "about" },
-  { label: "Rooms", href: "/#rooms", id: "rooms" },
+  { label: "The Homestay", href: "/#homestay", id: "homestay" },
   { label: "Explore", href: "/#explore", id: "explore" },
   { label: "Gallery", href: "/#gallery", id: "gallery" },
   { label: "Contact", href: "/#contact", id: "contact" },
@@ -15,7 +15,7 @@ const navLinks = [
 
 const mobileNavLinks = [
   { label: "About", href: "/#about", id: "about" },
-  { label: "Rooms & Rates", href: "/#rooms", id: "rooms" },
+  { label: "The Homestay", href: "/#homestay", id: "homestay" },
   { label: "Amenities", href: "/#amenities", id: "amenities" },
   { label: "Explore & Safaris", href: "/#explore", id: "explore" },
   { label: "Gallery", href: "/#gallery", id: "gallery" },
@@ -147,7 +147,7 @@ export default function Navbar() {
           {/* Desktop Primary CTA Button */}
           <div className="hidden lg:flex items-center">
             <Link
-              href="/#booking"
+              href="/book"
               id="nav-book-now"
               className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-md shadow-black/25"
               style={{
@@ -157,7 +157,7 @@ export default function Navbar() {
               }}
             >
               <Calendar className="w-3.5 h-3.5" />
-              <span>Book Room</span>
+              <span>Book Now</span>
             </Link>
           </div>
 
@@ -269,7 +269,7 @@ export default function Navbar() {
               {/* Bottom Quick Action Strip */}
               <div className="space-y-3.5 pt-5 border-t border-sand/15">
                 <Link
-                  href="/#booking"
+                  href="/book"
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center justify-center gap-2 w-full py-3.5 text-xs font-semibold uppercase tracking-[0.22em] shadow-lg shadow-black/30 transition-all active:scale-[0.98]"
                   style={{
@@ -279,7 +279,7 @@ export default function Navbar() {
                   }}
                 >
                   <Calendar className="w-4 h-4" />
-                  <span>Book Room / Check Rates</span>
+                  <span>Book Now</span>
                 </Link>
 
                 <div className="grid grid-cols-2 gap-2.5">

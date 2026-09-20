@@ -8,34 +8,34 @@ import { Sparkles, ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
 interface GalleryImage {
   src: string;
   alt: string;
-  category: "Villas & Suites" | "Lake & Nature" | "Wildlife & Heritage" | "Resort Living";
+  category: "The Homestay" | "Lake & Nature" | "Wildlife & Heritage" | "Homestay Life";
 }
 
 const galleryImages: GalleryImage[] = [
-  { src: "/images/img1.jpg", alt: "Heritage Villa exterior with tropical lush courtyard and plunge pool", category: "Villas & Suites" },
-  { src: "/images/img2.jpg", alt: "Lake Pavilion at golden sunrise with views of Tissa Wewa", category: "Villas & Suites" },
+  { src: "/images/img1.jpg", alt: "Peaceful homestay exterior and garden grounds", category: "The Homestay" },
+  { src: "/images/img2.jpg", alt: "Comfortable bedroom with clean linens", category: "The Homestay" },
   { src: "/images/tissa-lake-sunrise.jpg", alt: "Tissa Wewa reservoir at dawn with morning mist and lotus blossoms", category: "Lake & Nature" },
   { src: "/images/yala-leopard.jpg", alt: "Sri Lankan leopard basking on granite outcrop in Yala National Park", category: "Wildlife & Heritage" },
   { src: "/images/tissamaharama-stupa.jpg", alt: "Ancient white stupa of Tissamaharama Raja Maha Vihara against sunset", category: "Wildlife & Heritage" },
-  { src: "/images/img3.jpg", alt: "Garden Suite shaded terrace and tropical frangipani pathway", category: "Villas & Suites" },
-  { src: "/images/im 10.png", alt: "Sanctuary Residence private 12m lap pool and dining bale at dusk", category: "Villas & Suites" },
+  { src: "/images/img3.jpg", alt: "Garden terrace and peaceful sitting area", category: "The Homestay" },
+  { src: "/images/im 10.png", alt: "Homestay grounds at sunset", category: "The Homestay" },
   { src: "/images/bundala-flamingos.jpg", alt: "Greater Flamingos wading in Bundala UNESCO Ramsar wetland", category: "Wildlife & Heritage" },
   { src: "/images/kataragama-temple.jpg", alt: "Sacred evening puja ceremony with clay oil lamps at Kataragama", category: "Wildlife & Heritage" },
   { src: "/images/kirinda-temple.jpg", alt: "Kirinda cliff temple above crashing southern Indian Ocean waves", category: "Wildlife & Heritage" },
-  { src: "/images/im 7.png", alt: "Gourmet Sri Lankan culinary feast with organic local ingredients", category: "Resort Living" },
+  { src: "/images/im 7.png", alt: "Fresh home-cooked Sri Lankan breakfast", category: "Homestay Life" },
   { src: "/images/hero1.jpeg", alt: "Untamed wilderness of Ruhuna dry-zone forest and granite hills", category: "Lake & Nature" },
-  { src: "/images/im 5.png", alt: "Sun loungers by the central lakeside pool overlooking water lilies", category: "Resort Living" },
-  { src: "/images/im 4.png", alt: "Refined artisan interiors with hand-carved Ceylon timber screens", category: "Villas & Suites" },
-  { src: "/images/im 3.png", alt: "Tranquil outdoor rain shower beneath towering rain trees", category: "Villas & Suites" },
-  { src: "/images/hero 4.jpeg", alt: "Arrival entrance surrounded by whispering palms and reflecting pools", category: "Resort Living" },
+  { src: "/images/im 5.png", alt: "Garden relaxation area overlooking tropical greenery", category: "Homestay Life" },
+  { src: "/images/im 4.png", alt: "Clean, comfortable room setting", category: "The Homestay" },
+  { src: "/images/im 3.png", alt: "Attached private bathroom with hot water shower", category: "The Homestay" },
+  { src: "/images/hero 4.jpeg", alt: "Homestay entrance surrounded by tropical palms", category: "Homestay Life" },
 ];
 
 const categories = [
   "All Views",
-  "Villas & Suites",
+  "The Homestay",
   "Lake & Nature",
   "Wildlife & Heritage",
-  "Resort Living",
+  "Homestay Life",
 ] as const;
 
 const fadeUp: Variants = {
@@ -105,7 +105,7 @@ export default function Gallery() {
               className="text-xs uppercase tracking-[0.35em] font-medium"
               style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
             >
-              Visual Chronicles
+              Photo Gallery
             </p>
           </motion.div>
 
@@ -118,8 +118,8 @@ export default function Gallery() {
             className="text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Life at{" "}
-            <span className="italic text-bronze-light">Sri Shahrukh</span>
+            Photos of Our{" "}
+            <span className="italic text-bronze-light">Homestay</span>
           </motion.h2>
 
           <motion.p
@@ -130,8 +130,7 @@ export default function Gallery() {
             className="mt-3 text-sm sm:text-base font-light text-stone"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Explore the tranquil lakeside architecture, natural wonders of Ruhuna,
-            and understated luxury moments of our resort.
+            Take a look around our rooms, peaceful garden, and the beautiful sights in and around Tissamaharama.
           </motion.p>
         </div>
 

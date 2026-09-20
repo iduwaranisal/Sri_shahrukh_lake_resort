@@ -55,11 +55,11 @@ export default function NotFound() {
             </Link>
 
             <Link
-              href="/#rooms"
+              href="/#homestay"
               className="flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] px-7 py-3.5 border border-sand/40 text-sand hover:bg-sand/10 text-xs font-medium uppercase tracking-[0.2em] transition-colors"
             >
               <Calendar className="w-4 h-4" />
-              <span>Explore Rooms</span>
+              <span>The Homestay</span>
             </Link>
 
             <Link

@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { motion, useInView, type Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Compass, MapPin, Clock, ArrowUpRight } from "lucide-react";
+import { Compass, MapPin, Clock, ArrowUpRight, Calendar } from "lucide-react";
 import { attractions } from "@/data/explore";
 
 const categories = [
@@ -69,7 +69,7 @@ export default function Explore() {
               className="text-xs uppercase tracking-[0.35em] text-sand font-medium"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Excursions &amp; Expeditions
+              Places to Visit Nearby
             </p>
           </motion.div>
 
@@ -82,7 +82,7 @@ export default function Explore() {
             className="text-3xl sm:text-5xl md:text-6xl font-light text-ivory leading-[1.15]"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Explore Ancient{" "}
+            Explore Around{" "}
             <span className="italic gold-text-gradient font-normal">
               Tissamaharama
             </span>
@@ -218,7 +218,7 @@ export default function Explore() {
                   {/* Action Link */}
                   <div className="pt-4 border-t border-sand/15 flex items-center justify-between">
                     <span className="text-[11px] uppercase tracking-[0.25em] text-sand font-medium group-hover:tracking-[0.3em] transition-all">
-                      Read Insider Guide →
+                      View Details →
                     </span>
                     <span className="h-7 w-7 rounded-full flex items-center justify-center border border-sand/40 text-sand group-hover:bg-sand group-hover:text-teal-deep transition-all">
                       <ArrowUpRight className="w-3.5 h-3.5" />
@@ -230,7 +230,7 @@ export default function Explore() {
           ))}
         </div>
 
-        {/* Bottom Excursion Banner */}
+        {/* Bottom Destination Info & Resort Booking Banner */}
         <motion.div
           custom={6}
           variants={fadeUp}
@@ -243,27 +243,25 @@ export default function Explore() {
               className="text-2xl sm:text-3xl font-light text-ivory mb-2"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              Yala 4x4 Safari Jeeps &amp; Local Sightseeing
+              Convenient Location to Explore Southern Sri Lanka
             </h4>
             <p className="text-sm font-light text-ivory/80 max-w-xl">
-              Sri Shahrukh Lake Resort helps arrange affordable 4x4 safari jeeps with trusted local drivers,
-              bicycle and car rentals, and paid airport shuttle service to Mattala Airport (29 km).
+              Sri Shahrukh Lake Resort offers a quiet, comfortable stay just minutes away from Tissa Wewa lake, ancient temples, and Yala National Park safari gates.
             </p>
           </div>
 
-          <a
-            href="https://wa.me/94757273416?text=Hello%20Sri%20Shahrukh%20Lake%20Resort,%20I%20would%20like%20to%20inquire%20about%20Yala%20safari%20jeep%20rates"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="whitespace-nowrap px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-105"
+          <Link
+            href="/book"
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-105 shadow-lg"
             style={{
               background: "var(--color-sand)",
               color: "var(--color-teal-deep)",
               fontFamily: "var(--font-sans)",
             }}
           >
-            Inquire Safari on WhatsApp
-          </a>
+            <Calendar className="w-4 h-4" />
+            <span>Book Now</span>
+          </Link>
         </motion.div>
       </div>
     </section>

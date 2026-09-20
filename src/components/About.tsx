@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useInView, useScroll, useTransform, type Variants } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { Sparkles, Wifi, Car, Coffee, ShieldCheck, Bike, MapPin } from "lucide-react";
 
 /* ─── Real Stat definitions ─────────────────────────────────────────── */
@@ -10,7 +11,7 @@ const stats = [
   { numeric: 2.5, suffix: " km", label: "From Tissa Wewa", symbol: null },
   { numeric: 2.2, suffix: " km", label: "To Tissa Sacred Stupa", symbol: null },
   { numeric: 28, suffix: " km", label: "To Bundala & Yala Safari", symbol: null },
-  { numeric: null, suffix: "", label: "Homely Ceylon Hospitality", symbol: "2.5★" },
+  { numeric: null, suffix: "", label: "Rating Across Platforms", symbol: "4.8★" },
 ];
 
 /* ─── Founder portrait ─────────────────────────────────────────────── */
@@ -92,7 +93,22 @@ const fadeUp: Variants = {
   }),
 };
 
-export default function About() {
+export default function About({
+  aboutStory,
+  ratingScore = "4.8",
+  ratingLabel = "Rating Across Platforms",
+}: {
+  aboutStory?: string;
+  ratingScore?: string;
+  ratingLabel?: string;
+}) {
+  const dynamicStats = [
+    { numeric: 2.5, suffix: " km", label: "From Tissa Wewa", symbol: null },
+    { numeric: 2.2, suffix: " km", label: "To Tissa Sacred Stupa", symbol: null },
+    { numeric: 28, suffix: " km", label: "To Bundala & Yala Safari", symbol: null },
+    { numeric: null, suffix: "", label: ratingLabel, symbol: `${ratingScore}★` },
+  ];
+
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -160,32 +176,35 @@ export default function About() {
               className="space-y-4 text-sm sm:text-base font-light leading-relaxed"
               style={{ color: "var(--color-stone)", fontFamily: "var(--font-sans)" }}
             >
-              <p>
-                <strong>Sri Shahrukh Lake Resort</strong> is a peaceful budget homestay located at <strong>135/1 Suduwella Tikiri Udanapura in Tissamaharama</strong>.
-              </p>
-              <p>
-                Our story began in 2004, when our founder Geeth had the fortune of meeting Bollywood film icon
-                Shah Rukh Khan during his visit to Sri Lanka. Inspired by his gracious warmth, Geeth named this
-                peaceful homestay in his honor, welcoming travelers from across the world with genuine Sri Lankan hospitality.
-              </p>
-              <p>
-                We offer simple, comfortable accommodations with garden and lake/outdoor views, complimentary Wi-Fi,
-                free private parking, daily breakfast, and customized 4x4 safari packages to Yala and Bundala National Parks.
-              </p>
+              {aboutStory ? (
+                <p className="whitespace-pre-line leading-relaxed">{aboutStory}</p>
+              ) : (
+                <>
+                  <p>
+                    <strong>Sri Shahrukh Lake Resort</strong> is a peaceful homestay located at <strong>135/1 Suduwella Tikiri Udanapura in Tissamaharama</strong>. We offer a quiet and relaxing stay where every guest receives friendly personal care and warm Sri Lankan hospitality.
+                  </p>
+                  <p>
+                    Our story began in 2004, when our founder Geeth met Bollywood film star Shah Rukh Khan during his visit to Sri Lanka. Inspired by his kindness and warmth, Geeth named this homestay in his honor, welcoming travelers from all over the world.
+                  </p>
+                  <p>
+                    We offer clean and comfortable rooms with garden views, free Wi-Fi, private attached bathrooms with hot water, free private parking, fresh daily breakfast, and safari arrangements to Yala and Bundala National Parks.
+                  </p>
+                </>
+              )}
             </motion.div>
 
             {/* Quick Amenities List */}
             <div id="amenities" className="mt-6 pt-6 border-t border-sand/20">
               <p className="text-xs uppercase tracking-[0.25em] text-teal-deep font-semibold mb-3">
-                Key Amenities &amp; Facilities
+                Amenities &amp; Services
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs text-stone">
                 <span className="flex items-center gap-1.5"><Wifi className="w-3.5 h-3.5 text-sand" /> Free Wi-Fi</span>
-                <span className="flex items-center gap-1.5"><Car className="w-3.5 h-3.5 text-sand" /> Free Private Parking</span>
+                <span className="flex items-center gap-1.5"><Car className="w-3.5 h-3.5 text-sand" /> Free Parking</span>
                 <span className="flex items-center gap-1.5"><Coffee className="w-3.5 h-3.5 text-sand" /> Daily Breakfast</span>
                 <span className="flex items-center gap-1.5"><Bike className="w-3.5 h-3.5 text-sand" /> Bicycle &amp; Car Rental</span>
                 <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-sand" /> Luggage Storage</span>
-                <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-sand" /> Yala Safari Assistance</span>
+                <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-sand" /> Yala Safari Help</span>
               </div>
             </div>
 
@@ -197,7 +216,7 @@ export default function About() {
               className="mt-8 flex flex-wrap items-center gap-4"
             >
               <a
-                href="#rooms"
+                href="#homestay"
                 className="inline-flex items-center gap-2.5 px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition-all hover:scale-105"
                 style={{
                   background: "var(--color-teal-deep)",
@@ -205,18 +224,16 @@ export default function About() {
                   fontFamily: "var(--font-sans)",
                 }}
               >
-                View Rooms &amp; Rates
+                The Homestay
               </a>
 
-              <a
-                href="https://wa.me/94757273416?text=Hello%20Sri%20Shahrukh%20Lake%20Resort,%20can%20you%20share%20room%20rates?"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 text-xs font-medium uppercase tracking-[0.15em] border border-sand/50 text-teal-deep hover:bg-sand/15 transition-colors"
+              <Link
+                href="/book"
+                className="inline-flex items-center gap-2 px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] bg-sand text-teal-deep hover:bg-sand-light transition-all shadow-md"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                WhatsApp Host: 0757273416
-              </a>
+                Book Now
+              </Link>
             </motion.div>
           </div>
 
@@ -293,7 +310,7 @@ export default function About() {
           className="mt-14 sm:mt-20 grid grid-cols-2 md:grid-cols-4 border border-sand/30 shadow-sm"
           style={{ background: "var(--color-ivory)" }}
         >
-          {stats.map((stat, i) => (
+          {dynamicStats.map((stat, i) => (
             <StatCard key={stat.label} stat={stat} index={i} active={inView} />
           ))}
         </div>

@@ -25,48 +25,66 @@ const fadeUp: Variants = {
   }),
 };
 
-const contactDetails = [
-  {
-    label: "Address",
-    value: "135/1 Suduwella Tikiri udanapura, Tissamaharama, Sri Lanka",
-    href: "https://www.google.com/maps/search/?api=1&query=77VQ%2BX6+Tissamaharama",
-    icon: MapPin,
-  },
-  {
-    label: "Location / Plus Code",
-    value: "77VQ+X6 Tissamaharama",
-    href: "https://www.google.com/maps/search/?api=1&query=77VQ%2BX6+Tissamaharama",
-    icon: Navigation,
-  },
-  {
-    label: "Contact Number",
-    value: "077 621 9245",
-    href: "tel:+94776219245",
-    icon: Phone,
-  },
-  {
-    label: "WhatsApp Number",
-    value: "0757273416",
-    href: "https://wa.me/94757273416?text=Hello%20Sri%20Shahrukh%20Lake%20Resort",
-    icon: MessageCircle,
-  },
-  {
-    label: "Email Address",
-    value: "lakeresortsrishahrukh@gmail.com",
-    href: "mailto:lakeresortsrishahrukh@gmail.com",
-    icon: Mail,
-  },
-  {
-    label: "Check-In / Departure",
-    value: "Standard Check-In from 2:00 PM · Departure by 12:00 PM",
-    href: null,
-    icon: Clock,
-  },
-];
+interface ContactProps {
+  phone?: string;
+  whatsapp?: string;
+  email?: string;
+  address?: string;
+  mapUrl?: string;
+}
 
-export default function Contact() {
+export default function Contact({
+  phone = "077 621 9245",
+  whatsapp = "0757273416",
+  email = "lakeresortsrishahrukh@gmail.com",
+  address = "135/1 Suduwella Tikiri udanapura, Tissamaharama, Sri Lanka",
+  mapUrl = "https://www.google.com/maps/search/?api=1&query=77VQ%2BX6+Tissamaharama",
+}: ContactProps = {}) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+
+  const cleanWaNumber = whatsapp.replace(/[^0-9]/g, "").replace(/^0/, "94");
+  const cleanPhone = phone.replace(/[^0-9+]/g, "");
+
+  const contactDetails = [
+    {
+      label: "Address",
+      value: address,
+      href: mapUrl,
+      icon: MapPin,
+    },
+    {
+      label: "Location / Plus Code",
+      value: "77VQ+X6 Tissamaharama",
+      href: mapUrl,
+      icon: Navigation,
+    },
+    {
+      label: "Contact Number",
+      value: phone,
+      href: `tel:${cleanPhone.startsWith("+") ? cleanPhone : "+94" + cleanPhone.replace(/^0/, "")}`,
+      icon: Phone,
+    },
+    {
+      label: "WhatsApp Number",
+      value: whatsapp,
+      href: `https://wa.me/${cleanWaNumber}?text=Hello%20Sri%20Shahrukh%20Lake%20Resort`,
+      icon: MessageCircle,
+    },
+    {
+      label: "Email Address",
+      value: email,
+      href: `mailto:${email}`,
+      icon: Mail,
+    },
+    {
+      label: "Check-In / Departure",
+      value: "Standard Check-In from 2:00 PM · Departure by 12:00 PM",
+      href: null,
+      icon: Clock,
+    },
+  ];
+
 
   const {
     register,
@@ -186,14 +204,14 @@ export default function Contact() {
             <div className="p-5 border border-sand/30 bg-teal-deep text-ivory">
               <div className="flex items-center gap-2 mb-2">
                 <MessageCircle className="w-5 h-5 text-sand" />
-                <h4 className="text-sm font-medium text-ivory">WhatsApp Quick Inquiries: 0757273416</h4>
+                <h4 className="text-sm font-medium text-ivory">WhatsApp Quick Inquiries: {whatsapp}</h4>
               </div>
               <p className="text-xs text-ivory/80 font-light mb-3">
-                Chat directly on WhatsApp to check room availability, Yala safari jeep prices,
+                Chat directly on WhatsApp to check room availability, arrange Yala safari tours,
                 or request airport pick-up from Mattala Airport (29 km).
               </p>
               <a
-                href="https://wa.me/94757273416?text=Hello%20Sri%20Shahrukh%20Lake%20Resort,%20I%20have%20an%20inquiry%20regarding%20booking"
+                href={`https://wa.me/${cleanWaNumber}?text=Hello%20Sri%20Shahrukh%20Lake%20Resort,%20I%20have%20an%20inquiry%20regarding%20booking`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider transition-transform hover:scale-105"

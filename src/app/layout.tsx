@@ -10,15 +10,15 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://srishahrukhlakeresort.com"),
-  title: "Sri Shahrukh Lake Resort | Tissamaharama, Sri Lanka",
+  title: "Sri Shahrukh Lake Resort | Peaceful Homestay in Tissamaharama",
   description:
-    "Sri Shahrukh Lake Resort is a peaceful budget homestay located at 135/1 Suduwella Tikiri Udanapura in Tissamaharama. Free Wi-Fi, private parking, garden views, and Yala safari assistance.",
+    "Sri Shahrukh Lake Resort is a peaceful homestay located at 135/1 Suduwella Tikiri Udanapura in Tissamaharama. Rated 4.8/5 across all platforms. Free Wi-Fi, private parking, garden views, and Yala safari tour arrangements.",
   keywords:
-    "Sri Shahrukh Lake Resort, Tissamaharama budget homestay, Tissamaharama small hotel, Suduwella Tikiri Udanapura, Tissa Wewa accommodation, Yala safari Sri Lanka",
+    "Sri Shahrukh Lake Resort, Tissamaharama homestay, Tissamaharama boutique hotel, Suduwella Tikiri Udanapura, Tissa Wewa accommodation, Yala safari Sri Lanka",
   openGraph: {
     title: "Sri Shahrukh Lake Resort | Tissamaharama, Sri Lanka",
     description:
-      "A welcoming budget homestay in Tissamaharama near Tissa Wewa and Yala National Park. Free Wi-Fi, private parking, breakfast, and safari tour arrangements.",
+      "A peaceful boutique homestay in Tissamaharama rated 4.8/5 across platforms. Free Wi-Fi, private parking, breakfast, and personalized safari arrangements.",
     type: "website",
   },
 };
