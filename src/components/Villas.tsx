@@ -109,16 +109,24 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Sparkles,
 };
 
+export interface DynamicHomestayImage {
+  src: string;
+  title: string;
+}
+
 export default function Villas({
   homestayTitle,
   homestayDescription,
   amenities,
+  homestayImages,
 }: {
   homestayTitle?: string;
   homestayDescription?: string;
   amenities?: DynamicAmenity[];
+  homestayImages?: DynamicHomestayImage[];
 }) {
   const activeAmenities = amenities && amenities.length > 0 ? amenities : homestayAmenities;
+  const activePhotos = homestayImages && homestayImages.length > 0 ? homestayImages : homestayPhotos;
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -209,8 +217,8 @@ export default function Villas({
           >
             <div className="relative aspect-[16/10] w-full overflow-hidden border border-sand/30 shadow-xl bg-teal-deep">
               <Image
-                src={homestayPhotos[selectedPhotoIndex].src}
-                alt={homestayPhotos[selectedPhotoIndex].title}
+                src={(activePhotos[selectedPhotoIndex] || activePhotos[0]).src}
+                alt={(activePhotos[selectedPhotoIndex] || activePhotos[0]).title}
                 fill
                 priority
                 className="object-cover transition-transform duration-700 hover:scale-105"
@@ -228,22 +236,21 @@ export default function Villas({
                   Sri Shahrukh Lake Resort
                 </p>
                 <p className="text-sm sm:text-base font-light font-serif">
-                  {homestayPhotos[selectedPhotoIndex].title}
+                  {(activePhotos[selectedPhotoIndex] || activePhotos[0]).title}
                 </p>
               </div>
             </div>
 
             {/* Thumbnails */}
             <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none">
-              {homestayPhotos.map((photo, i) => (
+              {activePhotos.map((photo, i) => (
                 <button
                   key={i}
                   onClick={() => setSelectedPhotoIndex(i)}
-                  aria-label={`View ${photo.title}`}
-                  className={`relative aspect-[16/10] h-16 sm:h-20 flex-1 min-w-[75px] overflow-hidden border transition-all ${
+                  className={`relative h-16 w-24 flex-shrink-0 overflow-hidden border transition-all ${
                     selectedPhotoIndex === i
-                      ? "border-sand ring-2 ring-sand/50 scale-102"
-                      : "border-sand/20 opacity-70 hover:opacity-100"
+                      ? "border-sand scale-105 shadow-md"
+                      : "border-sand/25 opacity-70 hover:opacity-100"
                   }`}
                 >
                   <Image
@@ -251,7 +258,7 @@ export default function Villas({
                     alt={photo.title}
                     fill
                     className="object-cover"
-                    sizes="150px"
+                    sizes="96px"
                   />
                 </button>
               ))}

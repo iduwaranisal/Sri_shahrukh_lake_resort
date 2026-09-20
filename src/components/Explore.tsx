@@ -24,15 +24,30 @@ const fadeUp: Variants = {
   }),
 };
 
-export default function Explore() {
+export interface DynamicExploreImage {
+  id: string;
+  name: string;
+  src: string;
+}
+
+export default function Explore({
+  customImages,
+}: {
+  customImages?: DynamicExploreImage[];
+} = {}) {
   const [activeCategory, setActiveCategory] = useState("All Destinations");
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
+  const mergedAttractions = attractions.map((item) => {
+    const override = customImages?.find((c) => c.id === item.slug);
+    return override?.src ? { ...item, heroImage: override.src } : item;
+  });
+
   const filteredAttractions =
     activeCategory === "All Destinations"
-      ? attractions
-      : attractions.filter((a) =>
+      ? mergedAttractions
+      : mergedAttractions.filter((a) =>
           a.category.toLowerCase().includes(activeCategory.toLowerCase().slice(0, 5))
         );
 

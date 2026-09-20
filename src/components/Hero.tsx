@@ -29,15 +29,24 @@ const slides = [
   },
 ];
 
+export interface HeroSlide {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
 export default function Hero({
   heroTitle,
   heroSubtitle,
   whatsapp = "0757273416",
+  slides: dynamicSlides,
 }: {
   heroTitle?: string;
   heroSubtitle?: string;
   whatsapp?: string;
+  slides?: HeroSlide[];
 }) {
+  const activeSlides = dynamicSlides && dynamicSlides.length > 0 ? dynamicSlides : slides;
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -57,13 +66,15 @@ export default function Hero({
     }
 
     intervalRef.current = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
+      setCurrent((prev) => (prev + 1) % activeSlides.length);
     }, 6000);
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isPlaying]);
+  }, [isPlaying, activeSlides.length]);
+
+  const currentSlide = activeSlides[current] || activeSlides[0];
 
   return (
     <section
@@ -87,8 +98,8 @@ export default function Hero({
             className="absolute inset-0"
           >
             <Image
-              src={slides[current].src}
-              alt={slides[current].alt}
+              src={currentSlide.src}
+              alt={currentSlide.alt}
               fill
               priority={current === 0}
               className="object-cover"
@@ -226,7 +237,7 @@ export default function Hero({
             className="text-xs sm:text-sm font-light italic text-ivory/95 truncate"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            {slides[current].caption}
+            {currentSlide.caption}
           </p>
         </div>
 
@@ -241,11 +252,11 @@ export default function Hero({
           </button>
 
           <div className="flex items-center gap-1.5" aria-label="Slideshow indicators">
-            {slides.map((_, i) => (
+            {activeSlides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
-                aria-label={`Slide ${i + 1} of ${slides.length}`}
+                aria-label={`Slide ${i + 1} of ${activeSlides.length}`}
                 className="h-5 flex items-center justify-center p-0.5"
               >
                 <span

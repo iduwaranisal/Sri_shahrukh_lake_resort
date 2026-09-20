@@ -23,19 +23,22 @@ export default async function Home() {
           heroTitle={content.heroTitle}
           heroSubtitle={content.heroSubtitle}
           whatsapp={content.whatsapp}
+          slides={content.heroImages}
         />
         <About
           aboutStory={content.aboutStory}
           ratingScore={content.ratingScore}
           ratingLabel={content.ratingLabel}
+          founderImage={content.aboutImage}
         />
         <Villas
           homestayTitle={content.homestayTitle}
           homestayDescription={content.homestayDescription}
           amenities={content.amenities}
+          homestayImages={content.homestayImages}
         />
-        <Explore />
-        <Gallery />
+        <Explore customImages={content.exploreImages} />
+        <Gallery initialImages={content.galleryImages} />
         <Reviews
           initialReviews={content.reviews}
           ratingScore={content.ratingScore}

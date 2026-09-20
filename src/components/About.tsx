@@ -18,6 +18,8 @@ const stats = [
 const founderImage = {
   src: "/images/owner-srk.jpg",
   alt: "Sri Shahrukh Lake Resort founder Geeth with Shah Rukh Khan in 2004",
+  caption: "Founder Geeth with Shah Rukh Khan · 2004",
+  subCaption: "The encounter that inspired our homestay name: Sri Shahrukh Lake Resort.",
 };
 
 /* ─── Easing helper ─────────────────────────────────────────────────── */
@@ -93,15 +95,26 @@ const fadeUp: Variants = {
   }),
 };
 
+export interface DynamicAboutImage {
+  src: string;
+  alt: string;
+  caption?: string;
+  subCaption?: string;
+}
+
 export default function About({
   aboutStory,
   ratingScore = "4.8",
   ratingLabel = "Rating Across Platforms",
+  founderImage: dynamicFounderImage,
 }: {
   aboutStory?: string;
   ratingScore?: string;
   ratingLabel?: string;
+  founderImage?: DynamicAboutImage;
 }) {
+  const activeImage = dynamicFounderImage?.src ? dynamicFounderImage : founderImage;
+
   const dynamicStats = [
     { numeric: 2.5, suffix: " km", label: "From Tissa Wewa", symbol: null },
     { numeric: 2.2, suffix: " km", label: "To Tissa Sacred Stupa", symbol: null },
@@ -252,8 +265,8 @@ export default function About({
                 className="absolute inset-0 w-full h-[112%] -top-[6%]"
               >
                 <Image
-                  src={founderImage.src}
-                  alt={founderImage.alt}
+                  src={activeImage.src}
+                  alt={activeImage.alt}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 42vw"
@@ -273,13 +286,13 @@ export default function About({
                   className="text-[10px] uppercase tracking-[0.25em] text-sand font-medium"
                   style={{ fontFamily: "var(--font-sans)" }}
                 >
-                  Founder Geeth with Shah Rukh Khan · 2004
+                  {activeImage.caption || "Founder Geeth with Shah Rukh Khan · 2004"}
                 </p>
                 <p
                   className="mt-1 text-xs sm:text-sm font-light text-ivory leading-snug"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  The encounter that inspired our homestay name: Sri Shahrukh Lake Resort.
+                  {activeImage.subCaption || "The encounter that inspired our homestay name: Sri Shahrukh Lake Resort."}
                 </p>
               </div>
             </div>

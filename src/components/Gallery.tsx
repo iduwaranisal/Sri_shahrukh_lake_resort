@@ -47,16 +47,28 @@ const fadeUp: Variants = {
   }),
 };
 
-export default function Gallery() {
+export interface DynamicGalleryImage {
+  src: string;
+  alt: string;
+  category: string;
+}
+
+export default function Gallery({
+  initialImages,
+}: {
+  initialImages?: DynamicGalleryImage[];
+} = {}) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const [selectedCategory, setSelectedCategory] = useState<string>("All Views");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
+  const allImages = initialImages && initialImages.length > 0 ? initialImages : galleryImages;
+
   const filteredImages =
     selectedCategory === "All Views"
-      ? galleryImages
-      : galleryImages.filter((img) => img.category === selectedCategory);
+      ? allImages
+      : allImages.filter((img) => img.category === selectedCategory);
 
   const handleNext = useCallback(() => {
     if (lightboxIndex === null) return;

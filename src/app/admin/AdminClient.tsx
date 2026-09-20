@@ -30,6 +30,9 @@ import {
   Globe,
   Home,
   FileText,
+  Camera,
+  Upload,
+  Image as ImageIcon,
 } from "lucide-react";
 import {
   getBookings,
@@ -45,8 +48,22 @@ import {
   deleteReview,
   addAmenity,
   deleteAmenity,
+  uploadImageAction,
+  updateHeroImages,
+  updateAboutImage,
+  updateHomestayImages,
+  addGalleryImage,
+  deleteGalleryImage,
+  updateExploreImage,
   type SerializedSiteContent,
 } from "@/app/actions/contentActions";
+import type {
+  IHeroSlide,
+  IAboutImage,
+  IHomestayImage,
+  IGalleryImage,
+  IExploreImage,
+} from "@/models/SiteContent";
 import {
   loginAdmin,
   logoutAdmin,
@@ -58,7 +75,34 @@ export default function AdminClient() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
-  const [activeTab, setActiveTab] = useState<"bookings" | "content" | "reviews" | "amenities" | "security">("bookings");
+  const [activeTab, setActiveTab] = useState<"bookings" | "content" | "media" | "reviews" | "amenities" | "security">("bookings");
+  const [mediaSection, setMediaSection] = useState<"hero" | "about" | "homestay" | "gallery" | "explore">("hero");
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadingTarget, setUploadingTarget] = useState<string | null>(null);
+
+  // Gallery states
+  const [galleryFilter, setGalleryFilter] = useState("All Views");
+  const [showGalleryModal, setShowGalleryModal] = useState(false);
+  const [newGalleryImage, setNewGalleryImage] = useState({
+    src: "",
+    alt: "",
+    category: "The Homestay",
+  });
+
+  // New Hero slide state
+  const [showNewHeroModal, setShowNewHeroModal] = useState(false);
+  const [newHeroSlide, setNewHeroSlide] = useState({
+    src: "",
+    alt: "",
+    caption: "",
+  });
+
+  // New Homestay photo state
+  const [showNewHomestayModal, setShowNewHomestayModal] = useState(false);
+  const [newHomestayPhoto, setNewHomestayPhoto] = useState({
+    src: "",
+    title: "",
+  });
 
   // Data states
   const [bookings, setBookings] = useState<SerializedBooking[]>([]);
@@ -105,6 +149,37 @@ export default function AdminClient() {
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 4000);
+  };
+
+  const uploadFileToCloudinary = (file: File): Promise<string | null> => {
+    return new Promise((resolve) => {
+      if (file.size > 10 * 1024 * 1024) {
+        showToast("Image file must be under 10MB");
+        resolve(null);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const base64 = reader.result as string;
+          const res = await uploadImageAction(base64);
+          if (res.success && res.url) {
+            resolve(res.url);
+          } else {
+            showToast(res.error || "Failed to upload image");
+            resolve(null);
+          }
+        } catch {
+          showToast("Upload failed");
+          resolve(null);
+        }
+      };
+      reader.onerror = () => {
+        showToast("Could not read image file");
+        resolve(null);
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   // Check auth on mount
@@ -284,6 +359,217 @@ export default function AdminClient() {
       setConfirmPassword("");
     } else {
       setPasswordError(res.error || "Failed to update password");
+    }
+  };
+
+  // ── Media Handlers ──
+  const handleReplaceHeroSlideImage = async (index: number, file: File) => {
+    if (!content) return;
+    setIsUploading(true);
+    setUploadingTarget(`hero-${index}`);
+    const url = await uploadFileToCloudinary(file);
+    setIsUploading(false);
+    setUploadingTarget(null);
+    if (!url) return;
+
+    const newSlides = [...content.heroImages];
+    newSlides[index] = { ...newSlides[index], src: url };
+    const res = await updateHeroImages(newSlides);
+    if (res.success) {
+      showToast("Hero slide image replaced!");
+      setContent({ ...content, heroImages: newSlides });
+    } else {
+      showToast(res.error || "Failed to update hero slide");
+    }
+  };
+
+  const handleUpdateHeroSlideCaption = async (index: number, caption: string, alt: string) => {
+    if (!content) return;
+    const newSlides = [...content.heroImages];
+    newSlides[index] = { ...newSlides[index], caption, alt };
+    const res = await updateHeroImages(newSlides);
+    if (res.success) {
+      showToast("Hero slide updated");
+      setContent({ ...content, heroImages: newSlides });
+    }
+  };
+
+  const handleAddHeroSlide = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!content || !newHeroSlide.src) {
+      showToast("Please upload an image first");
+      return;
+    }
+    const newSlides = [...content.heroImages, newHeroSlide];
+    const res = await updateHeroImages(newSlides);
+    if (res.success) {
+      showToast("New hero slide added!");
+      setContent({ ...content, heroImages: newSlides });
+      setNewHeroSlide({ src: "", alt: "", caption: "" });
+      setShowNewHeroModal(false);
+    } else {
+      showToast(res.error || "Failed to add slide");
+    }
+  };
+
+  const handleDeleteHeroSlide = async (index: number) => {
+    if (!content) return;
+    if (content.heroImages.length <= 1) {
+      showToast("Must have at least one hero slide");
+      return;
+    }
+    if (!confirm("Delete this hero slide?")) return;
+    const newSlides = content.heroImages.filter((_, i) => i !== index);
+    const res = await updateHeroImages(newSlides);
+    if (res.success) {
+      showToast("Hero slide removed");
+      setContent({ ...content, heroImages: newSlides });
+    }
+  };
+
+  const handleReplaceAboutImage = async (file: File) => {
+    if (!content) return;
+    setIsUploading(true);
+    setUploadingTarget("about");
+    const url = await uploadFileToCloudinary(file);
+    setIsUploading(false);
+    setUploadingTarget(null);
+    if (!url) return;
+
+    const newAboutImage = {
+      ...content.aboutImage,
+      src: url,
+    };
+    const res = await updateAboutImage(newAboutImage);
+    if (res.success) {
+      showToast("About section photo updated!");
+      setContent({ ...content, aboutImage: newAboutImage });
+    }
+  };
+
+  const handleSaveAboutCaptions = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!content) return;
+    const res = await updateAboutImage(content.aboutImage);
+    if (res.success) {
+      showToast("About section image details saved!");
+    } else {
+      showToast(res.error || "Failed to save about details");
+    }
+  };
+
+  const handleReplaceHomestayImage = async (index: number, file: File) => {
+    if (!content) return;
+    setIsUploading(true);
+    setUploadingTarget(`homestay-${index}`);
+    const url = await uploadFileToCloudinary(file);
+    setIsUploading(false);
+    setUploadingTarget(null);
+    if (!url) return;
+
+    const newPhotos = [...content.homestayImages];
+    newPhotos[index] = { ...newPhotos[index], src: url };
+    const res = await updateHomestayImages(newPhotos);
+    if (res.success) {
+      showToast("Homestay photo replaced!");
+      setContent({ ...content, homestayImages: newPhotos });
+    }
+  };
+
+  const handleUpdateHomestayTitle = (index: number, title: string) => {
+    if (!content) return;
+    const newPhotos = [...content.homestayImages];
+    newPhotos[index] = { ...newPhotos[index], title };
+    setContent({ ...content, homestayImages: newPhotos });
+  };
+
+  const handleSaveHomestayPhotos = async () => {
+    if (!content) return;
+    const res = await updateHomestayImages(content.homestayImages);
+    if (res.success) {
+      showToast("Homestay showcase photos saved!");
+    }
+  };
+
+  const handleAddHomestayPhoto = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!content || !newHomestayPhoto.src || !newHomestayPhoto.title) {
+      showToast("Please upload an image and provide a title");
+      return;
+    }
+    const newPhotos = [...content.homestayImages, newHomestayPhoto];
+    const res = await updateHomestayImages(newPhotos);
+    if (res.success) {
+      showToast("Homestay photo added!");
+      setContent({ ...content, homestayImages: newPhotos });
+      setNewHomestayPhoto({ src: "", title: "" });
+      setShowNewHomestayModal(false);
+    }
+  };
+
+  const handleDeleteHomestayPhoto = async (index: number) => {
+    if (!content) return;
+    if (content.homestayImages.length <= 1) {
+      showToast("Must have at least one homestay photo");
+      return;
+    }
+    if (!confirm("Delete this photo?")) return;
+    const newPhotos = content.homestayImages.filter((_, i) => i !== index);
+    const res = await updateHomestayImages(newPhotos);
+    if (res.success) {
+      showToast("Photo removed from homestay showcase");
+      setContent({ ...content, homestayImages: newPhotos });
+    }
+  };
+
+  const handleAddGalleryImageSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newGalleryImage.src) {
+      showToast("Please select and upload an image");
+      return;
+    }
+    const res = await addGalleryImage({
+      src: newGalleryImage.src,
+      alt: newGalleryImage.alt || "Sri Shahrukh Lake Resort view",
+      category: newGalleryImage.category,
+    });
+    if (res.success) {
+      showToast("Photo added to gallery!");
+      setNewGalleryImage({ src: "", alt: "", category: "The Homestay" });
+      setShowGalleryModal(false);
+      const updated = await getSiteContent();
+      setContent(updated);
+    } else {
+      showToast(res.error || "Failed to add gallery photo");
+    }
+  };
+
+  const handleDeleteGalleryImage = async (index: number) => {
+    if (!confirm("Delete this photo from the gallery?")) return;
+    const res = await deleteGalleryImage(index);
+    if (res.success) {
+      showToast("Photo deleted from gallery");
+      const updated = await getSiteContent();
+      setContent(updated);
+    }
+  };
+
+  const handleReplaceExploreImage = async (id: string, file: File) => {
+    if (!content) return;
+    setIsUploading(true);
+    setUploadingTarget(`explore-${id}`);
+    const url = await uploadFileToCloudinary(file);
+    setIsUploading(false);
+    setUploadingTarget(null);
+    if (!url) return;
+
+    const res = await updateExploreImage(id, url);
+    if (res.success) {
+      showToast("Attraction photo updated!");
+      const updated = await getSiteContent();
+      setContent(updated);
+    } else {
+      showToast(res.error || "Failed to update attraction photo");
     }
   };
 
@@ -485,6 +771,18 @@ export default function AdminClient() {
           >
             <FileText className="w-4 h-4" />
             <span>Website &amp; Contact</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("media")}
+            className={`flex items-center gap-2 px-4 py-3 text-xs uppercase tracking-wider font-medium border-b-2 transition-all cursor-pointer whitespace-nowrap ${
+              activeTab === "media"
+                ? "border-sand text-sand bg-teal-deep/50"
+                : "border-transparent text-ivory/70 hover:text-ivory hover:bg-teal-deep/30"
+            }`}
+          >
+            <Camera className="w-4 h-4" />
+            <span>Photos &amp; Media</span>
           </button>
 
           <button
@@ -861,6 +1159,564 @@ export default function AdminClient() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════ */}
+          {/* TAB: PHOTOS & MEDIA MANAGEMENT (CLOUDINARY) */}
+          {/* ═════════════════════════════════════════════════════════════════ */}
+          {activeTab === "media" && content && (
+            <div className="space-y-6">
+              {/* Media Sub-Navigation */}
+              <div className="flex flex-wrap gap-2 p-2 bg-teal-mid border border-sand/20">
+                <button
+                  type="button"
+                  onClick={() => setMediaSection("hero")}
+                  className={`px-3.5 py-2 text-xs uppercase tracking-wider font-medium transition-all ${
+                    mediaSection === "hero"
+                      ? "bg-sand text-teal-deep shadow-md font-semibold"
+                      : "text-ivory/80 hover:text-sand hover:bg-teal-deep/50"
+                  }`}
+                >
+                  Hero Slides ({content.heroImages?.length || 0})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMediaSection("about")}
+                  className={`px-3.5 py-2 text-xs uppercase tracking-wider font-medium transition-all ${
+                    mediaSection === "about"
+                      ? "bg-sand text-teal-deep shadow-md font-semibold"
+                      : "text-ivory/80 hover:text-sand hover:bg-teal-deep/50"
+                  }`}
+                >
+                  About Story Photo
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMediaSection("homestay")}
+                  className={`px-3.5 py-2 text-xs uppercase tracking-wider font-medium transition-all ${
+                    mediaSection === "homestay"
+                      ? "bg-sand text-teal-deep shadow-md font-semibold"
+                      : "text-ivory/80 hover:text-sand hover:bg-teal-deep/50"
+                  }`}
+                >
+                  Homestay Showcase ({content.homestayImages?.length || 0})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMediaSection("gallery")}
+                  className={`px-3.5 py-2 text-xs uppercase tracking-wider font-medium transition-all ${
+                    mediaSection === "gallery"
+                      ? "bg-sand text-teal-deep shadow-md font-semibold"
+                      : "text-ivory/80 hover:text-sand hover:bg-teal-deep/50"
+                  }`}
+                >
+                  Photo Gallery ({content.galleryImages?.length || 0})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMediaSection("explore")}
+                  className={`px-3.5 py-2 text-xs uppercase tracking-wider font-medium transition-all ${
+                    mediaSection === "explore"
+                      ? "bg-sand text-teal-deep shadow-md font-semibold"
+                      : "text-ivory/80 hover:text-sand hover:bg-teal-deep/50"
+                  }`}
+                >
+                  Attraction Photos ({content.exploreImages?.length || 0})
+                </button>
+              </div>
+
+              {/* ── 1. HERO SLIDES ── */}
+              {mediaSection === "hero" && (
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 bg-teal-mid border border-sand/20">
+                    <div>
+                      <h3
+                        className="text-lg font-light uppercase gold-text-gradient"
+                        style={{ fontFamily: "var(--font-serif)" }}
+                      >
+                        Hero Slideshow Photos
+                      </h3>
+                      <p className="text-xs text-ivory/70 mt-0.5">
+                        These photos cycle automatically at the top of your homepage with crossfade animation.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowNewHeroModal(true)}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider hover:bg-sand-light shadow-md"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Add New Hero Slide</span>
+                    </button>
+                  </div>
+
+                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {content.heroImages.map((slide, index) => (
+                      <div
+                        key={index}
+                        className="border border-sand/30 bg-teal-mid flex flex-col justify-between overflow-hidden shadow-lg"
+                      >
+                        <div className="relative aspect-[16/10] w-full bg-teal-deep group overflow-hidden">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={slide.src}
+                            alt={slide.alt || `Hero slide ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-teal-deep/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
+                            <label className="cursor-pointer px-3.5 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-lg">
+                              <Upload className="w-3.5 h-3.5" />
+                              <span>Replace Photo</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={async (e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) await handleReplaceHeroSlideImage(index, file);
+                                }}
+                              />
+                            </label>
+                          </div>
+                          {isUploading && uploadingTarget === `hero-${index}` && (
+                            <div className="absolute inset-0 bg-teal-deep/80 flex items-center justify-center gap-2 text-sand text-xs">
+                              <RefreshCw className="w-4 h-4 animate-spin" />
+                              <span>Uploading to Cloudinary...</span>
+                            </div>
+                          )}
+                          <span className="absolute top-2 left-2 px-2 py-0.5 bg-teal-deep/90 text-sand text-[10px] uppercase tracking-wider font-semibold border border-sand/30">
+                            Slide {index + 1}
+                          </span>
+                        </div>
+
+                        <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
+                          <div className="space-y-2">
+                            <div>
+                              <label className="block text-[10px] uppercase tracking-wider text-sand font-medium mb-1">
+                                Caption Overlay
+                              </label>
+                              <input
+                                type="text"
+                                value={slide.caption || ""}
+                                onChange={(e) => {
+                                  const newSlides = [...content.heroImages];
+                                  newSlides[index].caption = e.target.value;
+                                  setContent({ ...content, heroImages: newSlides });
+                                }}
+                                className="w-full border border-sand/30 bg-teal-deep px-3 py-1.5 text-xs text-ivory outline-none focus:border-sand"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] uppercase tracking-wider text-sand font-medium mb-1">
+                                Image Alt Text
+                              </label>
+                              <input
+                                type="text"
+                                value={slide.alt || ""}
+                                onChange={(e) => {
+                                  const newSlides = [...content.heroImages];
+                                  newSlides[index].alt = e.target.value;
+                                  setContent({ ...content, heroImages: newSlides });
+                                }}
+                                className="w-full border border-sand/30 bg-teal-deep px-3 py-1.5 text-xs text-ivory outline-none focus:border-sand"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-between pt-2 border-t border-sand/15">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleUpdateHeroSlideCaption(index, slide.caption || "", slide.alt || "")
+                              }
+                              className="px-3 py-1.5 bg-sand/20 border border-sand/40 text-sand text-xs hover:bg-sand/30 transition-colors cursor-pointer"
+                            >
+                              Save Details
+                            </button>
+                            {content.heroImages.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteHeroSlide(index)}
+                                className="p-1.5 text-error hover:bg-error/20 transition-colors"
+                                title="Delete Slide"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ── 2. ABOUT STORY PHOTO ── */}
+              {mediaSection === "about" && (
+                <div className="p-6 border border-sand/25 bg-teal-mid space-y-6">
+                  <div>
+                    <h3
+                      className="text-lg font-light uppercase gold-text-gradient"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      About Story Photo (Founder &amp; Shah Rukh Khan)
+                    </h3>
+                    <p className="text-xs text-ivory/70 mt-1">
+                      This photo is displayed alongside your homestay founding story in the Property Overview section.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-6 md:grid-cols-12 items-start">
+                    <div className="md:col-span-5 relative border border-sand/30 bg-teal-deep overflow-hidden aspect-[4/5] shadow-xl">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={content.aboutImage?.src || "/images/hero3.jpeg"}
+                        alt={content.aboutImage?.alt || "Founder Geeth with Shah Rukh Khan"}
+                        className="w-full h-full object-cover"
+                      />
+                      {isUploading && uploadingTarget === "about" && (
+                        <div className="absolute inset-0 bg-teal-deep/80 flex items-center justify-center gap-2 text-sand text-xs">
+                          <RefreshCw className="w-4 h-4 animate-spin" />
+                          <span>Uploading to Cloudinary...</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <form onSubmit={handleSaveAboutCaptions} className="md:col-span-7 space-y-4">
+                      <div>
+                        <label className="block text-xs uppercase tracking-wider text-sand font-medium mb-1.5">
+                          Change Photo
+                        </label>
+                        <label className="inline-flex items-center gap-2 px-5 py-2.5 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider hover:bg-sand-light shadow-md cursor-pointer">
+                          <Upload className="w-4 h-4" />
+                          <span>Upload New Photo from Device</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (file) await handleReplaceAboutImage(file);
+                            }}
+                          />
+                        </label>
+                        <p className="text-[11px] text-ivory/60 mt-1">
+                          Uploads directly to your Cloudinary storage under <strong>srishahrukh</strong>.
+                        </p>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs uppercase tracking-wider text-sand font-medium mb-1">
+                          Photo Title / Top Caption
+                        </label>
+                        <input
+                          type="text"
+                          value={content.aboutImage?.caption || ""}
+                          onChange={(e) =>
+                            setContent({
+                              ...content,
+                              aboutImage: {
+                                ...content.aboutImage,
+                                caption: e.target.value,
+                              },
+                            })
+                          }
+                          className="w-full border border-sand/30 bg-teal-deep p-3 text-xs text-ivory outline-none focus:border-sand"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs uppercase tracking-wider text-sand font-medium mb-1">
+                          Photo Sub-caption / Story Note
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={content.aboutImage?.subCaption || ""}
+                          onChange={(e) =>
+                            setContent({
+                              ...content,
+                              aboutImage: {
+                                ...content.aboutImage,
+                                subCaption: e.target.value,
+                              },
+                            })
+                          }
+                          className="w-full border border-sand/30 bg-teal-deep p-3 text-xs text-ivory outline-none focus:border-sand"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="px-6 py-2.5 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider shadow-md hover:bg-sand-light transition-all"
+                      >
+                        Save Photo Captions
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              )}
+
+              {/* ── 3. HOMESTAY SHOWCASE PHOTOS ── */}
+              {mediaSection === "homestay" && (
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 bg-teal-mid border border-sand/20">
+                    <div>
+                      <h3
+                        className="text-lg font-light uppercase gold-text-gradient"
+                        style={{ fontFamily: "var(--font-serif)" }}
+                      >
+                        The Homestay Showcase Photos
+                      </h3>
+                      <p className="text-xs text-ivory/70 mt-0.5">
+                        These photos showcase the homestay grounds, bedrooms, terrace, and bathrooms.
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setShowNewHomestayModal(true)}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider hover:bg-sand-light shadow-md"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add Photo</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleSaveHomestayPhotos}
+                        className="px-4 py-2 border border-sand text-sand text-xs font-semibold uppercase tracking-wider hover:bg-teal-deep transition-all"
+                      >
+                        Save All Titles
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {content.homestayImages.map((photo, index) => (
+                      <div
+                        key={index}
+                        className="border border-sand/30 bg-teal-mid overflow-hidden flex flex-col justify-between shadow-lg"
+                      >
+                        <div className="relative aspect-[16/10] w-full bg-teal-deep group overflow-hidden">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={photo.src} alt={photo.title} className="w-full h-full object-cover" />
+                          <div className="absolute inset-0 bg-teal-deep/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
+                            <label className="cursor-pointer px-3.5 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-lg">
+                              <Upload className="w-3.5 h-3.5" />
+                              <span>Replace Photo</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={async (e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) await handleReplaceHomestayImage(index, file);
+                                }}
+                              />
+                            </label>
+                          </div>
+                          {isUploading && uploadingTarget === `homestay-${index}` && (
+                            <div className="absolute inset-0 bg-teal-deep/80 flex items-center justify-center gap-2 text-sand text-xs">
+                              <RefreshCw className="w-4 h-4 animate-spin" />
+                              <span>Uploading...</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="p-3.5 space-y-2 flex-1 flex flex-col justify-between">
+                          <div>
+                            <label className="block text-[10px] uppercase tracking-wider text-sand font-medium mb-1">
+                              Display Title
+                            </label>
+                            <input
+                              type="text"
+                              value={photo.title}
+                              onChange={(e) => handleUpdateHomestayTitle(index, e.target.value)}
+                              className="w-full border border-sand/30 bg-teal-deep px-3 py-1.5 text-xs text-ivory outline-none focus:border-sand"
+                            />
+                          </div>
+
+                          <div className="flex items-center justify-end pt-1">
+                            {content.homestayImages.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteHomestayPhoto(index)}
+                                className="p-1.5 text-error hover:bg-error/20 transition-colors"
+                                title="Remove photo"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ── 4. PHOTO GALLERY ── */}
+              {mediaSection === "gallery" && (
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 bg-teal-mid border border-sand/20">
+                    <div>
+                      <h3
+                        className="text-lg font-light uppercase gold-text-gradient"
+                        style={{ fontFamily: "var(--font-serif)" }}
+                      >
+                        Photo Gallery ({content.galleryImages.length} Images)
+                      </h3>
+                      <p className="text-xs text-ivory/70 mt-0.5">
+                        Add and manage high-resolution photos in the public lightbox gallery.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowGalleryModal(true)}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider hover:bg-sand-light shadow-md"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Upload Photo to Gallery</span>
+                    </button>
+                  </div>
+
+                  {/* Filter chips */}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {[
+                      "All Views",
+                      "The Homestay",
+                      "Lake & Nature",
+                      "Wildlife & Heritage",
+                      "Homestay Life",
+                    ].map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setGalleryFilter(cat)}
+                        className={`px-3 py-1 text-xs uppercase tracking-wider border transition-colors ${
+                          galleryFilter === cat
+                            ? "border-sand bg-sand text-teal-deep font-semibold"
+                            : "border-sand/30 text-ivory/80 hover:border-sand hover:text-sand"
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                    {content.galleryImages
+                      .map((img, originalIndex) => ({ img, originalIndex }))
+                      .filter(
+                        ({ img }) =>
+                          galleryFilter === "All Views" || img.category === galleryFilter
+                      )
+                      .map(({ img, originalIndex }) => (
+                        <div
+                          key={originalIndex}
+                          className="border border-sand/25 bg-teal-mid flex flex-col justify-between overflow-hidden shadow-md group"
+                        >
+                          <div className="relative aspect-[4/3] w-full bg-teal-deep">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={img.src}
+                              alt={img.alt}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            <span className="absolute top-2 left-2 px-2 py-0.5 bg-teal-deep/90 text-sand text-[9px] uppercase tracking-wider font-semibold border border-sand/30">
+                              {img.category}
+                            </span>
+                          </div>
+
+                          <div className="p-3 flex items-center justify-between gap-2 border-t border-sand/15">
+                            <p className="text-[11px] text-ivory/80 truncate flex-1">{img.alt}</p>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteGalleryImage(originalIndex)}
+                              className="p-1 text-error hover:bg-error/20 transition-colors flex-shrink-0"
+                              title="Delete Photo"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ── 5. ATTRACTION PHOTOS (EXPLORE) ── */}
+              {mediaSection === "explore" && (
+                <div className="space-y-6">
+                  <div className="p-4 bg-teal-mid border border-sand/20">
+                    <h3
+                      className="text-lg font-light uppercase gold-text-gradient"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      Nearby Attraction Cards (Explore Section)
+                    </h3>
+                    <p className="text-xs text-ivory/70 mt-0.5">
+                      Replace the preview thumbnail photos for the 6 local destinations and safari gateways.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {content.exploreImages.map((attraction) => (
+                      <div
+                        key={attraction.id}
+                        className="border border-sand/30 bg-teal-mid overflow-hidden flex flex-col justify-between shadow-lg"
+                      >
+                        <div className="relative aspect-[16/10] w-full bg-teal-deep group overflow-hidden">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={attraction.src}
+                            alt={attraction.name}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-teal-deep/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
+                            <label className="cursor-pointer px-3.5 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-lg">
+                              <Upload className="w-3.5 h-3.5" />
+                              <span>Replace Image</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={async (e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) await handleReplaceExploreImage(attraction.id, file);
+                                }}
+                              />
+                            </label>
+                          </div>
+                          {isUploading && uploadingTarget === `explore-${attraction.id}` && (
+                            <div className="absolute inset-0 bg-teal-deep/80 flex items-center justify-center gap-2 text-sand text-xs">
+                              <RefreshCw className="w-4 h-4 animate-spin" />
+                              <span>Uploading to Cloudinary...</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="p-4 border-t border-sand/15 flex items-center justify-between">
+                          <h4 className="text-xs font-medium text-ivory">{attraction.name}</h4>
+                          <label className="cursor-pointer text-[11px] uppercase tracking-wider text-sand hover:underline font-semibold flex items-center gap-1">
+                            <Camera className="w-3 h-3" />
+                            <span>Change</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (file) await handleReplaceExploreImage(attraction.id, file);
+                              }}
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════ */}
           {/* TAB 3: REVIEWS MANAGER */}
           {/* ═════════════════════════════════════════════════════════════════ */}
           {activeTab === "reviews" && content && (
@@ -1213,6 +2069,290 @@ export default function AdminClient() {
                   className="px-5 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider"
                 >
                   Save Booking
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal: Add New Hero Slide ── */}
+      {showNewHeroModal && (
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+          <div className="bg-teal-mid border border-sand/40 p-6 max-w-md w-full shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-sand/20 pb-3">
+              <h3 className="text-base uppercase gold-text-gradient font-serif">Add New Hero Slide</h3>
+              <button
+                type="button"
+                onClick={() => setShowNewHeroModal(false)}
+                className="text-ivory/60 hover:text-ivory"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddHeroSlide} className="space-y-4">
+              <div>
+                <label className="block text-xs uppercase text-sand font-medium mb-1">1. Choose Image *</label>
+                <label className="flex flex-col items-center justify-center p-4 border border-dashed border-sand/40 bg-teal-deep text-center cursor-pointer hover:border-sand">
+                  {newHeroSlide.src ? (
+                    <div className="relative aspect-[16/10] w-full max-h-40 overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={newHeroSlide.src} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="w-6 h-6 text-sand mb-2" />
+                      <span className="text-xs text-ivory">Click to select photo from device</span>
+                      <span className="text-[10px] text-ivory/50 mt-1">Uploads automatically to Cloudinary</span>
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setIsUploading(true);
+                      setUploadingTarget("modal-hero");
+                      const url = await uploadFileToCloudinary(file);
+                      setIsUploading(false);
+                      setUploadingTarget(null);
+                      if (url) setNewHeroSlide({ ...newHeroSlide, src: url });
+                    }}
+                  />
+                </label>
+                {isUploading && uploadingTarget === "modal-hero" && (
+                  <p className="text-xs text-sand flex items-center gap-1 mt-1">
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Uploading to Cloudinary...
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase text-sand font-medium mb-1">2. Slide Caption</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Yala Safari Gateway · 4x4 Tours Arranged"
+                  value={newHeroSlide.caption}
+                  onChange={(e) => setNewHeroSlide({ ...newHeroSlide, caption: e.target.value })}
+                  className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase text-sand font-medium mb-1">3. Alt Description</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Scenic view of Tissa Wewa lake at sunrise"
+                  value={newHeroSlide.alt}
+                  onChange={(e) => setNewHeroSlide({ ...newHeroSlide, alt: e.target.value })}
+                  className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowNewHeroModal(false)}
+                  className="px-4 py-2 border border-sand/20 text-ivory text-xs uppercase"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={!newHeroSlide.src || isUploading}
+                  className="px-5 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider disabled:opacity-50"
+                >
+                  Add Slide
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal: Add New Homestay Photo ── */}
+      {showNewHomestayModal && (
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+          <div className="bg-teal-mid border border-sand/40 p-6 max-w-md w-full shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-sand/20 pb-3">
+              <h3 className="text-base uppercase gold-text-gradient font-serif">Add Homestay Showcase Photo</h3>
+              <button
+                type="button"
+                onClick={() => setShowNewHomestayModal(false)}
+                className="text-ivory/60 hover:text-ivory"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddHomestayPhoto} className="space-y-4">
+              <div>
+                <label className="block text-xs uppercase text-sand font-medium mb-1">1. Choose Photo *</label>
+                <label className="flex flex-col items-center justify-center p-4 border border-dashed border-sand/40 bg-teal-deep text-center cursor-pointer hover:border-sand">
+                  {newHomestayPhoto.src ? (
+                    <div className="relative aspect-[16/10] w-full max-h-40 overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={newHomestayPhoto.src} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="w-6 h-6 text-sand mb-2" />
+                      <span className="text-xs text-ivory">Click to select photo</span>
+                      <span className="text-[10px] text-ivory/50 mt-1">Uploads to Cloudinary</span>
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setIsUploading(true);
+                      setUploadingTarget("modal-homestay");
+                      const url = await uploadFileToCloudinary(file);
+                      setIsUploading(false);
+                      setUploadingTarget(null);
+                      if (url) setNewHomestayPhoto({ ...newHomestayPhoto, src: url });
+                    }}
+                  />
+                </label>
+                {isUploading && uploadingTarget === "modal-homestay" && (
+                  <p className="text-xs text-sand flex items-center gap-1 mt-1">
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Uploading to Cloudinary...
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase text-sand font-medium mb-1">2. Display Title *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Garden Verandah & Terrace"
+                  value={newHomestayPhoto.title}
+                  onChange={(e) => setNewHomestayPhoto({ ...newHomestayPhoto, title: e.target.value })}
+                  className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowNewHomestayModal(false)}
+                  className="px-4 py-2 border border-sand/20 text-ivory text-xs uppercase"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={!newHomestayPhoto.src || !newHomestayPhoto.title || isUploading}
+                  className="px-5 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider disabled:opacity-50"
+                >
+                  Add Photo
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal: Upload Photo to Gallery ── */}
+      {showGalleryModal && (
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+          <div className="bg-teal-mid border border-sand/40 p-6 max-w-md w-full shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-sand/20 pb-3">
+              <h3 className="text-base uppercase gold-text-gradient font-serif">Upload Photo to Gallery</h3>
+              <button
+                type="button"
+                onClick={() => setShowGalleryModal(false)}
+                className="text-ivory/60 hover:text-ivory"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddGalleryImageSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs uppercase text-sand font-medium mb-1">1. Choose Photo *</label>
+                <label className="flex flex-col items-center justify-center p-4 border border-dashed border-sand/40 bg-teal-deep text-center cursor-pointer hover:border-sand">
+                  {newGalleryImage.src ? (
+                    <div className="relative aspect-[4/3] w-full max-h-40 overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={newGalleryImage.src} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="w-6 h-6 text-sand mb-2" />
+                      <span className="text-xs text-ivory">Click to select photo</span>
+                      <span className="text-[10px] text-ivory/50 mt-1">Uploads directly to Cloudinary</span>
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setIsUploading(true);
+                      setUploadingTarget("modal-gallery");
+                      const url = await uploadFileToCloudinary(file);
+                      setIsUploading(false);
+                      setUploadingTarget(null);
+                      if (url) setNewGalleryImage({ ...newGalleryImage, src: url });
+                    }}
+                  />
+                </label>
+                {isUploading && uploadingTarget === "modal-gallery" && (
+                  <p className="text-xs text-sand flex items-center gap-1 mt-1">
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Uploading to Cloudinary...
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase text-sand font-medium mb-1">2. Gallery Category *</label>
+                <select
+                  value={newGalleryImage.category}
+                  onChange={(e) => setNewGalleryImage({ ...newGalleryImage, category: e.target.value })}
+                  className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand"
+                >
+                  <option value="The Homestay">The Homestay</option>
+                  <option value="Lake & Nature">Lake & Nature</option>
+                  <option value="Wildlife & Heritage">Wildlife & Heritage</option>
+                  <option value="Homestay Life">Homestay Life</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase text-sand font-medium mb-1">3. Caption / Description</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Garden sitting area under evening sunset"
+                  value={newGalleryImage.alt}
+                  onChange={(e) => setNewGalleryImage({ ...newGalleryImage, alt: e.target.value })}
+                  className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowGalleryModal(false)}
+                  className="px-4 py-2 border border-sand/20 text-ivory text-xs uppercase"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={!newGalleryImage.src || isUploading}
+                  className="px-5 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider disabled:opacity-50"
+                >
+                  Publish to Gallery
                 </button>
               </div>
             </form>
