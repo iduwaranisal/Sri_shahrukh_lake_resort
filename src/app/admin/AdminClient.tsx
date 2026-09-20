@@ -195,15 +195,22 @@ export default function AdminClient() {
 
   const refreshAllData = () => {
     startTransition(async () => {
-      const [bookingsRes, contentRes] = await Promise.all([
-        getBookings(statusFilter, searchTerm),
-        getSiteContent(),
-      ]);
-      if (bookingsRes.success && bookingsRes.bookings) {
-        setBookings(bookingsRes.bookings);
+      try {
+        const bookingsRes = await getBookings("all", "");
+        if (bookingsRes.success && bookingsRes.bookings) {
+          setBookings(bookingsRes.bookings);
+        }
+      } catch (e) {
+        console.error("Failed to load bookings", e);
       }
-      if (contentRes) {
-        setContent(contentRes);
+
+      try {
+        const contentRes = await getSiteContent();
+        if (contentRes) {
+          setContent(contentRes);
+        }
+      } catch (e) {
+        console.error("Failed to load content", e);
       }
     });
   };

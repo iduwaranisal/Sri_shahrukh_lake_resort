@@ -82,8 +82,8 @@ export default function Hero({
       className="relative min-h-[100dvh] w-full overflow-hidden flex flex-col justify-between"
       aria-label="Hero — Sri Shahrukh Lake Resort"
     >
-      {/* ── Continuous seamless crossfade slides — isolated at lowest z-index ── */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden bg-teal-deep isolate z-0 pointer-events-none">
+      {/* ── Continuous seamless crossfade slides ── */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden bg-teal-deep pointer-events-none">
         {slidesToRender.map((slide, idx) => {
           const isActive = idx === current;
           return (
@@ -91,17 +91,14 @@ export default function Hero({
               key={`${slide.src}-${idx}`}
               initial={false}
               animate={{
-                opacity: isActive ? 0.78 : 0,
-                scale: isActive ? 1.03 : 1.0,
+                opacity: isActive ? 1 : 0,
+                scale: isActive ? 1.02 : 1.0,
               }}
               transition={{
-                opacity: { duration: 0.9, ease: "easeInOut" },
+                opacity: { duration: 0.8, ease: "easeInOut" },
                 scale: { duration: 4.2, ease: "easeOut" },
               }}
               className="absolute inset-0 w-full h-full"
-              style={{
-                zIndex: isActive ? 1 : 0,
-              }}
             >
               <Image
                 src={slide.src}
@@ -116,21 +113,12 @@ export default function Hero({
         })}
       </div>
 
-      {/* ── Editorial Gradient Overlays with enhanced contrast (z-10) ── */}
+      {/* ── Subtle, clean transparent gradient overlay ── */}
       <div
-        className="absolute inset-0 pointer-events-none z-10"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(10,24,21,0.82) 0%, rgba(10,24,21,0.68) 35%, rgba(10,24,21,0.80) 70%, rgba(10,24,21,0.96) 100%)",
-        }}
-      />
-
-      {/* Radial dark vignette directly behind center text (z-10) */}
-      <div
-        className="pointer-events-none absolute inset-0 z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 65% at 50% 50%, rgba(10,24,21,0.82) 0%, rgba(10,24,21,0.45) 60%, transparent 100%)",
+            "linear-gradient(to bottom, rgba(10,24,21,0.5) 0%, rgba(10,24,21,0.15) 35%, rgba(10,24,21,0.7) 100%)",
         }}
       />
 
