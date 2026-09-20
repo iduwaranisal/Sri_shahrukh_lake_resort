@@ -96,7 +96,7 @@ export default function Explore({
 
         {/* Category Filters */}
         <div
-          className="scroll-reveal stagger-3 mb-10 sm:mb-12 flex flex-wrap items-center justify-center gap-2 sm:gap-3"
+          className="scroll-reveal stagger-3 mb-10 sm:mb-12 flex items-center gap-2 sm:gap-3 overflow-x-auto sm:flex-wrap sm:justify-center no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 py-1"
           role="tablist"
           aria-label="Excursion categories"
         >
@@ -108,7 +108,7 @@ export default function Explore({
                 role="tab"
                 aria-selected={isSelected}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 text-[11px] uppercase tracking-wider transition-all border ${
+                className={`flex-shrink-0 whitespace-nowrap min-h-[40px] px-4 py-2 text-[11px] uppercase tracking-wider transition-all border touch-manipulation ${
                   isSelected
                     ? "bg-sand text-teal-deep font-semibold border-sand shadow-md"
                     : "bg-teal-mid/50 text-ivory/80 border-sand/20 hover:border-sand/50"
@@ -236,7 +236,7 @@ export default function Explore({
 
           <Link
             href="/book"
-            className="btn-shimmer inline-flex items-center justify-center gap-2 whitespace-nowrap px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-105 shadow-lg"
+            className="btn-shimmer inline-flex items-center justify-center gap-2 whitespace-nowrap w-full sm:w-auto min-h-[48px] px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-105 shadow-lg active:scale-95"
             style={{
               background: "var(--color-sand)",
               color: "var(--color-teal-deep)",

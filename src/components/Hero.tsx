@@ -270,7 +270,7 @@ export default function Hero({
       </div>
 
       {/* ── Bottom Controls Bar with clearance for fixed mobile bar ── */}
-      <div className="relative z-20 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-10 pb-20 sm:pb-8 flex items-center justify-between gap-3">
+      <div className="relative z-20 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-10 pb-24 sm:pb-8 flex items-center justify-between gap-3">
         {/* Caption for current slide */}
         <div
           className="text-left max-w-[170px] xs:max-w-xs sm:max-w-md px-3 py-1.5 sm:px-3.5 sm:py-2 border border-sand/30 shadow-xl"
@@ -300,18 +300,18 @@ export default function Hero({
           <button
             onClick={() => setIsPlaying(!isPlaying)}
             aria-label={isPlaying ? "Pause background slideshow" : "Play background slideshow"}
-            className="text-sand hover:text-sand-light p-1 transition-colors"
+            className="text-sand hover:text-sand-light p-1.5 transition-colors touch-manipulation"
           >
             {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
           </button>
 
-          <div className="flex items-center gap-1.5" aria-label="Slideshow indicators">
+          <div className="flex items-center gap-1" aria-label="Slideshow indicators">
             {slidesToRender.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
                 aria-label={`Slide ${i + 1} of ${slidesToRender.length}`}
-                className="h-5 flex items-center justify-center p-0.5"
+                className="h-8 w-6 flex items-center justify-center p-1 touch-manipulation"
               >
                 <span
                   className="h-[2.5px] transition-all duration-400 block"

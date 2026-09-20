@@ -128,7 +128,7 @@ export default function Navbar({
           </Link>
 
           {/* Desktop Navigation Links */}
-          <ul className="hidden lg:flex items-center gap-7 xl:gap-9" role="menubar">
+          <ul className="hidden lg:flex items-center gap-5 xl:gap-8 2xl:gap-9" role="menubar">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -136,7 +136,7 @@ export default function Navbar({
                   <Link
                     href={link.href}
                     role="menuitem"
-                    className={`relative text-xs uppercase tracking-[0.22em] transition-colors duration-200 py-1 ${
+                    className={`relative text-[11px] xl:text-xs uppercase tracking-[0.16em] xl:tracking-[0.22em] transition-colors duration-200 py-1 ${
                       isActive
                         ? "text-sand font-medium"
                         : "text-ivory/80 hover:text-sand font-light"
@@ -180,7 +180,7 @@ export default function Navbar({
             <button
               id="nav-menu-toggle"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="flex items-center justify-center h-10 w-10 text-ivory border border-sand/30 bg-teal-deep/80 transition-all active:scale-95"
+              className="flex items-center justify-center h-11 w-11 text-ivory border border-sand/30 bg-teal-deep/80 transition-all active:scale-95 touch-manipulation"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
               aria-controls="mobile-drawer-menu"
@@ -249,7 +249,7 @@ export default function Navbar({
               </Link>
               <button
                 onClick={() => setMenuOpen(false)}
-                className="h-10 w-10 flex items-center justify-center text-sand border border-sand/40 bg-teal-mid/50 transition-all active:scale-95"
+                className="h-11 w-11 flex items-center justify-center text-sand border border-sand/40 bg-teal-mid/50 transition-all active:scale-95 touch-manipulation"
                 aria-label="Close navigation menu"
               >
                 <X className="w-5 h-5" />
@@ -257,14 +257,14 @@ export default function Navbar({
             </div>
 
             {/* Scrollable Links & Actions */}
-            <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col justify-between">
-              <ul className="flex flex-col gap-3.5 my-auto text-center py-4">
+            <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col justify-between overscroll-contain pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+              <ul className="flex flex-col gap-2 my-auto text-center py-4">
                 {mobileNavLinks.map((link) => (
                   <li key={link.href} className="w-full">
                     <Link
                       href={link.href}
                       onClick={() => setMenuOpen(false)}
-                      className="inline-block py-2 text-xl font-light tracking-wide transition-colors hover:text-sand"
+                      className="inline-flex items-center justify-center min-h-[44px] py-2 px-3 text-xl font-light tracking-wide transition-colors hover:text-sand touch-manipulation"
                       style={{
                         color: activeSection === link.id ? "var(--color-sand)" : "var(--color-ivory)",
                         fontFamily: "var(--font-serif)",

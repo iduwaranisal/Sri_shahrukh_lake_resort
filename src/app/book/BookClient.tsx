@@ -322,7 +322,7 @@ export default function BookClient() {
                         type="text"
                         placeholder="Full Name"
                         {...register("name")}
-                        className="w-full border border-sand/30 bg-teal-deep px-3.5 py-2.5 text-xs text-ivory placeholder:text-ivory/40 outline-none focus:border-sand"
+                        className="w-full border border-sand/30 bg-teal-deep px-3.5 py-2.5 min-h-[46px] text-xs text-ivory placeholder:text-ivory/40 outline-none focus:border-sand touch-manipulation"
                       />
                       {errors.name && (
                         <p className="text-[10px] text-error mt-1">{errors.name.message}</p>
@@ -341,7 +341,7 @@ export default function BookClient() {
                         type="email"
                         placeholder="your@email.com"
                         {...register("email")}
-                        className="w-full border border-sand/30 bg-teal-deep px-3.5 py-2.5 text-xs text-ivory placeholder:text-ivory/40 outline-none focus:border-sand"
+                        className="w-full border border-sand/30 bg-teal-deep px-3.5 py-2.5 min-h-[46px] text-xs text-ivory placeholder:text-ivory/40 outline-none focus:border-sand touch-manipulation"
                       />
                       {errors.email && (
                         <p className="text-[10px] text-error mt-1">{errors.email.message}</p>
@@ -362,7 +362,7 @@ export default function BookClient() {
                         type="tel"
                         placeholder="+94 7X XXX XXXX"
                         {...register("phone")}
-                        className="w-full border border-sand/30 bg-teal-deep px-3.5 py-2.5 text-xs text-ivory placeholder:text-ivory/40 outline-none focus:border-sand"
+                        className="w-full border border-sand/30 bg-teal-deep px-3.5 py-2.5 min-h-[46px] text-xs text-ivory placeholder:text-ivory/40 outline-none focus:border-sand touch-manipulation"
                       />
                     </div>
 
@@ -378,7 +378,7 @@ export default function BookClient() {
                         type="text"
                         placeholder="Yala safari inquiry, airport pickup, etc."
                         {...register("specialRequests")}
-                        className="w-full border border-sand/30 bg-teal-deep px-3.5 py-2.5 text-xs text-ivory placeholder:text-ivory/40 outline-none focus:border-sand"
+                        className="w-full border border-sand/30 bg-teal-deep px-3.5 py-2.5 min-h-[46px] text-xs text-ivory placeholder:text-ivory/40 outline-none focus:border-sand touch-manipulation"
                       />
                     </div>
                   </div>
@@ -389,7 +389,7 @@ export default function BookClient() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 py-3.5 px-6 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-[0.2em] shadow-lg hover:bg-sand-light transition-all cursor-pointer disabled:opacity-50"
+                    className="w-full flex items-center justify-center gap-2 min-h-[48px] py-3.5 px-6 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-[0.2em] shadow-lg hover:bg-sand-light transition-all cursor-pointer disabled:opacity-50 touch-manipulation active:scale-[0.99]"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">

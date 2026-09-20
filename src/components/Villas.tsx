@@ -225,7 +225,7 @@ export default function Villas({
           {/* Left: Continuous Slideshow Photo Viewer (7 cols) */}
           <div className="scroll-reveal stagger-3 lg:col-span-7 flex flex-col gap-3.5">
             <div
-              className="relative aspect-[16/10] w-full overflow-hidden border border-sand/30 shadow-2xl bg-teal-deep group select-none"
+              className="relative aspect-[4/3] sm:aspect-[16/10] w-full overflow-hidden border border-sand/30 shadow-2xl bg-teal-deep group select-none"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               onTouchStart={() => setIsHovered(true)}
@@ -291,7 +291,7 @@ export default function Villas({
                   e.stopPropagation();
                   prevPhoto();
                 }}
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-sand/40 bg-teal-deep/80 text-sand flex items-center justify-center opacity-80 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-sand hover:text-teal-deep active:scale-95 shadow-lg"
+                className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-sand/40 bg-teal-deep/80 text-sand flex items-center justify-center opacity-90 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-sand hover:text-teal-deep active:scale-95 shadow-lg touch-manipulation"
                 aria-label="Previous homestay photo"
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -302,7 +302,7 @@ export default function Villas({
                   e.stopPropagation();
                   nextPhoto();
                 }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-sand/40 bg-teal-deep/80 text-sand flex items-center justify-center opacity-80 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-sand hover:text-teal-deep active:scale-95 shadow-lg"
+                className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-sand/40 bg-teal-deep/80 text-sand flex items-center justify-center opacity-90 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-sand hover:text-teal-deep active:scale-95 shadow-lg touch-manipulation"
                 aria-label="Next homestay photo"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -313,7 +313,7 @@ export default function Villas({
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
                   aria-label={isPlaying ? "Pause photo slideshow" : "Resume photo slideshow"}
-                  className="text-sand hover:text-sand-light transition-colors"
+                  className="text-sand hover:text-sand-light transition-colors touch-manipulation"
                 >
                   {isPlaying && !isHovered ? (
                     <Pause className="w-3 h-3" />
@@ -345,7 +345,7 @@ export default function Villas({
 
             {/* Thumbnails with glowing active state & progress */}
             <div
-              className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none touch-pan-x overscroll-contain"
+              className="flex gap-2 sm:gap-2.5 overflow-x-auto pb-2 no-scrollbar touch-pan-x overscroll-contain py-1"
               style={{ WebkitOverflowScrolling: "touch" }}
             >
               {activePhotos.map((photo, i) => {
@@ -354,7 +354,7 @@ export default function Villas({
                   <button
                     key={i}
                     onClick={() => setSelectedPhotoIndex(i)}
-                    className={`relative h-16 w-24 flex-shrink-0 overflow-hidden border transition-all duration-300 ${
+                    className={`relative h-14 sm:h-16 w-20 sm:w-24 flex-shrink-0 overflow-hidden border transition-all duration-300 touch-manipulation ${
                       isSelected
                         ? "border-sand scale-105 shadow-md shadow-sand/20 ring-2 ring-sand/60"
                         : "border-sand/25 opacity-70 hover:opacity-100 hover:border-sand/60"

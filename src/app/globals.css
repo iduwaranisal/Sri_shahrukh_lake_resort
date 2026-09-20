@@ -79,6 +79,18 @@ body {
 }
 
 /* ── Mobile Form & Input Styling ── */
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    font-size: 16px !important; /* Prevents unwanted iOS Safari viewport auto-zoom */
+  }
+}
+
 input[type="date"] {
   color-scheme: dark;
   -webkit-appearance: none;
@@ -93,6 +105,23 @@ select {
   background-size: 1.1em;
   padding-right: 2.5rem !important;
   min-height: 46px;
+}
+
+/* ── Mobile Safe Area Utilities & Smooth Touch Scroll ── */
+.pb-safe {
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+}
+
+.pt-safe {
+  padding-top: max(1rem, env(safe-area-inset-top));
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* ── Custom Luxury Utilities ── */

@@ -127,7 +127,7 @@ export default function Gallery({
 
         {/* Category Filters */}
         <div
-          className="scroll-reveal stagger-3 mb-10 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5"
+          className="scroll-reveal stagger-3 mb-8 sm:mb-10 flex items-center gap-2 sm:gap-2.5 overflow-x-auto sm:flex-wrap sm:justify-center no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 py-1"
           role="tablist"
           aria-label="Gallery category filters"
         >
@@ -142,7 +142,7 @@ export default function Gallery({
                   setSelectedCategory(category);
                   setLightboxIndex(null);
                 }}
-                className={`px-4 py-2 text-[11px] uppercase tracking-wider transition-all border ${
+                className={`flex-shrink-0 whitespace-nowrap min-h-[40px] px-4 py-2 text-[11px] uppercase tracking-wider transition-all border touch-manipulation ${
                   isSelected
                     ? "bg-teal-deep text-sand border-teal-deep font-medium shadow-sm"
                     : "bg-ivory text-stone border-sand/20 hover:border-sand hover:text-teal-deep"
@@ -223,7 +223,7 @@ export default function Gallery({
                 </span>
                 <button
                   onClick={() => setLightboxIndex(null)}
-                  className="h-10 w-10 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/15 transition-all"
+                  className="h-11 w-11 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/15 transition-all touch-manipulation active:scale-95"
                   aria-label="Close Lightbox"
                 >
                   <X className="w-5 h-5" />
@@ -231,7 +231,7 @@ export default function Gallery({
               </div>
 
               {/* Main Image Container */}
-              <div className="relative aspect-[16/10] w-full max-h-[70vh] overflow-hidden border border-sand/30 shadow-2xl bg-teal-deep">
+              <div className="relative aspect-[4/3] sm:aspect-[16/10] w-full max-h-[65vh] sm:max-h-[70vh] overflow-hidden border border-sand/30 shadow-2xl bg-teal-deep">
                 <SmoothImage
                   src={optimizeImage(filteredImages[lightboxIndex].src, {
                     width: 1600,
@@ -255,14 +255,14 @@ export default function Gallery({
                 <div className="flex items-center gap-3">
                   <button
                     onClick={handlePrev}
-                    className="h-10 w-10 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/20 transition-all"
+                    className="h-11 w-11 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/20 transition-all touch-manipulation active:scale-95"
                     aria-label="Previous photograph"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
                   <button
                     onClick={handleNext}
-                    className="h-10 w-10 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/20 transition-all"
+                    className="h-11 w-11 flex items-center justify-center border border-sand/40 text-sand hover:bg-sand/20 transition-all touch-manipulation active:scale-95"
                     aria-label="Next photograph"
                   >
                     <ChevronRight className="w-5 h-5" />

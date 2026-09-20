@@ -159,7 +159,7 @@ export default function Reviews({
         {/* Carousel Card */}
         <div className="scroll-reveal stagger-3 relative mx-auto max-w-3xl">
           <div
-            className="border border-sand/30 bg-ivory-warm p-8 sm:p-12 md:p-14 shadow-lg text-center relative"
+            className="border border-sand/30 bg-ivory-warm p-6 sm:p-12 md:p-14 shadow-lg text-center relative"
             aria-live="polite"
           >
             <div
@@ -207,7 +207,7 @@ export default function Reviews({
               <button
                 onClick={prev}
                 aria-label="Previous visitor review"
-                className="flex h-10 w-10 items-center justify-center border border-teal-deep/30 text-teal-deep hover:border-sand hover:text-sand-dark transition-all rounded-none"
+                className="flex h-11 w-11 items-center justify-center border border-teal-deep/30 text-teal-deep hover:border-sand hover:text-sand-dark transition-all rounded-none touch-manipulation active:scale-95"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -218,7 +218,7 @@ export default function Reviews({
                     key={i}
                     onClick={() => setCurrent(i)}
                     aria-label={`View review ${i + 1}`}
-                    className="h-6 flex items-center justify-center p-1"
+                    className="h-8 flex items-center justify-center px-1 touch-manipulation"
                   >
                     <span
                       className="h-[2.5px] transition-all duration-400 block"
@@ -237,7 +237,7 @@ export default function Reviews({
               <button
                 onClick={next}
                 aria-label="Next visitor review"
-                className="flex h-10 w-10 items-center justify-center border border-teal-deep/30 text-teal-deep hover:border-sand hover:text-sand-dark transition-all rounded-none"
+                className="flex h-11 w-11 items-center justify-center border border-teal-deep/30 text-teal-deep hover:border-sand hover:text-sand-dark transition-all rounded-none touch-manipulation active:scale-95"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>

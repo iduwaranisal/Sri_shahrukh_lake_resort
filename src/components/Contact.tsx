@@ -256,7 +256,7 @@ export default function Contact({
                       type="text"
                       placeholder="Your name"
                       {...register("name")}
-                      className="border border-sand/30 bg-ivory px-3.5 py-2.5 text-sm text-charcoal outline-none transition-all focus:border-sand"
+                      className="border border-sand/30 bg-ivory px-3.5 py-2.5 min-h-[46px] text-sm text-charcoal outline-none transition-all focus:border-sand touch-manipulation"
                       aria-invalid={!!errors.name}
                     />
                     {errors.name && (
@@ -276,7 +276,7 @@ export default function Contact({
                       type="email"
                       placeholder="your@email.com"
                       {...register("email")}
-                      className="border border-sand/30 bg-ivory px-3.5 py-2.5 text-sm text-charcoal outline-none transition-all focus:border-sand"
+                      className="border border-sand/30 bg-ivory px-3.5 py-2.5 min-h-[46px] text-sm text-charcoal outline-none transition-all focus:border-sand touch-manipulation"
                       aria-invalid={!!errors.email}
                     />
                     {errors.email && (
@@ -297,7 +297,7 @@ export default function Contact({
                     type="tel"
                     placeholder="e.g. 077 123 4567"
                     {...register("phone")}
-                    className="border border-sand/30 bg-ivory px-3.5 py-2.5 text-sm text-charcoal outline-none transition-all focus:border-sand"
+                    className="border border-sand/30 bg-ivory px-3.5 py-2.5 min-h-[46px] text-sm text-charcoal outline-none transition-all focus:border-sand touch-manipulation"
                   />
                 </div>
 
@@ -313,7 +313,7 @@ export default function Contact({
                     rows={4}
                     placeholder="Ask about room availability, check-in time, Yala safari jeep options, bicycle rentals, or airport shuttle..."
                     {...register("message")}
-                    className="border border-sand/30 bg-ivory px-3.5 py-2.5 text-sm text-charcoal outline-none transition-all focus:border-sand resize-none"
+                    className="border border-sand/30 bg-ivory px-3.5 py-2.5 text-sm text-charcoal outline-none transition-all focus:border-sand resize-none touch-manipulation"
                     aria-invalid={!!errors.message}
                   />
                   {errors.message && (

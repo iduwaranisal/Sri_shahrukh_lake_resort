@@ -66,7 +66,11 @@ function StatCard({
 
   return (
     <div
-      className={`scroll-reveal stagger-${index + 1} flex flex-col items-center py-6 px-3 sm:py-8 sm:px-4 text-center border-r border-b border-sand/20 last:border-r-0 transition-all duration-300 hover:-translate-y-1 hover:border-sand/60`}
+      className={`scroll-reveal stagger-${index + 1} flex flex-col items-center py-6 px-3 sm:py-8 sm:px-4 text-center border-sand/20 ${
+        index < 2 ? "border-b" : ""
+      } ${
+        index % 2 === 0 ? "border-r" : ""
+      } md:border-b-0 md:border-r md:last:border-r-0 transition-all duration-300 hover:-translate-y-1 hover:border-sand/60`}
       style={{ background: "var(--color-ivory)" }}
     >
       <span
@@ -208,10 +212,10 @@ export default function About({
               </div>
             </div>
 
-            <div className="scroll-reveal stagger-3 mt-8 flex flex-wrap items-center gap-4">
+            <div className="scroll-reveal stagger-3 mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <a
                 href="#homestay"
-                className="inline-flex items-center gap-2.5 px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition-all hover:scale-105"
+                className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 text-center min-h-[46px]"
                 style={{
                   background: "var(--color-teal-deep)",
                   color: "var(--color-ivory)",
@@ -223,7 +227,7 @@ export default function About({
 
               <Link
                 href="/book"
-                className="btn-shimmer inline-flex items-center gap-2 px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] bg-sand text-teal-deep hover:bg-sand-light transition-all shadow-md"
+                className="btn-shimmer inline-flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.15em] bg-sand text-teal-deep hover:bg-sand-light transition-all shadow-md active:scale-95 text-center min-h-[46px]"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
                 Book Now
