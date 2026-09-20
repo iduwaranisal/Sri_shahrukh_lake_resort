@@ -9,21 +9,9 @@ import { getWhatsAppUrl, getTelUrl } from "@/lib/whatsapp";
 const navLinks = [
   { label: "About", href: "/#about", id: "about" },
   { label: "The Homestay", href: "/#homestay", id: "homestay" },
-  { label: "Amenities", href: "/#amenities", id: "amenities" },
-  { label: "Explore & Safaris", href: "/#explore", id: "explore" },
+  { label: "Explore", href: "/#explore", id: "explore" },
   { label: "Gallery", href: "/#gallery", id: "gallery" },
-  { label: "Guest Reviews", href: "/#reviews", id: "reviews" },
   { label: "Contact", href: "/#contact", id: "contact" },
-];
-
-const mobileNavLinks = [
-  { label: "About", href: "/#about", id: "about" },
-  { label: "The Homestay", href: "/#homestay", id: "homestay" },
-  { label: "Amenities", href: "/#amenities", id: "amenities" },
-  { label: "Explore & Safaris", href: "/#explore", id: "explore" },
-  { label: "Gallery", href: "/#gallery", id: "gallery" },
-  { label: "Guest Reviews", href: "/#reviews", id: "reviews" },
-  { label: "Contact & Location", href: "/#contact", id: "contact" },
 ];
 
 export default function Navbar({
@@ -127,8 +115,8 @@ export default function Navbar({
             </span>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <ul className="hidden lg:flex items-center gap-5 xl:gap-8 2xl:gap-9" role="menubar">
+          {/* Desktop Navigation Links — Clean, uncluttered 5 core items */}
+          <ul className="hidden lg:flex items-center gap-7 xl:gap-9" role="menubar">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -136,7 +124,7 @@ export default function Navbar({
                   <Link
                     href={link.href}
                     role="menuitem"
-                    className={`relative text-[11px] xl:text-xs uppercase tracking-[0.16em] xl:tracking-[0.22em] transition-colors duration-200 py-1 ${
+                    className={`relative text-xs uppercase tracking-[0.2em] transition-colors duration-200 py-1 ${
                       isActive
                         ? "text-sand font-medium"
                         : "text-ivory/80 hover:text-sand font-light"
@@ -257,14 +245,14 @@ export default function Navbar({
             </div>
 
             {/* Scrollable Links & Actions */}
-            <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col justify-between overscroll-contain pb-[max(1.5rem,env(safe-area-inset-bottom))]">
-              <ul className="flex flex-col gap-2 my-auto text-center py-4">
-                {mobileNavLinks.map((link) => (
+            <div className="flex-1 overflow-y-auto px-6 py-8 flex flex-col justify-between overscroll-contain pb-[max(2rem,env(safe-area-inset-bottom))]">
+              <ul className="flex flex-col gap-3 my-auto text-center py-6">
+                {navLinks.map((link) => (
                   <li key={link.href} className="w-full">
                     <Link
                       href={link.href}
                       onClick={() => setMenuOpen(false)}
-                      className="inline-flex items-center justify-center min-h-[44px] py-2 px-3 text-xl font-light tracking-wide transition-colors hover:text-sand touch-manipulation"
+                      className="inline-flex items-center justify-center min-h-[48px] py-2 px-4 text-2xl font-light tracking-wide transition-colors hover:text-sand touch-manipulation"
                       style={{
                         color: activeSection === link.id ? "var(--color-sand)" : "var(--color-ivory)",
                         fontFamily: "var(--font-serif)",
@@ -276,8 +264,8 @@ export default function Navbar({
                 ))}
               </ul>
 
-              {/* Bottom Quick Action Strip */}
-              <div className="space-y-3.5 pt-5 border-t border-sand/15">
+              {/* Bottom Quick Action Strip — Clean and focused */}
+              <div className="space-y-3 pt-6 border-t border-sand/15">
                 <Link
                   href="/book"
                   onClick={() => setMenuOpen(false)}
@@ -292,32 +280,18 @@ export default function Navbar({
                   <span>Book Now</span>
                 </Link>
 
-                <div className="grid grid-cols-2 gap-2.5">
-                  <a
-                    href={getWhatsAppUrl(
-                      whatsapp,
-                      "Hello Sri Shahrukh Lake Resort, I would like to inquire about room availability."
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-1.5 py-2.5 border border-sand/30 text-sand text-[11px] uppercase tracking-wider bg-teal-mid/50 hover:bg-teal-mid"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>WhatsApp</span>
-                  </a>
-                  <a
-                    href={getTelUrl(phone)}
-                    className="flex items-center justify-center gap-1.5 py-2.5 border border-sand/30 text-sand text-[11px] uppercase tracking-wider bg-teal-mid/50 hover:bg-teal-mid"
-                  >
-                    <Phone className="w-3.5 h-3.5" />
-                    <span className="truncate">{phone}</span>
-                  </a>
-                </div>
-
-                <div className="flex items-center justify-center gap-1.5 text-ivory/60 text-[10px] tracking-wider text-center pt-1">
-                  <MapPin className="w-3 h-3 text-sand flex-shrink-0" />
-                  <span>135/1 Suduwella Tikiri Udanapura, Tissamaharama</span>
-                </div>
+                <a
+                  href={getWhatsAppUrl(
+                    whatsapp,
+                    "Hello Sri Shahrukh Lake Resort, I would like to inquire about room availability."
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full py-3 border border-sand/30 text-sand text-xs uppercase tracking-wider bg-teal-mid/50 hover:bg-teal-mid transition-all active:scale-[0.98]"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Chat on WhatsApp</span>
+                </a>
               </div>
             </div>
           </motion.div>
