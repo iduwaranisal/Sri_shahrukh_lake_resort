@@ -113,7 +113,7 @@ export default function MapSection({
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 mb-3.5 px-4 py-1.5 border border-sand/40 bg-sand/10 shadow-lg">
-            <Sparkles className="w-3.5 h-3.5 text-sand" />
+            <Sparkles className="w-3.5 h-3.5 text-sand animate-twinkle" />
             <p className="text-xs uppercase tracking-[0.3em] font-semibold text-sand-light">
               Interactive Map &amp; Distances
             </p>
@@ -235,7 +235,7 @@ export default function MapSection({
                 className="text-lg sm:text-xl font-light text-sand flex items-center gap-2"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                <Compass className="w-5 h-5 text-sand" />
+                <Compass className="w-5 h-5 text-sand animate-twinkle" />
                 <span>Distances to Key Attractions</span>
               </h3>
               <p className="text-xs text-ivory/70 mt-1">
@@ -280,7 +280,7 @@ export default function MapSection({
               href={mapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 flex items-center justify-center gap-2 w-full py-3.5 px-4 bg-gradient-to-r from-sand via-amber-300 to-sand text-teal-deep font-bold text-xs uppercase tracking-[0.2em] shadow-xl hover:brightness-110 transition-all text-center"
+              className="btn-shimmer mt-2 flex items-center justify-center gap-2 w-full py-3.5 px-4 bg-gradient-to-r from-sand via-amber-300 to-sand text-teal-deep font-bold text-xs uppercase tracking-[0.2em] shadow-xl hover:brightness-110 transition-all text-center"
             >
               <Navigation className="w-4 h-4 text-teal-deep" />
               <span>Get Turn-by-Turn GPS Directions</span>

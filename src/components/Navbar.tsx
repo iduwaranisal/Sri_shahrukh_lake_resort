@@ -154,7 +154,7 @@ export default function Navbar() {
             <Link
               href="/book"
               id="nav-book-now"
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-md shadow-black/25"
+              className="btn-shimmer inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-md shadow-black/25"
               style={{
                 background: "var(--color-sand)",
                 color: "var(--color-teal-deep)",

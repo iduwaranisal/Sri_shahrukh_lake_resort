@@ -63,8 +63,8 @@ export default function Explore({
       <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
         {/* Header */}
         <div className="mb-12 sm:mb-16 text-center max-w-3xl mx-auto">
-          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10">
-            <Compass className="w-3.5 h-3.5 text-sand" />
+          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10 shadow-sm">
+            <Compass className="w-3.5 h-3.5 text-sand animate-twinkle" />
             <p
               className="text-xs uppercase tracking-[0.35em] text-sand font-medium"
               style={{ fontFamily: "var(--font-sans)" }}
@@ -235,7 +235,7 @@ export default function Explore({
 
           <Link
             href="/book"
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-105 shadow-lg"
+            className="btn-shimmer inline-flex items-center justify-center gap-2 whitespace-nowrap px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-105 shadow-lg"
             style={{
               background: "var(--color-sand)",
               color: "var(--color-teal-deep)",

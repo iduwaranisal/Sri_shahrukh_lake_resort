@@ -129,8 +129,8 @@ export default function Reviews({
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
         {/* Section Header */}
         <div className="mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
-          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10">
-            <Sparkles className="w-3.5 h-3.5 text-sand" />
+          <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-sand animate-twinkle" />
             <p
               className="text-xs uppercase tracking-[0.3em] font-medium"
               style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
@@ -255,8 +255,8 @@ export default function Reviews({
           ].map((item, idx) => {
             const Icon = item.icon;
             return (
-              <div key={idx} className="p-4 border border-sand/20 bg-ivory-warm/60">
-                <Icon className="w-4 h-4 text-sand mx-auto mb-1.5" />
+              <div key={idx} className="p-4 border border-sand/20 bg-ivory-warm/60 transition-all duration-300 hover:-translate-y-1 hover:border-sand hover:shadow-sm">
+                <Icon className="w-4 h-4 text-sand mx-auto mb-1.5 animate-twinkle" />
                 <p className="text-xl font-light text-teal-deep font-serif">
                   {item.metric}
                 </p>

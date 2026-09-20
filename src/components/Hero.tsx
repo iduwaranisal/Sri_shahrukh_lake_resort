@@ -142,7 +142,7 @@ export default function Hero({
       <div className="relative z-20 flex flex-1 flex-col items-center justify-center px-4 sm:px-6 text-center pt-28 sm:pt-32 pb-16 sm:pb-20 max-w-5xl mx-auto">
         {/* Resort Location & Accommodation Type Badge */}
         <div
-          className={`mb-4 sm:mb-6 inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-4 py-2 border shadow-2xl shadow-black/80 transition-all duration-700 ease-out ${
+          className={`mb-4 sm:mb-6 inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-4 py-2 border shadow-2xl shadow-black/80 transition-all duration-700 ease-out animate-float-slow ${
             contentVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
           }`}
           style={{
@@ -156,17 +156,17 @@ export default function Hero({
           </span>
           <span className="hidden sm:inline text-sand/40">|</span>
           <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-ivory font-normal drop-shadow">
-            <Sparkles className="w-3 h-3 text-sand" />
+            <Sparkles className="w-3 h-3 text-sand animate-twinkle" />
             <span>Homestay in Tissamaharama</span>
             <span>·</span>
-            <Star className="w-3 h-3 fill-sand text-sand" />
+            <Star className="w-3 h-3 fill-sand text-sand animate-twinkle" />
             <strong className="font-semibold text-sand">4.8 / 5.0 Rating</strong>
           </span>
         </div>
 
         {/* Main Headline */}
         <div
-          className={`mb-5 sm:mb-7 flex flex-col items-center transition-all duration-900 ease-out ${
+          className={`mb-5 sm:mb-7 flex flex-col items-center transition-all duration-700 ease-out ${
             contentVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
           style={{ transitionDelay: "0.15s" }}
@@ -201,7 +201,7 @@ export default function Hero({
 
         {/* Subtitle with genuine, accurate details */}
         <p
-          className={`mb-8 sm:mb-10 max-w-2xl text-sm sm:text-base md:text-lg font-normal leading-relaxed text-ivory px-4 py-2 rounded shadow-lg transition-all duration-900 ease-out ${
+          className={`mb-8 sm:mb-10 max-w-2xl text-sm sm:text-base md:text-lg font-normal leading-relaxed text-ivory px-4 py-2 rounded shadow-lg transition-all duration-700 ease-out ${
             contentVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           }`}
           style={{
@@ -218,7 +218,7 @@ export default function Hero({
 
         {/* Primary Action Buttons */}
         <div
-          className={`flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto max-w-sm sm:max-w-none transition-all duration-900 ease-out ${
+          className={`flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto max-w-sm sm:max-w-none transition-all duration-700 ease-out ${
             contentVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           }`}
           style={{ transitionDelay: "0.45s" }}
@@ -226,7 +226,7 @@ export default function Hero({
           <Link
             href="/book"
             id="hero-cta-booking"
-            className="flex items-center justify-center gap-2.5 w-full sm:w-auto min-h-[50px] px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-xl shadow-black/30"
+            className="btn-shimmer flex items-center justify-center gap-2.5 w-full sm:w-auto min-h-[50px] px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-xl shadow-black/30"
             style={{
               background: "var(--color-sand)",
               color: "var(--color-teal-deep)",

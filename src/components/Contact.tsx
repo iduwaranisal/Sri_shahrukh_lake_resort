@@ -99,7 +99,7 @@ export default function Contact({
         {/* Section Header */}
         <div className="mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
           <div className="scroll-reveal inline-flex items-center gap-2 mb-3 px-3.5 py-1 border border-sand/30 bg-sand/10">
-            <Sparkles className="w-3.5 h-3.5 text-sand" />
+            <Sparkles className="w-3.5 h-3.5 text-sand animate-twinkle" />
             <p
               className="text-xs uppercase tracking-[0.3em] font-medium"
               style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
@@ -295,7 +295,7 @@ export default function Contact({
                   id="contact-submit"
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex items-center justify-center gap-2 w-full min-h-[46px] px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50"
+                  className="btn-shimmer flex items-center justify-center gap-2 w-full min-h-[46px] px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50"
                   style={{
                     background: "var(--color-teal-deep)",
                     color: "var(--color-ivory)",

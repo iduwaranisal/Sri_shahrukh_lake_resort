@@ -65,7 +65,7 @@ function StatCard({
 
   return (
     <div
-      className={`scroll-reveal stagger-${index + 1} flex flex-col items-center py-6 px-3 sm:py-8 sm:px-4 text-center border-r border-b border-sand/20 last:border-r-0`}
+      className={`scroll-reveal stagger-${index + 1} flex flex-col items-center py-6 px-3 sm:py-8 sm:px-4 text-center border-r border-b border-sand/20 last:border-r-0 transition-all duration-300 hover:-translate-y-1 hover:border-sand/60`}
       style={{ background: "var(--color-ivory)" }}
     >
       <span
@@ -151,7 +151,7 @@ export default function About({
           {/* ── Text column (7 cols on desktop) ── */}
           <div className="lg:col-span-7">
             <div className="scroll-reveal inline-flex items-center gap-2 mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-sand" />
+              <Sparkles className="w-3.5 h-3.5 text-sand animate-twinkle" />
               <p
                 className="text-xs font-medium uppercase tracking-[0.3em]"
                 style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
@@ -222,7 +222,7 @@ export default function About({
 
               <Link
                 href="/book"
-                className="inline-flex items-center gap-2 px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] bg-sand text-teal-deep hover:bg-sand-light transition-all shadow-md"
+                className="btn-shimmer inline-flex items-center gap-2 px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] bg-sand text-teal-deep hover:bg-sand-light transition-all shadow-md"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
                 Book Now
@@ -232,7 +232,7 @@ export default function About({
 
           {/* ── Image column (static, no parallax) ── */}
           <div className="scroll-reveal stagger-1 lg:col-span-5 relative px-2 sm:px-0">
-            <div className="relative aspect-[4/5] w-full overflow-hidden border border-sand/30 shadow-xl bg-teal-deep">
+            <div className="relative aspect-[4/5] w-full overflow-hidden border border-sand/30 shadow-xl bg-teal-deep group">
               <Image
                 src={optimizeImage(activeImage.src, {
                   width: 1000,
@@ -242,7 +242,7 @@ export default function About({
                 alt={activeImage.alt}
                 fill
                 loading="lazy"
-                className="object-cover"
+                className="object-cover transition-transform duration-700 hover:scale-105"
                 sizes="(max-width: 1024px) 100vw, 42vw"
               />
 
