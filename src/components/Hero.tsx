@@ -82,8 +82,8 @@ export default function Hero({
       className="relative min-h-[100dvh] w-full overflow-hidden flex flex-col justify-between"
       aria-label="Hero — Sri Shahrukh Lake Resort"
     >
-      {/* ── Continuous seamless crossfade slides — zero gap / empty space ── */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden bg-teal-deep">
+      {/* ── Continuous seamless crossfade slides — isolated at lowest z-index ── */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden bg-teal-deep isolate z-0 pointer-events-none">
         {slidesToRender.map((slide, idx) => {
           const isActive = idx === current;
           return (
@@ -91,14 +91,14 @@ export default function Hero({
               key={`${slide.src}-${idx}`}
               initial={false}
               animate={{
-                opacity: isActive ? 1 : 0,
+                opacity: isActive ? 0.78 : 0,
                 scale: isActive ? 1.03 : 1.0,
               }}
               transition={{
                 opacity: { duration: 0.9, ease: "easeInOut" },
                 scale: { duration: 4.2, ease: "easeOut" },
               }}
-              className="absolute inset-0 w-full h-full pointer-events-none"
+              className="absolute inset-0 w-full h-full"
               style={{
                 zIndex: isActive ? 1 : 0,
               }}
@@ -116,26 +116,26 @@ export default function Hero({
         })}
       </div>
 
-      {/* ── Editorial Gradient Overlays with enhanced contrast for colorful photos ── */}
+      {/* ── Editorial Gradient Overlays with enhanced contrast (z-10) ── */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none z-10"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(10,24,21,0.78) 0%, rgba(10,24,21,0.64) 35%, rgba(10,24,21,0.76) 70%, rgba(10,24,21,0.95) 100%)",
+            "linear-gradient(to bottom, rgba(10,24,21,0.82) 0%, rgba(10,24,21,0.68) 35%, rgba(10,24,21,0.80) 70%, rgba(10,24,21,0.96) 100%)",
         }}
       />
 
-      {/* Radial dark vignette directly behind center text */}
+      {/* Radial dark vignette directly behind center text (z-10) */}
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 z-10"
         style={{
           background:
-            "radial-gradient(ellipse 80% 65% at 50% 50%, rgba(10,24,21,0.75) 0%, rgba(10,24,21,0.4) 60%, transparent 100%)",
+            "radial-gradient(ellipse 80% 65% at 50% 50%, rgba(10,24,21,0.82) 0%, rgba(10,24,21,0.45) 60%, transparent 100%)",
         }}
       />
 
-      {/* ── Center Content ── */}
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 sm:px-6 text-center pt-28 sm:pt-32 pb-16 sm:pb-20 max-w-5xl mx-auto">
+      {/* ── Center Content (z-20) ── */}
+      <div className="relative z-20 flex flex-1 flex-col items-center justify-center px-4 sm:px-6 text-center pt-28 sm:pt-32 pb-16 sm:pb-20 max-w-5xl mx-auto">
         {/* Resort Location & Accommodation Type Badge */}
         <motion.div
           initial={{ opacity: 0, y: -15 }}
@@ -246,7 +246,7 @@ export default function Hero({
       </div>
 
       {/* ── Bottom Controls Bar ── */}
-      <div className="relative z-10 mx-auto max-w-7xl w-full px-5 sm:px-6 lg:px-10 pb-6 sm:pb-8 flex items-center justify-between">
+      <div className="relative z-20 mx-auto max-w-7xl w-full px-5 sm:px-6 lg:px-10 pb-6 sm:pb-8 flex items-center justify-between">
         {/* Caption for current slide */}
         <div
           className="text-left max-w-xs sm:max-w-md px-3.5 py-2 border border-sand/30 shadow-xl"
