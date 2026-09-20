@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MapPin, Phone, Mail, ExternalLink, MessageCircle, Navigation } from "lucide-react";
+import { MapPin, Phone, Mail, MessageCircle, Navigation } from "lucide-react";
 
 const quickLinks = [
   { label: "About the Homestay", href: "/#about", targetBlank: false },
@@ -59,39 +59,6 @@ export default function Footer({
             "linear-gradient(to right, transparent, var(--color-sand), transparent)",
         }}
       />
-
-      {/* Map Embed Section with Safe Mobile Interaction */}
-      <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-teal-deep">
-        <iframe
-          title="Sri Shahrukh Lake Resort Location Map at 135/1 Suduwella Tikiri Udanapura, Tissamaharama"
-          src="https://maps.google.com/maps?q=77VQ%2BX6+Tissamaharama&t=&z=14&ie=UTF8&iwloc=&output=embed"
-          width="100%"
-          height="100%"
-          className="w-full h-full border-0 filter grayscale contrast-110 opacity-75"
-          allowFullScreen={false}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-
-        {/* Map Header Floating Overlay */}
-        <div className="absolute top-4 left-4 sm:left-10 bg-teal-deep/95 border border-sand/30 p-3 sm:p-4 backdrop-blur-md max-w-sm">
-          <p className="text-[10px] uppercase tracking-widest text-sand font-semibold">
-            Location · 77VQ+X6 Tissamaharama
-          </p>
-          <p className="text-xs text-ivory font-light mt-1">
-            135/1 Suduwella Tikiri Udanapura, Tissamaharama, Sri Lanka
-          </p>
-          <a
-            href="https://www.google.com/maps/search/?api=1&query=77VQ%2BX6+Tissamaharama"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-sand-light hover:text-sand mt-2 font-medium"
-          >
-            <span>View on Google Maps</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
-        </div>
-      </div>
 
       {/* Main Footer Content */}
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10 py-14">
