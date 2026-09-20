@@ -46,35 +46,34 @@ export default function Hero({
   whatsapp?: string;
   slides?: HeroSlide[];
 }) {
-  const activeSlides = dynamicSlides && dynamicSlides.length > 0 ? dynamicSlides : slides;
+  const rawSlides = dynamicSlides && dynamicSlides.length > 0 ? dynamicSlides : slides;
+  const activeSlides = rawSlides.filter(
+    (s) => s && typeof s.src === "string" && s.src.trim() !== ""
+  );
+  const slidesToRender = activeSlides.length > 0 ? activeSlides : slides;
+
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  /* Parallax — background scrolls smoothly */
   const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
 
   useEffect(() => {
-    if (!isPlaying) {
+    if (!isPlaying || slidesToRender.length <= 1) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       return;
     }
 
     intervalRef.current = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % activeSlides.length);
-    }, 6000);
+      setCurrent((prev) => (prev + 1) % slidesToRender.length);
+    }, 3000);
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isPlaying, activeSlides.length]);
+  }, [isPlaying, slidesToRender.length]);
 
-  const currentSlide = activeSlides[current] || activeSlides[0];
+  const currentSlide = slidesToRender[current] || slidesToRender[0];
 
   return (
     <section
@@ -83,31 +82,39 @@ export default function Hero({
       className="relative min-h-[100dvh] w-full overflow-hidden flex flex-col justify-between"
       aria-label="Hero — Sri Shahrukh Lake Resort"
     >
-      {/* ── Crossfade slides — with parallax wrapper ── */}
-      <motion.div
-        style={{ y: bgY }}
-        className="absolute inset-0 w-full h-[125%] -top-[12%]"
-      >
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={current}
-            initial={{ opacity: 0, scale: 1.07 }}
-            animate={{ opacity: 1, scale: 1.01 }}
-            exit={{ opacity: 0, scale: 0.99 }}
-            transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={currentSlide.src}
-              alt={currentSlide.alt}
-              fill
-              priority={current === 0}
-              className="object-cover"
-              sizes="100vw"
-            />
-          </motion.div>
-        </AnimatePresence>
-      </motion.div>
+      {/* ── Continuous seamless crossfade slides — zero gap / empty space ── */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden bg-teal-deep">
+        {slidesToRender.map((slide, idx) => {
+          const isActive = idx === current;
+          return (
+            <motion.div
+              key={`${slide.src}-${idx}`}
+              initial={false}
+              animate={{
+                opacity: isActive ? 1 : 0,
+                scale: isActive ? 1.03 : 1.0,
+              }}
+              transition={{
+                opacity: { duration: 0.8, ease: "easeInOut" },
+                scale: { duration: 3.2, ease: "easeOut" },
+              }}
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              style={{
+                zIndex: isActive ? 1 : 0,
+              }}
+            >
+              <Image
+                src={slide.src}
+                alt={slide.alt || "Sri Shahrukh Lake Resort"}
+                fill
+                priority={idx === 0 || idx === 1}
+                className="object-cover"
+                sizes="100vw"
+              />
+            </motion.div>
+          );
+        })}
+      </div>
 
       {/* ── Editorial Gradient Overlays ── */}
       <div
@@ -252,11 +259,11 @@ export default function Hero({
           </button>
 
           <div className="flex items-center gap-1.5" aria-label="Slideshow indicators">
-            {activeSlides.map((_, i) => (
+            {slidesToRender.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
-                aria-label={`Slide ${i + 1} of ${activeSlides.length}`}
+                aria-label={`Slide ${i + 1} of ${slidesToRender.length}`}
                 className="h-5 flex items-center justify-center p-0.5"
               >
                 <span

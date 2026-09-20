@@ -33,6 +33,8 @@ import {
   Camera,
   Upload,
   Image as ImageIcon,
+  ArrowLeft,
+  ArrowRight,
 } from "lucide-react";
 import {
   getBookings,
@@ -423,6 +425,25 @@ export default function AdminClient() {
     if (res.success) {
       showToast("Hero slide removed");
       setContent({ ...content, heroImages: newSlides });
+    }
+  };
+
+  const handleMoveHeroSlide = async (index: number, direction: "left" | "right") => {
+    if (!content) return;
+    const targetIndex = direction === "left" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= content.heroImages.length) return;
+
+    const newSlides = [...content.heroImages];
+    const temp = newSlides[index];
+    newSlides[index] = newSlides[targetIndex];
+    newSlides[targetIndex] = temp;
+
+    const res = await updateHeroImages(newSlides);
+    if (res.success) {
+      showToast(`Slide moved to position ${targetIndex + 1}`);
+      setContent({ ...content, heroImages: newSlides });
+    } else {
+      showToast(res.error || "Failed to update slide order");
     }
   };
 
@@ -1280,9 +1301,42 @@ export default function AdminClient() {
                               <span>Uploading to Cloudinary...</span>
                             </div>
                           )}
-                          <span className="absolute top-2 left-2 px-2 py-0.5 bg-teal-deep/90 text-sand text-[10px] uppercase tracking-wider font-semibold border border-sand/30">
-                            Slide {index + 1}
-                          </span>
+                          <div className="absolute top-2 left-2 flex items-center gap-1.5 z-10">
+                            <span className="px-2 py-0.5 bg-teal-deep/90 text-sand text-[10px] uppercase tracking-wider font-semibold border border-sand/30 shadow">
+                              Slide {index + 1}
+                            </span>
+                            {content.heroImages.length > 1 && (
+                              <div className="flex items-center bg-teal-deep/90 border border-sand/30 shadow">
+                                <button
+                                  type="button"
+                                  disabled={index === 0}
+                                  onClick={() => handleMoveHeroSlide(index, "left")}
+                                  className={`p-1 transition-colors ${
+                                    index === 0
+                                      ? "opacity-30 cursor-not-allowed text-ivory/30"
+                                      : "text-sand hover:bg-sand/20 cursor-pointer"
+                                  }`}
+                                  title="Move earlier (Left)"
+                                >
+                                  <ArrowLeft className="w-3 h-3" />
+                                </button>
+                                <span className="text-sand/30 text-[10px]">|</span>
+                                <button
+                                  type="button"
+                                  disabled={index === content.heroImages.length - 1}
+                                  onClick={() => handleMoveHeroSlide(index, "right")}
+                                  className={`p-1 transition-colors ${
+                                    index === content.heroImages.length - 1
+                                      ? "opacity-30 cursor-not-allowed text-ivory/30"
+                                      : "text-sand hover:bg-sand/20 cursor-pointer"
+                                  }`}
+                                  title="Move later (Right)"
+                                >
+                                  <ArrowRight className="w-3 h-3" />
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </div>
 
                         <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
@@ -1320,15 +1374,39 @@ export default function AdminClient() {
                           </div>
 
                           <div className="flex items-center justify-between pt-2 border-t border-sand/15">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                handleUpdateHeroSlideCaption(index, slide.caption || "", slide.alt || "")
-                              }
-                              className="px-3 py-1.5 bg-sand/20 border border-sand/40 text-sand text-xs hover:bg-sand/30 transition-colors cursor-pointer"
-                            >
-                              Save Details
-                            </button>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleUpdateHeroSlideCaption(index, slide.caption || "", slide.alt || "")
+                                }
+                                className="px-3 py-1.5 bg-sand/20 border border-sand/40 text-sand text-xs hover:bg-sand/30 transition-colors cursor-pointer"
+                              >
+                                Save Details
+                              </button>
+                              {content.heroImages.length > 1 && (
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    type="button"
+                                    disabled={index === 0}
+                                    onClick={() => handleMoveHeroSlide(index, "left")}
+                                    className="p-1.5 border border-sand/30 text-sand hover:bg-sand/20 disabled:opacity-30 disabled:cursor-not-allowed"
+                                    title="Move earlier"
+                                  >
+                                    <ArrowLeft className="w-3.5 h-3.5" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    disabled={index === content.heroImages.length - 1}
+                                    onClick={() => handleMoveHeroSlide(index, "right")}
+                                    className="p-1.5 border border-sand/30 text-sand hover:bg-sand/20 disabled:opacity-30 disabled:cursor-not-allowed"
+                                    title="Move later"
+                                  >
+                                    <ArrowRight className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                             {content.heroImages.length > 1 && (
                               <button
                                 type="button"
