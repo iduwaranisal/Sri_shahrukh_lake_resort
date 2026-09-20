@@ -16,7 +16,7 @@ const stats = [
 
 /* ─── Founder portrait ─────────────────────────────────────────────── */
 const founderImage = {
-  src: "/images/owner-srk.jpg",
+  src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894712/srishahrukh/owner-srk.jpg",
   alt: "Sri Shahrukh Lake Resort founder Geeth with Shah Rukh Khan in 2004",
   caption: "Founder Geeth with Shah Rukh Khan · 2004",
   subCaption: "The encounter that inspired our homestay name: Sri Shahrukh Lake Resort.",

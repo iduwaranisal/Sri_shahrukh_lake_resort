@@ -26,11 +26,11 @@ export const attractions: Attraction[] = [
     distance: "2.5 km",
     travelTime: "5-minute drive / 15-min cycle",
     category: "Nature & Heritage",
-    heroImage: "/images/tissa-lake-sunrise.jpg",
+    heroImage: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894717/srishahrukh/tissa-lake-sunrise.jpg",
     galleryImages: [
-      "/images/tissa-lake-sunrise.jpg",
-      "/images/bundala-flamingos.jpg",
-      "/images/kirinda-temple.jpg"
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894717/srishahrukh/tissa-lake-sunrise.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894641/srishahrukh/bundala-flamingos.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894710/srishahrukh/kirinda-temple.jpg"
     ],
     shortDescription:
       "Commissioned by King Kavantissa over 2,200 years ago, Tissa Wewa is located about 2.5 km (1.5 miles) from our homestay, surrounded by giant rain trees and lotus wetlands.",
@@ -60,11 +60,11 @@ export const attractions: Attraction[] = [
     distance: "2.2 km",
     travelTime: "5-minute drive / 10-min cycle",
     category: "Ancient Sacred Heritage",
-    heroImage: "/images/tissamaharama-stupa.jpg",
+    heroImage: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894722/srishahrukh/tissamaharama-stupa.jpg",
     galleryImages: [
-      "/images/tissamaharama-stupa.jpg",
-      "/images/tissa-lake-sunrise.jpg",
-      "/images/kataragama-temple.jpg"
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894722/srishahrukh/tissamaharama-stupa.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894717/srishahrukh/tissa-lake-sunrise.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894706/srishahrukh/kataragama-temple.jpg"
     ],
     shortDescription:
       "Located just 2.2 km from our homestay, this colossal 158-foot sacred Buddhist stupa was consecrated in the 3rd century BC by King Kavan Tissa.",
@@ -94,11 +94,11 @@ export const attractions: Attraction[] = [
     distance: "28 km",
     travelTime: "30-minute drive",
     category: "Wildlife Safari",
-    heroImage: "/images/yala-leopard.jpg",
+    heroImage: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894726/srishahrukh/yala-leopard.jpg",
     galleryImages: [
-      "/images/yala-leopard.jpg",
-      "/images/tissa-lake-sunrise.jpg",
-      "/images/tissamaharama-stupa.jpg"
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894726/srishahrukh/yala-leopard.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894717/srishahrukh/tissa-lake-sunrise.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894722/srishahrukh/tissamaharama-stupa.jpg"
     ],
     shortDescription:
       "Famous worldwide for having one of the highest densities of wild leopards on earth, majestic Asian elephants, sloth bears, and diverse birdlife.",
@@ -128,11 +128,11 @@ export const attractions: Attraction[] = [
     distance: "7.5 km",
     travelTime: "10-minute drive",
     category: "Culture & Cinema Heritage",
-    heroImage: "/images/hero2.jpeg",
+    heroImage: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894647/srishahrukh/hero2.jpg",
     galleryImages: [
-      "/images/hero2.jpeg",
-      "/images/im 1.jpg",
-      "/images/hero 4.jpeg"
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894647/srishahrukh/hero2.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894655/srishahrukh/im_1.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894643/srishahrukh/hero_4.jpg"
     ],
     shortDescription:
       "Located just 7.5 km from our homestay, this 230-acre cinema village features full-scale vintage colonial streetscapes, historic replica buildings, and film production sets.",
@@ -162,11 +162,11 @@ export const attractions: Attraction[] = [
     distance: "14 km",
     travelTime: "15-minute coastal drive",
     category: "Coastal Legend & Ocean Panorama",
-    heroImage: "/images/kirinda-temple.jpg",
+    heroImage: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894710/srishahrukh/kirinda-temple.jpg",
     galleryImages: [
-      "/images/kirinda-temple.jpg",
-      "/images/tissa-lake-sunrise.jpg",
-      "/images/bundala-flamingos.jpg"
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894710/srishahrukh/kirinda-temple.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894717/srishahrukh/tissa-lake-sunrise.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894641/srishahrukh/bundala-flamingos.jpg"
     ],
     shortDescription:
       "A scenic wind-swept cliff temple located 14 km from the homestay, towering above crashing turquoise ocean waves on the southern coast.",
@@ -196,11 +196,11 @@ export const attractions: Attraction[] = [
     distance: "28 km",
     travelTime: "25-minute coastal drive",
     category: "UNESCO Wetland & Avifauna",
-    heroImage: "/images/bundala-flamingos.jpg",
+    heroImage: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894641/srishahrukh/bundala-flamingos.jpg",
     galleryImages: [
-      "/images/bundala-flamingos.jpg",
-      "/images/yala-leopard.jpg",
-      "/images/kirinda-temple.jpg"
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894641/srishahrukh/bundala-flamingos.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894726/srishahrukh/yala-leopard.jpg",
+      "https://res.cloudinary.com/znj9faa6/image/upload/v1789894710/srishahrukh/kirinda-temple.jpg"
     ],
     shortDescription:
       "Located 28 km away, Bundala is an internationally recognized wetland sanctuary famous for thousands of wintering migratory birds, flamingos, and quiet safaris.",

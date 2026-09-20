@@ -12,22 +12,22 @@ interface GalleryImage {
 }
 
 const galleryImages: GalleryImage[] = [
-  { src: "/images/img1.jpg", alt: "Peaceful homestay exterior and garden grounds", category: "The Homestay" },
-  { src: "/images/img2.jpg", alt: "Comfortable bedroom with clean linens", category: "The Homestay" },
-  { src: "/images/tissa-lake-sunrise.jpg", alt: "Tissa Wewa reservoir at dawn with morning mist and lotus blossoms", category: "Lake & Nature" },
-  { src: "/images/yala-leopard.jpg", alt: "Sri Lankan leopard basking on granite outcrop in Yala National Park", category: "Wildlife & Heritage" },
-  { src: "/images/tissamaharama-stupa.jpg", alt: "Ancient white stupa of Tissamaharama Raja Maha Vihara against sunset", category: "Wildlife & Heritage" },
-  { src: "/images/img3.jpg", alt: "Garden terrace and peaceful sitting area", category: "The Homestay" },
-  { src: "/images/im 10.png", alt: "Homestay grounds at sunset", category: "The Homestay" },
-  { src: "/images/bundala-flamingos.jpg", alt: "Greater Flamingos wading in Bundala UNESCO Ramsar wetland", category: "Wildlife & Heritage" },
-  { src: "/images/kataragama-temple.jpg", alt: "Sacred evening puja ceremony with clay oil lamps at Kataragama", category: "Wildlife & Heritage" },
-  { src: "/images/kirinda-temple.jpg", alt: "Kirinda cliff temple above crashing southern Indian Ocean waves", category: "Wildlife & Heritage" },
-  { src: "/images/im 7.png", alt: "Fresh home-cooked Sri Lankan breakfast", category: "Homestay Life" },
-  { src: "/images/hero1.jpeg", alt: "Untamed wilderness of Ruhuna dry-zone forest and granite hills", category: "Lake & Nature" },
-  { src: "/images/im 5.png", alt: "Garden relaxation area overlooking tropical greenery", category: "Homestay Life" },
-  { src: "/images/im 4.png", alt: "Clean, comfortable room setting", category: "The Homestay" },
-  { src: "/images/im 3.png", alt: "Attached private bathroom with hot water shower", category: "The Homestay" },
-  { src: "/images/hero 4.jpeg", alt: "Homestay entrance surrounded by tropical palms", category: "Homestay Life" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894680/srishahrukh/img1.jpg", alt: "Peaceful homestay exterior and garden grounds", category: "The Homestay" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894691/srishahrukh/img2.jpg", alt: "Comfortable bedroom with clean linens", category: "The Homestay" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894717/srishahrukh/tissa-lake-sunrise.jpg", alt: "Tissa Wewa reservoir at dawn with morning mist and lotus blossoms", category: "Lake & Nature" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894726/srishahrukh/yala-leopard.jpg", alt: "Sri Lankan leopard basking on granite outcrop in Yala National Park", category: "Wildlife & Heritage" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894722/srishahrukh/tissamaharama-stupa.jpg", alt: "Ancient white stupa of Tissamaharama Raja Maha Vihara against sunset", category: "Wildlife & Heritage" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894702/srishahrukh/img3.jpg", alt: "Garden terrace and peaceful sitting area", category: "The Homestay" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894657/srishahrukh/im_10.png", alt: "Homestay grounds at sunset", category: "The Homestay" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894641/srishahrukh/bundala-flamingos.jpg", alt: "Greater Flamingos wading in Bundala UNESCO Ramsar wetland", category: "Wildlife & Heritage" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894706/srishahrukh/kataragama-temple.jpg", alt: "Sacred evening puja ceremony with clay oil lamps at Kataragama", category: "Wildlife & Heritage" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894710/srishahrukh/kirinda-temple.jpg", alt: "Kirinda cliff temple above crashing southern Indian Ocean waves", category: "Wildlife & Heritage" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894668/srishahrukh/im_7.png", alt: "Fresh home-cooked Sri Lankan breakfast", category: "Homestay Life" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894645/srishahrukh/hero1.jpg", alt: "Untamed wilderness of Ruhuna dry-zone forest and granite hills", category: "Lake & Nature" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894664/srishahrukh/im_5.png", alt: "Garden relaxation area overlooking tropical greenery", category: "Homestay Life" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894662/srishahrukh/im_4.png", alt: "Clean, comfortable room setting", category: "The Homestay" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894660/srishahrukh/im_3.png", alt: "Attached private bathroom with hot water shower", category: "The Homestay" },
+  { src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894643/srishahrukh/hero_4.jpg", alt: "Homestay entrance surrounded by tropical palms", category: "Homestay Life" },
 ];
 
 const categories = [

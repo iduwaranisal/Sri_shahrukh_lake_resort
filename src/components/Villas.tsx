@@ -19,23 +19,23 @@ import {
 
 const homestayPhotos = [
   {
-    src: "/images/img1.jpg",
+    src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894680/srishahrukh/img1.jpg",
     title: "Peaceful Homestay Grounds",
   },
   {
-    src: "/images/img2.jpg",
+    src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894691/srishahrukh/img2.jpg",
     title: "Comfortable Bedroom",
   },
   {
-    src: "/images/img3.jpg",
+    src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894702/srishahrukh/img3.jpg",
     title: "Garden Verandah & Terrace",
   },
   {
-    src: "/images/im 4.png",
+    src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894662/srishahrukh/im_4.png",
     title: "Clean Room Setting",
   },
   {
-    src: "/images/im 3.png",
+    src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894660/srishahrukh/im_3.png",
     title: "Private Bathroom with Hot Shower",
   },
 ];

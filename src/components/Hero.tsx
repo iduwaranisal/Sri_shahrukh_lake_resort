@@ -8,22 +8,22 @@ import { Pause, Play, Calendar, Sparkles, MessageCircle, MapPin, Star } from "lu
 
 const slides = [
   {
-    src: "/images/img2.jpg",
+    src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894691/srishahrukh/img2.jpg",
     alt: "Scenic view of Tissa Wewa in Tissamaharama near Sri Shahrukh Lake Resort",
     caption: "Tissamaharama · 2.5 km from Ancient Tissa Wewa",
   },
   {
-    src: "/images/hero1.jpeg",
+    src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894645/srishahrukh/hero1.jpg",
     alt: "Yala National Park wildlife safari — leopard habitat near Tissamaharama",
     caption: "Yala Safari Gateway · Affordable 4x4 Tours Arranged",
   },
   {
-    src: "/images/hero2.jpeg",
+    src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894647/srishahrukh/hero2.jpg",
     alt: "Sacred Kataragama Devalaya evening ceremonies near Tissamaharama",
     caption: "Kataragama Pilgrimage Sanctuary · 21 km Away",
   },
   {
-    src: "/images/tissamaharama-stupa.jpg",
+    src: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894722/srishahrukh/tissamaharama-stupa.jpg",
     alt: "Tissamaharama Raja Maha Vihara stupa located 2.2 km from the property",
     caption: "Tissamaharama Stupa · 2.2 km from Homestay",
   },
