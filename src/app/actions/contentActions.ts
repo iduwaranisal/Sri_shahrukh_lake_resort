@@ -112,7 +112,7 @@ export async function getSiteContent(): Promise<SerializedSiteContent> {
               "The encounter that inspired our homestay name: Sri Shahrukh Lake Resort.",
           }
         : {
-            src: "/images/hero3.jpeg",
+            src: "/images/owner-srk.jpg",
             alt: "Founder Geeth with Bollywood actor Shah Rukh Khan in Sri Lanka",
             caption: "Founder Geeth with Shah Rukh Khan · 2004",
             subCaption:
@@ -164,7 +164,7 @@ export async function getSiteContent(): Promise<SerializedSiteContent> {
             { id: "tissa-lake", name: "Tissa Wewa Lake", src: "/images/tissa-lake-sunrise.jpg" },
             { id: "tissamaharama-dagoba", name: "Tissamaharama Stupa", src: "/images/tissamaharama-stupa.jpg" },
             { id: "yala-national-park", name: "Yala National Park Safari", src: "/images/yala-leopard.jpg" },
-            { id: "ranminitenna", name: "Ranminitenna Cinema Village", src: "/images/ranminitenna.jpg" },
+            { id: "ranminitenna", name: "Ranminitenna Cinema Village", src: "/images/hero2.jpeg" },
             { id: "kirinda-beach", name: "Kirinda Beach & Temple", src: "/images/kirinda-temple.jpg" },
             { id: "bundala-national-park", name: "Bundala Ramsar Wetland", src: "/images/bundala-flamingos.jpg" },
           ],
@@ -256,7 +256,7 @@ export async function getSiteContent(): Promise<SerializedSiteContent> {
         },
       ],
       aboutImage: {
-        src: "/images/hero3.jpeg",
+        src: "/images/owner-srk.jpg",
         alt: "Founder Geeth with Bollywood actor Shah Rukh Khan in Sri Lanka",
         caption: "Founder Geeth with Shah Rukh Khan · 2004",
         subCaption: "The encounter that inspired our homestay name: Sri Shahrukh Lake Resort.",
@@ -290,7 +290,7 @@ export async function getSiteContent(): Promise<SerializedSiteContent> {
         { id: "tissa-lake", name: "Tissa Wewa Lake", src: "/images/tissa-lake-sunrise.jpg" },
         { id: "tissamaharama-dagoba", name: "Tissamaharama Stupa", src: "/images/tissamaharama-stupa.jpg" },
         { id: "yala-national-park", name: "Yala National Park Safari", src: "/images/yala-leopard.jpg" },
-        { id: "ranminitenna", name: "Ranminitenna Cinema Village", src: "/images/ranminitenna.jpg" },
+        { id: "ranminitenna", name: "Ranminitenna Cinema Village", src: "/images/hero2.jpeg" },
         { id: "kirinda-beach", name: "Kirinda Beach & Temple", src: "/images/kirinda-temple.jpg" },
         { id: "bundala-national-park", name: "Bundala Ramsar Wetland", src: "/images/bundala-flamingos.jpg" },
       ],

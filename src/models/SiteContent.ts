@@ -100,7 +100,7 @@ const HeroSlideSubSchema = new Schema<IHeroSlide>({
 
 const AboutImageSubSchema = new Schema<IAboutImage>(
   {
-    src: { type: String, default: "/images/hero3.jpeg" },
+    src: { type: String, default: "/images/owner-srk.jpg" },
     alt: { type: String, default: "Founder Geeth with Bollywood actor Shah Rukh Khan in Sri Lanka" },
     caption: { type: String, default: "Founder Geeth with Shah Rukh Khan · 2004" },
     subCaption: {
@@ -233,7 +233,7 @@ const SiteContentSchema = new Schema<ISiteContent>(
     aboutImage: {
       type: AboutImageSubSchema,
       default: () => ({
-        src: "/images/hero3.jpeg",
+        src: "/images/owner-srk.jpg",
         alt: "Founder Geeth with Bollywood actor Shah Rukh Khan in Sri Lanka",
         caption: "Founder Geeth with Shah Rukh Khan · 2004",
         subCaption: "The encounter that inspired our homestay name: Sri Shahrukh Lake Resort.",
@@ -276,7 +276,7 @@ const SiteContentSchema = new Schema<ISiteContent>(
         { id: "tissa-lake", name: "Tissa Wewa Lake", src: "/images/tissa-lake-sunrise.jpg" },
         { id: "tissamaharama-dagoba", name: "Tissamaharama Stupa", src: "/images/tissamaharama-stupa.jpg" },
         { id: "yala-national-park", name: "Yala National Park Safari", src: "/images/yala-leopard.jpg" },
-        { id: "ranminitenna", name: "Ranminitenna Cinema Village", src: "/images/ranminitenna.jpg" },
+        { id: "ranminitenna", name: "Ranminitenna Cinema Village", src: "/images/hero2.jpeg" },
         { id: "kirinda-beach", name: "Kirinda Beach & Temple", src: "/images/kirinda-temple.jpg" },
         { id: "bundala-national-park", name: "Bundala Ramsar Wetland", src: "/images/bundala-flamingos.jpg" },
       ],

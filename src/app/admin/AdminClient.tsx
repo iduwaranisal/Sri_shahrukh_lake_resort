@@ -1367,7 +1367,7 @@ export default function AdminClient() {
                     <div className="md:col-span-5 relative border border-sand/30 bg-teal-deep overflow-hidden aspect-[4/5] shadow-xl">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={content.aboutImage?.src || "/images/hero3.jpeg"}
+                        src={content.aboutImage?.src || "/images/owner-srk.jpg"}
                         alt={content.aboutImage?.alt || "Founder Geeth with Shah Rukh Khan"}
                         className="w-full h-full object-cover"
                       />
