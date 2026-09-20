@@ -66,7 +66,7 @@ export default function Hero({
 
     intervalRef.current = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slidesToRender.length);
-    }, 3000);
+    }, 4000);
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
@@ -95,8 +95,8 @@ export default function Hero({
                 scale: isActive ? 1.03 : 1.0,
               }}
               transition={{
-                opacity: { duration: 0.8, ease: "easeInOut" },
-                scale: { duration: 3.2, ease: "easeOut" },
+                opacity: { duration: 0.9, ease: "easeInOut" },
+                scale: { duration: 4.2, ease: "easeOut" },
               }}
               className="absolute inset-0 w-full h-full pointer-events-none"
               style={{
@@ -116,21 +116,21 @@ export default function Hero({
         })}
       </div>
 
-      {/* ── Editorial Gradient Overlays ── */}
+      {/* ── Editorial Gradient Overlays with enhanced contrast for colorful photos ── */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(10,24,21,0.65) 0%, rgba(10,24,21,0.4) 45%, rgba(10,24,21,0.92) 100%)",
+            "linear-gradient(to bottom, rgba(10,24,21,0.78) 0%, rgba(10,24,21,0.64) 35%, rgba(10,24,21,0.76) 70%, rgba(10,24,21,0.95) 100%)",
         }}
       />
 
-      {/* Radial soft ambient glow */}
+      {/* Radial dark vignette directly behind center text */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-40"
+        className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(212,175,55,0.15) 0%, transparent 75%)",
+            "radial-gradient(ellipse 80% 65% at 50% 50%, rgba(10,24,21,0.75) 0%, rgba(10,24,21,0.4) 60%, transparent 100%)",
         }}
       />
 
@@ -141,19 +141,19 @@ export default function Hero({
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-4 sm:mb-6 inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-3.5 py-1.5 border"
+          className="mb-4 sm:mb-6 inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-4 py-2 border shadow-2xl shadow-black/80"
           style={{
-            background: "rgba(10,24,21,0.75)",
-            borderColor: "rgba(212,175,55,0.4)",
-            backdropFilter: "blur(10px)",
+            background: "rgba(10,24,21,0.88)",
+            borderColor: "rgba(212,175,55,0.45)",
+            backdropFilter: "blur(12px)",
           }}
         >
-          <span className="flex items-center gap-1.5 text-[10px] sm:text-xs font-medium uppercase tracking-[0.2em] text-sand-light">
+          <span className="flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-sand-light drop-shadow">
             <MapPin className="h-3 w-3 text-sand" />
             135/1 Suduwella Tikiri Udanapura · Tissamaharama
           </span>
           <span className="hidden sm:inline text-sand/40">|</span>
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-ivory/90 font-light">
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-ivory font-normal drop-shadow">
             <Sparkles className="w-3 h-3 text-sand" />
             <span>Homestay in Tissamaharama</span>
             <span>·</span>
@@ -168,10 +168,19 @@ export default function Hero({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="mb-4 sm:mb-6 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-[1.15] tracking-tight"
-          style={{ color: "var(--color-ivory)", fontFamily: "var(--font-serif)" }}
+          style={{
+            color: "var(--color-ivory)",
+            fontFamily: "var(--font-serif)",
+            textShadow: "0 4px 20px rgba(0,0,0,0.95), 0 2px 6px rgba(0,0,0,0.9)",
+          }}
         >
           Sri Shahrukh Lake Resort <br />
-          <span className="italic gold-text-gradient font-normal text-2xl sm:text-4xl md:text-5xl">
+          <span
+            className="italic gold-text-gradient font-normal text-2xl sm:text-4xl md:text-5xl inline-block"
+            style={{
+              filter: "drop-shadow(0 4px 14px rgba(0,0,0,0.95)) drop-shadow(0 2px 4px rgba(0,0,0,0.9))",
+            }}
+          >
             Homestay in Tissamaharama
           </span>
         </motion.h1>
@@ -181,8 +190,14 @@ export default function Hero({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-8 sm:mb-10 max-w-2xl text-sm sm:text-base md:text-lg font-light leading-relaxed text-ivory/90 px-2 whitespace-pre-line"
-          style={{ fontFamily: "var(--font-sans)" }}
+          className="mb-8 sm:mb-10 max-w-2xl text-sm sm:text-base md:text-lg font-normal leading-relaxed text-ivory px-4 py-2 rounded shadow-lg"
+          style={{
+            fontFamily: "var(--font-sans)",
+            textShadow: "0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.95)",
+            background: "rgba(10,24,21,0.45)",
+            backdropFilter: "blur(6px)",
+            border: "1px solid rgba(212,175,55,0.2)",
+          }}
         >
           {heroSubtitle ||
             "A peaceful, friendly homestay in Tissamaharama. Enjoy clean comfortable rooms, tranquil garden views, free Wi-Fi, free private parking, fresh daily breakfast, and Yala safari tour arrangements."}
@@ -233,16 +248,25 @@ export default function Hero({
       {/* ── Bottom Controls Bar ── */}
       <div className="relative z-10 mx-auto max-w-7xl w-full px-5 sm:px-6 lg:px-10 pb-6 sm:pb-8 flex items-center justify-between">
         {/* Caption for current slide */}
-        <div className="text-left max-w-xs sm:max-w-md">
+        <div
+          className="text-left max-w-xs sm:max-w-md px-3.5 py-2 border border-sand/30 shadow-xl"
+          style={{
+            background: "rgba(10,24,21,0.85)",
+            backdropFilter: "blur(10px)",
+          }}
+        >
           <p
-            className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-sand"
+            className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-sand font-semibold"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Location Reference
           </p>
           <p
-            className="text-xs sm:text-sm font-light italic text-ivory/95 truncate"
-            style={{ fontFamily: "var(--font-serif)" }}
+            className="text-xs sm:text-sm font-light italic text-ivory truncate"
+            style={{
+              fontFamily: "var(--font-serif)",
+              textShadow: "0 1px 4px rgba(0,0,0,0.8)",
+            }}
           >
             {currentSlide.caption}
           </p>
