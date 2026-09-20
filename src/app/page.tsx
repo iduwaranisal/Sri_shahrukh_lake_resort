@@ -6,6 +6,7 @@ import Explore from "@/components/Explore";
 import Gallery from "@/components/Gallery";
 import Reviews from "@/components/Reviews";
 import Contact from "@/components/Contact";
+import MapSection from "@/components/MapSection";
 import Footer from "@/components/Footer";
 import MobileBottomBar from "@/components/MobileBottomBar";
 import { getSiteContent } from "@/app/actions/contentActions";
@@ -51,6 +52,7 @@ export default async function Home() {
           address={content.address}
           mapUrl={content.mapUrl}
         />
+        <MapSection address={content.address} mapUrl={content.mapUrl} />
       </main>
       <Footer
         phone={content.phone}

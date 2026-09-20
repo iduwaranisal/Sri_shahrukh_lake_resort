@@ -151,27 +151,39 @@ export default function Hero({
         </motion.div>
 
         {/* Main Headline */}
-        <motion.h1
+        <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-4 sm:mb-6 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-[1.15] tracking-tight"
-          style={{
-            color: "var(--color-ivory)",
-            fontFamily: "var(--font-serif)",
-            textShadow: "0 4px 20px rgba(0,0,0,0.95), 0 2px 6px rgba(0,0,0,0.9)",
-          }}
+          className="mb-5 sm:mb-7 flex flex-col items-center"
         >
-          Sri Shahrukh Lake Resort <br />
-          <span
-            className="italic gold-text-gradient font-normal text-2xl sm:text-4xl md:text-5xl inline-block"
+          <h1
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light leading-[1.08] tracking-tight text-center"
             style={{
-              filter: "drop-shadow(0 4px 14px rgba(0,0,0,0.95)) drop-shadow(0 2px 4px rgba(0,0,0,0.9))",
+              color: "var(--color-ivory)",
+              fontFamily: "var(--font-serif)",
+              textShadow: "0 4px 24px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.85)",
             }}
           >
-            Homestay in Tissamaharama
-          </span>
-        </motion.h1>
+            Sri Shahrukh Lake Resort
+          </h1>
+
+          {/* Premium Subtitle: Homestay in Tissamaharama */}
+          <div className="mt-3.5 sm:mt-5 inline-flex items-center justify-center gap-3 sm:gap-5">
+            <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-r from-transparent via-sand to-sand/80" />
+            <span
+              className="text-xs sm:text-sm md:text-base font-medium uppercase tracking-[0.32em] text-sand-light select-none"
+              style={{
+                fontFamily: "var(--font-sans)",
+                color: "#f1d48c",
+                textShadow: "0 2px 10px rgba(0,0,0,0.9), 0 0 20px rgba(212,175,55,0.4)",
+              }}
+            >
+              Homestay in Tissamaharama
+            </span>
+            <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-l from-transparent via-sand to-sand/80" />
+          </div>
+        </motion.div>
 
         {/* Subtitle with genuine, accurate details */}
         <motion.p

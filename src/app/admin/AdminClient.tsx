@@ -111,7 +111,25 @@ export default function AdminClient() {
   const [content, setContent] = useState<SerializedSiteContent | null>(null);
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  type ToastType = "success" | "error" | "info";
+  interface ToastState {
+    id: number;
+    message: string;
+    type: ToastType;
+  }
+  const [toast, setToast] = useState<ToastState | null>(null);
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    confirmLabel?: string;
+    onConfirm: () => void;
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
   const [isPending, startTransition] = useTransition();
 
   // Modals & form states
@@ -148,9 +166,27 @@ export default function AdminClient() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 4000);
+  const showToast = (msg: string, type: ToastType = "success") => {
+    const id = Date.now();
+    setToast({ id, message: msg, type });
+    setTimeout(() => {
+      setToast((curr) => (curr?.id === id ? null : curr));
+    }, 4500);
+  };
+
+  const openConfirm = (
+    title: string,
+    message: string,
+    onConfirm: () => void,
+    confirmLabel = "Confirm Delete"
+  ) => {
+    setConfirmDialog({
+      isOpen: true,
+      title,
+      message,
+      confirmLabel,
+      onConfirm,
+    });
   };
 
   const uploadFileToCloudinary = async (file: File): Promise<string | null> => {
@@ -250,15 +286,21 @@ export default function AdminClient() {
   };
 
   // Delete Booking Handler
-  const handleDeleteBooking = async (id: string) => {
-    if (!confirm("Are you sure you want to remove this booking?")) return;
-    const res = await deleteBooking(id);
-    if (res.success) {
-      setBookings((prev) => prev.filter((b) => b.id !== id));
-      showToast("Booking removed.");
-    } else {
-      showToast(res.error || "Failed to remove booking");
-    }
+  const handleDeleteBooking = (id: string) => {
+    openConfirm(
+      "Remove Booking Record",
+      "Are you sure you want to permanently delete this booking record?",
+      async () => {
+        const res = await deleteBooking(id);
+        if (res.success) {
+          setBookings((prev) => prev.filter((b) => b.id !== id));
+          showToast("Booking removed successfully.", "success");
+        } else {
+          showToast(res.error || "Failed to remove booking", "error");
+        }
+      },
+      "Delete Booking"
+    );
   };
 
   // Create Manual Booking Handler
@@ -317,14 +359,22 @@ export default function AdminClient() {
   };
 
   // Delete Review Handler
-  const handleDeleteReview = async (index: number) => {
-    if (!confirm("Delete this review?")) return;
-    const res = await deleteReview(index);
-    if (res.success) {
-      showToast("Review deleted");
-      const updated = await getSiteContent();
-      setContent(updated);
-    }
+  const handleDeleteReview = (index: number) => {
+    openConfirm(
+      "Delete Guest Review",
+      "Are you sure you want to remove this guest review from the website?",
+      async () => {
+        const res = await deleteReview(index);
+        if (res.success) {
+          showToast("Review deleted successfully", "success");
+          const updated = await getSiteContent();
+          setContent(updated);
+        } else {
+          showToast("Failed to delete review", "error");
+        }
+      },
+      "Delete Review"
+    );
   };
 
   // Add Amenity Handler
@@ -341,14 +391,22 @@ export default function AdminClient() {
   };
 
   // Delete Amenity Handler
-  const handleDeleteAmenity = async (index: number) => {
-    if (!confirm("Delete this amenity?")) return;
-    const res = await deleteAmenity(index);
-    if (res.success) {
-      showToast("Amenity removed");
-      const updated = await getSiteContent();
-      setContent(updated);
-    }
+  const handleDeleteAmenity = (index: number) => {
+    openConfirm(
+      "Delete Amenity Feature",
+      "Are you sure you want to remove this amenity from the homestay highlights?",
+      async () => {
+        const res = await deleteAmenity(index);
+        if (res.success) {
+          showToast("Amenity removed", "success");
+          const updated = await getSiteContent();
+          setContent(updated);
+        } else {
+          showToast("Failed to remove amenity", "error");
+        }
+      },
+      "Delete Amenity"
+    );
   };
 
   // Change Password Handler
@@ -420,19 +478,27 @@ export default function AdminClient() {
     }
   };
 
-  const handleDeleteHeroSlide = async (index: number) => {
+  const handleDeleteHeroSlide = (index: number) => {
     if (!content) return;
     if (content.heroImages.length <= 1) {
-      showToast("Must have at least one hero slide");
+      showToast("Must have at least one hero slide", "info");
       return;
     }
-    if (!confirm("Delete this hero slide?")) return;
-    const newSlides = content.heroImages.filter((_, i) => i !== index);
-    const res = await updateHeroImages(newSlides);
-    if (res.success) {
-      showToast("Hero slide removed");
-      setContent({ ...content, heroImages: newSlides });
-    }
+    openConfirm(
+      "Delete Hero Slide",
+      "Are you sure you want to remove this slide from the hero slideshow?",
+      async () => {
+        const newSlides = content.heroImages.filter((_, i) => i !== index);
+        const res = await updateHeroImages(newSlides);
+        if (res.success) {
+          showToast("Hero slide removed", "success");
+          setContent({ ...content, heroImages: newSlides });
+        } else {
+          showToast(res.error || "Failed to remove hero slide", "error");
+        }
+      },
+      "Delete Slide"
+    );
   };
 
   const handleMoveHeroSlide = async (index: number, direction: "left" | "right") => {
@@ -534,19 +600,27 @@ export default function AdminClient() {
     }
   };
 
-  const handleDeleteHomestayPhoto = async (index: number) => {
+  const handleDeleteHomestayPhoto = (index: number) => {
     if (!content) return;
     if (content.homestayImages.length <= 1) {
-      showToast("Must have at least one homestay photo");
+      showToast("Must have at least one homestay photo", "info");
       return;
     }
-    if (!confirm("Delete this photo?")) return;
-    const newPhotos = content.homestayImages.filter((_, i) => i !== index);
-    const res = await updateHomestayImages(newPhotos);
-    if (res.success) {
-      showToast("Photo removed from homestay showcase");
-      setContent({ ...content, homestayImages: newPhotos });
-    }
+    openConfirm(
+      "Delete Homestay Photo",
+      "Are you sure you want to remove this photo from the homestay showcase?",
+      async () => {
+        const newPhotos = content.homestayImages.filter((_, i) => i !== index);
+        const res = await updateHomestayImages(newPhotos);
+        if (res.success) {
+          showToast("Photo removed from homestay showcase", "success");
+          setContent({ ...content, homestayImages: newPhotos });
+        } else {
+          showToast("Failed to remove photo", "error");
+        }
+      },
+      "Delete Photo"
+    );
   };
 
   const handleAddGalleryImageSubmit = async (e: React.FormEvent) => {
@@ -571,14 +645,22 @@ export default function AdminClient() {
     }
   };
 
-  const handleDeleteGalleryImage = async (index: number) => {
-    if (!confirm("Delete this photo from the gallery?")) return;
-    const res = await deleteGalleryImage(index);
-    if (res.success) {
-      showToast("Photo deleted from gallery");
-      const updated = await getSiteContent();
-      setContent(updated);
-    }
+  const handleDeleteGalleryImage = (index: number) => {
+    openConfirm(
+      "Delete Gallery Photo",
+      "Are you sure you want to delete this photo from the resort gallery?",
+      async () => {
+        const res = await deleteGalleryImage(index);
+        if (res.success) {
+          showToast("Photo deleted from gallery", "success");
+          const updated = await getSiteContent();
+          setContent(updated);
+        } else {
+          showToast("Failed to delete photo", "error");
+        }
+      },
+      "Delete Photo"
+    );
   };
 
   const handleReplaceExploreImage = async (id: string, file: File) => {
@@ -711,12 +793,66 @@ export default function AdminClient() {
   // ─────────────────────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "var(--color-teal-deep)" }}>
-      {/* ── Toast Notification ── */}
-      {toastMessage && (
-        <div className="fixed bottom-5 right-5 z-50 px-4 py-3 bg-sand text-teal-deep text-xs font-semibold shadow-2xl flex items-center gap-2 animate-bounce">
-          <CheckCircle2 className="w-4 h-4" />
-          <span>{toastMessage}</span>
-        </div>
+      {/* ── Modern Toast Notification ── */}
+      {toast && (
+        <aside
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-5 right-5 z-[9999] max-w-sm border shadow-2xl p-4 flex items-start gap-3 backdrop-blur-xl transition-all duration-300"
+          style={{
+            background:
+              toast.type === "error"
+                ? "rgba(35, 10, 10, 0.96)"
+                : toast.type === "info"
+                ? "rgba(10, 26, 38, 0.96)"
+                : "rgba(10, 24, 21, 0.97)",
+            borderColor:
+              toast.type === "error"
+                ? "rgba(239, 68, 68, 0.5)"
+                : toast.type === "info"
+                ? "rgba(147, 197, 253, 0.5)"
+                : "rgba(201, 169, 110, 0.55)",
+            boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.65)",
+          }}
+        >
+          <div className="flex-shrink-0 mt-0.5">
+            {toast.type === "error" ? (
+              <AlertCircle className="w-5 h-5 text-red-400" />
+            ) : toast.type === "info" ? (
+              <Sparkles className="w-5 h-5 text-sky-300" />
+            ) : (
+              <CheckCircle2 className="w-5 h-5 text-sand" />
+            )}
+          </div>
+          <div className="flex-1 min-w-0 pr-2">
+            <p
+              className="font-semibold uppercase tracking-wider text-[10px] mb-0.5"
+              style={{
+                color:
+                  toast.type === "error"
+                    ? "#fca5a5"
+                    : toast.type === "info"
+                    ? "#93c5fd"
+                    : "var(--color-sand)",
+              }}
+            >
+              {toast.type === "error"
+                ? "Alert / Notice"
+                : toast.type === "info"
+                ? "Information"
+                : "Update Successful"}
+            </p>
+            <p className="text-xs text-ivory font-light leading-relaxed break-words">{toast.message}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setToast(null)}
+            className="flex-shrink-0 text-ivory/50 hover:text-ivory transition-colors p-0.5"
+            aria-label="Close notification"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </aside>
       )}
 
       {/* ── Top Header ── */}
@@ -2440,6 +2576,57 @@ export default function AdminClient() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modern Confirmation Modal Dialog (replaces browser confirm) ── */}
+      {confirmDialog.isOpen && (
+        <div
+          className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="confirm-modal-title"
+        >
+          <div className="w-full max-w-md border border-sand/40 bg-teal-mid p-6 shadow-2xl space-y-4">
+            <div className="flex items-start gap-3.5">
+              <div className="h-10 w-10 flex-shrink-0 flex items-center justify-center rounded-full bg-red-500/15 border border-red-500/30 text-red-400">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div className="flex-1">
+                <h3
+                  id="confirm-modal-title"
+                  className="text-lg font-light text-ivory"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {confirmDialog.title}
+                </h3>
+                <p className="text-xs text-ivory/80 mt-1 leading-relaxed">
+                  {confirmDialog.message}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-sand/15">
+              <button
+                type="button"
+                onClick={() => setConfirmDialog((prev) => ({ ...prev, isOpen: false }))}
+                className="px-4 py-2 border border-sand/25 text-ivory/80 hover:text-ivory text-xs uppercase tracking-wider transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const cb = confirmDialog.onConfirm;
+                  setConfirmDialog((prev) => ({ ...prev, isOpen: false }));
+                  cb();
+                }}
+                className="px-5 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-semibold uppercase tracking-wider shadow-lg transition-all cursor-pointer"
+              >
+                {confirmDialog.confirmLabel || "Confirm"}
+              </button>
+            </div>
           </div>
         </div>
       )}
