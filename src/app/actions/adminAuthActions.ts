@@ -1,56 +1,45 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { connectToDatabase } from "@/lib/mongodb";
-import { AdminUser, type IAdminUser } from "@/models/AdminUser";
-import crypto from "crypto";
+import {
+  COOKIE_NAME,
+  signToken,
+  getOrCreateAdmin,
+  checkRateLimit,
+  recordFailedAttempt,
+  resetLoginAttempts,
+  verifyAdminSession,
+} from "@/lib/adminAuth";
 
-const COOKIE_NAME = "srishahrukh_admin_session";
-const SECRET = process.env.ADMIN_SECRET_KEY || "srishahrukh_admin_secret_key_tissa_2026";
-const DEFAULT_ADMIN_PASSWORD = "admin";
-
-function signToken(username: string): string {
-  const timestamp = Date.now();
-  const data = `${username}:${timestamp}`;
-  const hmac = crypto.createHmac("sha256", SECRET).update(data).digest("hex");
-  return `${Buffer.from(data).toString("base64")}.${hmac}`;
+/**
+ * Verify whether the incoming request has a valid authenticated admin session.
+ */
+export async function checkAdminAuth(): Promise<{ authenticated: boolean }> {
+  return verifyAdminSession();
 }
 
-function verifyToken(token: string): boolean {
-  try {
-    const parts = token.split(".");
-    if (parts.length !== 2) return false;
-    const [b64Data, hmac] = parts;
-    const data = Buffer.from(b64Data, "base64").toString("utf-8");
-    const expectedHmac = crypto.createHmac("sha256", SECRET).update(data).digest("hex");
-    if (hmac !== expectedHmac) return false;
-
-    // Verify expiration (session valid for 7 days)
-    const [, timestampStr] = data.split(":");
-    const timestamp = parseInt(timestampStr, 10);
-    const maxAge = 7 * 24 * 60 * 60 * 1000;
-    if (Date.now() - timestamp > maxAge) return false;
-
-    return true;
-  } catch {
-    return false;
+/**
+ * Guard function for server actions. Returns unauthorized status if not authenticated.
+ */
+export async function requireAdminAuth(): Promise<{ authorized: boolean; error?: string }> {
+  const { authenticated } = await checkAdminAuth();
+  if (!authenticated) {
+    return { authorized: false, error: "Unauthorized access: Admin session required." };
   }
-}
-
-async function getOrCreateAdmin(): Promise<IAdminUser> {
-  await connectToDatabase();
-  let admin = await AdminUser.findOne({ username: "admin" });
-  if (!admin) {
-    admin = new AdminUser({ username: "admin" });
-    admin.setPassword(DEFAULT_ADMIN_PASSWORD);
-    await admin.save();
-    console.log("[Admin Initialized] Default admin user created with username 'admin'");
-  }
-  return admin;
+  return { authorized: true };
 }
 
 export async function loginAdmin(password: string) {
   try {
+    // 1. Check rate limit
+    const rateCheck = checkRateLimit();
+    if (!rateCheck.allowed) {
+      return {
+        success: false,
+        error: `Too many failed login attempts. Account locked for security. Please retry in ${rateCheck.waitMinutes} minutes.`,
+      };
+    }
+
     if (!password) {
       return { success: false, error: "Please enter your password" };
     }
@@ -59,8 +48,12 @@ export async function loginAdmin(password: string) {
     const isValid = admin.validatePassword(password);
 
     if (!isValid) {
+      recordFailedAttempt();
       return { success: false, error: "Incorrect admin password" };
     }
+
+    // Success: clear rate limit counter
+    resetLoginAttempts();
 
     const token = signToken(admin.username);
     const cookieStore = await cookies();
@@ -92,25 +85,11 @@ export async function logoutAdmin() {
   }
 }
 
-export async function checkAdminAuth(): Promise<{ authenticated: boolean }> {
-  try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get(COOKIE_NAME);
-    if (!sessionCookie || !sessionCookie.value) {
-      return { authenticated: false };
-    }
-
-    const isValid = verifyToken(sessionCookie.value);
-    return { authenticated: isValid };
-  } catch {
-    return { authenticated: false };
-  }
-}
-
 export async function changeAdminPassword(oldPassword: string, newPassword: string) {
   try {
-    if (!newPassword || newPassword.length < 4) {
-      return { success: false, error: "New password must be at least 4 characters long" };
+    // Password complexity requirements
+    if (!newPassword || newPassword.length < 8) {
+      return { success: false, error: "New password must be at least 8 characters long" };
     }
 
     const admin = await getOrCreateAdmin();
@@ -123,7 +102,7 @@ export async function changeAdminPassword(oldPassword: string, newPassword: stri
     admin.setPassword(newPassword);
     await admin.save();
 
-    // Re-issue session cookie with new timestamp
+    // Re-issue fresh session cookie
     const token = signToken(admin.username);
     const cookieStore = await cookies();
     cookieStore.set(COOKIE_NAME, token, {

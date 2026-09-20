@@ -414,6 +414,10 @@ export default function AdminClient() {
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setPasswordError("");
+    if (newPassword.length < 8) {
+      setPasswordError("New password must be at least 8 characters long");
+      return;
+    }
     if (newPassword !== confirmPassword) {
       setPasswordError("New passwords do not match");
       return;
@@ -2152,12 +2156,12 @@ export default function AdminClient() {
 
                 <div>
                   <label className="block text-xs uppercase tracking-wider text-sand font-medium mb-1">
-                    New Password (Min 4 chars)
+                    New Password (Min 8 chars)
                   </label>
                   <input
                     type="password"
                     required
-                    minLength={4}
+                    minLength={8}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand"
@@ -2171,7 +2175,7 @@ export default function AdminClient() {
                   <input
                     type="password"
                     required
-                    minLength={4}
+                    minLength={8}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand"

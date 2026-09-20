@@ -14,6 +14,7 @@ import {
 } from "@/models/SiteContent";
 import { uploadImageToCloudinary } from "@/lib/cloudinary";
 import { revalidatePath } from "next/cache";
+import { requireAdminAuth } from "@/app/actions/adminAuthActions";
 
 export interface SerializedSiteContent {
   resortName: string;
@@ -300,6 +301,11 @@ export async function getSiteContent(): Promise<SerializedSiteContent> {
 
 export async function updateSiteContent(updates: Partial<SerializedSiteContent>) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
 
     let doc = await SiteContent.findOne();
@@ -324,6 +330,11 @@ export async function updateSiteContent(updates: Partial<SerializedSiteContent>)
 
 export async function addReview(review: Omit<IReview, "id">) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
 
     let doc = await SiteContent.findOne();
@@ -347,6 +358,11 @@ export async function addReview(review: Omit<IReview, "id">) {
 
 export async function deleteReview(index: number) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
 
     const doc = await SiteContent.findOne();
@@ -370,6 +386,11 @@ export async function deleteReview(index: number) {
 
 export async function addAmenity(amenity: IAmenity) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
 
     let doc = await SiteContent.findOne();
@@ -393,6 +414,11 @@ export async function addAmenity(amenity: IAmenity) {
 
 export async function deleteAmenity(index: number) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
 
     const doc = await SiteContent.findOne();
@@ -416,6 +442,11 @@ export async function deleteAmenity(index: number) {
 
 export async function uploadImageAction(base64Data: string, folder = "srishahrukh") {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     if (!base64Data) {
       return { success: false, error: "No image data provided" };
     }
@@ -430,6 +461,11 @@ export async function uploadImageAction(base64Data: string, folder = "srishahruk
 
 export async function updateHeroImages(heroImages: IHeroSlide[]) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
     let doc = await SiteContent.findOne();
     if (!doc) doc = new SiteContent({});
@@ -447,6 +483,11 @@ export async function updateHeroImages(heroImages: IHeroSlide[]) {
 
 export async function updateAboutImage(aboutImage: IAboutImage) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
     let doc = await SiteContent.findOne();
     if (!doc) doc = new SiteContent({});
@@ -464,6 +505,11 @@ export async function updateAboutImage(aboutImage: IAboutImage) {
 
 export async function updateHomestayImages(homestayImages: IHomestayImage[]) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
     let doc = await SiteContent.findOne();
     if (!doc) doc = new SiteContent({});
@@ -481,6 +527,11 @@ export async function updateHomestayImages(homestayImages: IHomestayImage[]) {
 
 export async function addGalleryImage(image: Omit<IGalleryImage, "_id">) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
     let doc = await SiteContent.findOne();
     if (!doc) doc = new SiteContent({});
@@ -498,6 +549,11 @@ export async function addGalleryImage(image: Omit<IGalleryImage, "_id">) {
 
 export async function deleteGalleryImage(index: number) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
     const doc = await SiteContent.findOne();
     if (!doc) return { success: false, error: "Content not found" };
@@ -519,6 +575,11 @@ export async function deleteGalleryImage(index: number) {
 
 export async function updateExploreImage(id: string, src: string) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
     let doc = await SiteContent.findOne();
     if (!doc) doc = new SiteContent({});

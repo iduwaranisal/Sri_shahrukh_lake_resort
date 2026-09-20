@@ -19,18 +19,53 @@ const AdminUserSchema = new Schema<IAdminUser>(
   { timestamps: true }
 );
 
+const PBKDF2_ROUNDS = 100000;
+const PBKDF2_KEYLEN = 64;
+const PBKDF2_DIGEST = "sha512";
+
 AdminUserSchema.methods.setPassword = function (password: string) {
   this.salt = crypto.randomBytes(16).toString("hex");
   this.passwordHash = crypto
-    .pbkdf2Sync(password, this.salt, 1000, 64, "sha512")
+    .pbkdf2Sync(password, this.salt, PBKDF2_ROUNDS, PBKDF2_KEYLEN, PBKDF2_DIGEST)
     .toString("hex");
 };
 
 AdminUserSchema.methods.validatePassword = function (password: string): boolean {
-  const hash = crypto
-    .pbkdf2Sync(password, this.salt, 1000, 64, "sha512")
-    .toString("hex");
-  return this.passwordHash === hash;
+  try {
+    const hash = crypto
+      .pbkdf2Sync(password, this.salt, PBKDF2_ROUNDS, PBKDF2_KEYLEN, PBKDF2_DIGEST)
+      .toString("hex");
+
+    const a = Buffer.from(this.passwordHash, "hex");
+    const b = Buffer.from(hash, "hex");
+
+    if (a.length === b.length && crypto.timingSafeEqual(a, b)) {
+      return true;
+    }
+  } catch {
+    // Length mismatch or hex parse issue
+  }
+
+  // Fallback for legacy 1000 iteration hashes if any
+  try {
+    const legacyHash = crypto
+      .pbkdf2Sync(password, this.salt, 1000, PBKDF2_KEYLEN, PBKDF2_DIGEST)
+      .toString("hex");
+
+    const a = Buffer.from(this.passwordHash, "hex");
+    const b = Buffer.from(legacyHash, "hex");
+
+    if (a.length === b.length && crypto.timingSafeEqual(a, b)) {
+      // Upgrade immediately to 100,000 rounds
+      this.setPassword(password);
+      this.save().catch(() => {});
+      return true;
+    }
+  } catch {
+    // Ignore
+  }
+
+  return false;
 };
 
 export const AdminUser: Model<IAdminUser> =

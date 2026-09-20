@@ -4,6 +4,7 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { Booking, type IBooking } from "@/models/Booking";
 import nodemailer from "nodemailer";
 import { revalidatePath } from "next/cache";
+import { requireAdminAuth } from "@/app/actions/adminAuthActions";
 
 export interface CreateBookingInput {
   name: string;
@@ -73,6 +74,11 @@ export async function createBooking(data: CreateBookingInput) {
 
 export async function getBookings(statusFilter?: string, search?: string) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized", bookings: [] };
+    }
+
     await connectToDatabase();
 
     const query: Record<string, unknown> = {};
@@ -121,6 +127,11 @@ export async function updateBookingStatus(
   adminNotes?: string
 ) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
 
     const updateFields: { status: string; adminNotes?: string } = { status };
@@ -144,6 +155,11 @@ export async function updateBookingStatus(
 
 export async function deleteBooking(id: string) {
   try {
+    const auth = await requireAdminAuth();
+    if (!auth.authorized) {
+      return { success: false, error: auth.error || "Unauthorized" };
+    }
+
     await connectToDatabase();
     await Booking.findByIdAndDelete(id);
     revalidatePath("/admin");
