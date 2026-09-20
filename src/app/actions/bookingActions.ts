@@ -5,6 +5,7 @@ import { Booking, type IBooking } from "@/models/Booking";
 import nodemailer from "nodemailer";
 import { revalidatePath } from "next/cache";
 import { requireAdminAuth } from "@/app/actions/adminAuthActions";
+import { generateBookingEmailHtml, generateBookingEmailText } from "@/lib/emailTemplate";
 
 export interface CreateBookingInput {
   name: string;
@@ -178,25 +179,21 @@ async function sendNotificationEmail(booking: IBooking) {
   const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
   const smtpPort = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : 465;
 
-  const emailSubject = `New Homestay Booking: ${booking.name} (${booking.checkIn} to ${booking.checkOut})`;
+  const bookingDetails = {
+    name: booking.name,
+    email: booking.email,
+    phone: booking.phone,
+    villa: booking.villa || "Homestay Stay",
+    checkIn: booking.checkIn,
+    checkOut: booking.checkOut,
+    guests: booking.guests,
+    specialRequests: booking.specialRequests,
+    type: "booking" as const,
+  };
 
-  const plainText = `
-=====================================================
-NEW HOMESTAY BOOKING - SRI SHAHRUKH LAKE RESORT
-=====================================================
-
-Guest Details:
-• Name: ${booking.name}
-• Email: ${booking.email}
-${booking.phone ? `• Phone / WhatsApp: ${booking.phone}\n` : ""}
-Stay Details:
-• Check-In Date: ${booking.checkIn}
-• Check-Out Date: ${booking.checkOut}
-• Number of Guests: ${booking.guests}
-
-${booking.specialRequests ? `Special Requests:\n${booking.specialRequests}\n\n` : ""}
-Submitted at: ${new Date().toLocaleString()}
-`;
+  const emailSubject = `New Homestay Booking: ${booking.villa || "Homestay Stay"} (${booking.checkIn} to ${booking.checkOut}) - ${booking.name}`;
+  const plainText = generateBookingEmailText(bookingDetails);
+  const htmlContent = generateBookingEmailHtml(bookingDetails);
 
   if (!emailUser || !emailPass) {
     console.log("[DEV Email Simulated] Booking notification created:\n", plainText);
@@ -219,5 +216,6 @@ Submitted at: ${new Date().toLocaleString()}
     replyTo: booking.email,
     subject: emailSubject,
     text: plainText,
+    html: htmlContent,
   });
 }
