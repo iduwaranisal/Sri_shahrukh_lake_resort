@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Pause, Play, Calendar, Sparkles, MessageCircle, MapPin, Star } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 const slides = [
   {
@@ -139,10 +140,10 @@ export default function Hero({
       />
 
       {/* ── Center Content (z-20) — CSS-driven entrance instead of framer-motion ── */}
-      <div className="relative z-20 flex flex-1 flex-col items-center justify-center px-4 sm:px-6 text-center pt-28 sm:pt-32 pb-16 sm:pb-20 max-w-5xl mx-auto">
+      <div className="relative z-20 flex flex-1 flex-col items-center justify-center px-4 sm:px-6 text-center pt-24 sm:pt-32 pb-14 sm:pb-20 max-w-5xl mx-auto w-full">
         {/* Resort Location & Accommodation Type Badge */}
         <div
-          className={`mb-4 sm:mb-6 inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-4 py-2 border shadow-2xl shadow-black/80 transition-all duration-700 ease-out animate-float-slow ${
+          className={`mb-3.5 sm:mb-6 inline-flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 px-3 py-1.5 sm:px-4 sm:py-2 border shadow-2xl shadow-black/80 transition-all duration-700 ease-out animate-float-slow max-w-full ${
             contentVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
           }`}
           style={{
@@ -150,9 +151,9 @@ export default function Hero({
             borderColor: "rgba(212,175,55,0.45)",
           }}
         >
-          <span className="flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-sand-light drop-shadow">
-            <MapPin className="h-3 w-3 text-sand" />
-            135/1 Suduwella Tikiri Udanapura · Tissamaharama
+          <span className="flex items-center gap-1.5 text-[9.5px] sm:text-xs font-semibold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-sand-light drop-shadow">
+            <MapPin className="h-3 w-3 text-sand flex-shrink-0" />
+            <span className="truncate max-w-[240px] sm:max-w-none">135/1 Suduwella Tikiri Udanapura · Tissamaharama</span>
           </span>
           <span className="hidden sm:inline text-sand/40">|</span>
           <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-ivory font-normal drop-shadow">
@@ -166,13 +167,13 @@ export default function Hero({
 
         {/* Main Headline */}
         <div
-          className={`mb-5 sm:mb-7 flex flex-col items-center transition-all duration-700 ease-out ${
+          className={`mb-4 sm:mb-7 flex flex-col items-center transition-all duration-700 ease-out ${
             contentVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
           style={{ transitionDelay: "0.15s" }}
         >
           <h1
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light leading-[1.08] tracking-tight text-center"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light leading-[1.12] sm:leading-[1.08] tracking-tight text-center px-2"
             style={{
               color: "var(--color-ivory)",
               fontFamily: "var(--font-serif)",
@@ -183,15 +184,15 @@ export default function Hero({
           </h1>
 
           {/* Premium Subtitle: Homestay in Tissamaharama */}
-          <div className="mt-3.5 sm:mt-5 inline-flex items-center justify-center gap-3 sm:gap-5">
+          <div className="mt-2.5 sm:mt-5 inline-flex items-center justify-center gap-2 sm:gap-5">
             <span
-              className={`h-[1px] w-8 sm:w-16 bg-gradient-to-r from-transparent via-sand to-sand/80 transition-all duration-700 ease-out origin-right ${
+              className={`h-[1px] w-5 sm:w-12 md:w-16 bg-gradient-to-r from-transparent via-sand to-sand/80 transition-all duration-700 ease-out origin-right ${
                 contentVisible ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
               }`}
               style={{ transitionDelay: "0.25s" }}
             />
             <span
-              className="text-xs sm:text-sm md:text-base font-medium uppercase tracking-[0.32em] text-sand-light select-none"
+              className="text-[11px] sm:text-sm md:text-base font-medium uppercase tracking-[0.22em] sm:tracking-[0.32em] text-sand-light select-none whitespace-nowrap"
               style={{
                 fontFamily: "var(--font-sans)",
                 color: "#f1d48c",
@@ -201,7 +202,7 @@ export default function Hero({
               Homestay in Tissamaharama
             </span>
             <span
-              className={`h-[1px] w-8 sm:w-16 bg-gradient-to-l from-transparent via-sand to-sand/80 transition-all duration-700 ease-out origin-left ${
+              className={`h-[1px] w-5 sm:w-12 md:w-16 bg-gradient-to-l from-transparent via-sand to-sand/80 transition-all duration-700 ease-out origin-left ${
                 contentVisible ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
               }`}
               style={{ transitionDelay: "0.25s" }}
@@ -248,9 +249,10 @@ export default function Hero({
           </Link>
 
           <a
-            href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+            href={getWhatsAppUrl(
+              whatsapp,
               "Hello Sri Shahrukh Lake Resort, I would like to inquire about room availability."
-            )}`}
+            )}
             target="_blank"
             rel="noopener noreferrer"
             id="hero-cta-whatsapp"
@@ -262,28 +264,28 @@ export default function Hero({
             }}
           >
             <MessageCircle className="w-4 h-4 text-sand-light" />
-            <span>WhatsApp: {whatsapp}</span>
+            <span>Chat on WhatsApp</span>
           </a>
         </div>
       </div>
 
-      {/* ── Bottom Controls Bar ── */}
-      <div className="relative z-20 mx-auto max-w-7xl w-full px-5 sm:px-6 lg:px-10 pb-6 sm:pb-8 flex items-center justify-between">
+      {/* ── Bottom Controls Bar with clearance for fixed mobile bar ── */}
+      <div className="relative z-20 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-10 pb-20 sm:pb-8 flex items-center justify-between gap-3">
         {/* Caption for current slide */}
         <div
-          className="text-left max-w-xs sm:max-w-md px-3.5 py-2 border border-sand/30 shadow-xl"
+          className="text-left max-w-[170px] xs:max-w-xs sm:max-w-md px-3 py-1.5 sm:px-3.5 sm:py-2 border border-sand/30 shadow-xl"
           style={{
             background: "rgba(10,24,21,0.9)",
           }}
         >
           <p
-            className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-sand font-semibold"
+            className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-sand font-semibold"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Location Reference
           </p>
           <p
-            className="text-xs sm:text-sm font-light italic text-ivory truncate"
+            className="text-[11px] sm:text-sm font-light italic text-ivory truncate"
             style={{
               fontFamily: "var(--font-serif)",
               textShadow: "0 1px 4px rgba(0,0,0,0.8)",

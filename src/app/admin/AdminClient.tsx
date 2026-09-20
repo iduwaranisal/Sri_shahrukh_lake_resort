@@ -43,6 +43,7 @@ import {
   createBooking,
   type SerializedBooking,
 } from "@/app/actions/bookingActions";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 import {
   getSiteContent,
   updateSiteContent,
@@ -1073,12 +1074,14 @@ export default function AdminClient() {
 
                     const cleanPhone = b.phone?.replace(/[^0-9]/g, "") || "";
                     const whatsappLink = cleanPhone
-                      ? `https://wa.me/${cleanPhone.startsWith("94") ? cleanPhone : `94${cleanPhone.replace(/^0/, "")}`}?text=${encodeURIComponent(
+                      ? getWhatsAppUrl(
+                          cleanPhone,
                           `Hello ${b.name}, this is Geeth from Sri Shahrukh Lake Resort regarding your reservation from ${b.checkIn} to ${b.checkOut}.`
-                        )}`
-                      : `https://wa.me/94757273416?text=${encodeURIComponent(
+                        )
+                      : getWhatsAppUrl(
+                          "94757273416",
                           `Inquiry regarding ${b.name}'s stay from ${b.checkIn} to ${b.checkOut}.`
-                        )}`;
+                        );
 
                     return (
                       <div

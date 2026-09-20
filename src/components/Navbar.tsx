@@ -3,13 +3,16 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Phone, MessageCircle, MapPin, X, Calendar } from "lucide-react";
+import { Menu, X, Calendar, Phone, MessageCircle, MapPin } from "lucide-react";
+import { getWhatsAppUrl, getTelUrl } from "@/lib/whatsapp";
 
 const navLinks = [
   { label: "About", href: "/#about", id: "about" },
   { label: "The Homestay", href: "/#homestay", id: "homestay" },
-  { label: "Explore", href: "/#explore", id: "explore" },
+  { label: "Amenities", href: "/#amenities", id: "amenities" },
+  { label: "Explore & Safaris", href: "/#explore", id: "explore" },
   { label: "Gallery", href: "/#gallery", id: "gallery" },
+  { label: "Guest Reviews", href: "/#reviews", id: "reviews" },
   { label: "Contact", href: "/#contact", id: "contact" },
 ];
 
@@ -23,7 +26,13 @@ const mobileNavLinks = [
   { label: "Contact & Location", href: "/#contact", id: "contact" },
 ];
 
-export default function Navbar() {
+export default function Navbar({
+  whatsapp = "0757273416",
+  phone = "077 621 9245",
+}: {
+  whatsapp?: string;
+  phone?: string;
+} = {}) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -285,7 +294,10 @@ export default function Navbar() {
 
                 <div className="grid grid-cols-2 gap-2.5">
                   <a
-                    href="https://wa.me/94757273416?text=Hello%20Sri%20Shahrukh%20Lake%20Resort,%20I%20would%20like%20to%20inquire%20about%20room%20availability."
+                    href={getWhatsAppUrl(
+                      whatsapp,
+                      "Hello Sri Shahrukh Lake Resort, I would like to inquire about room availability."
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-1.5 py-2.5 border border-sand/30 text-sand text-[11px] uppercase tracking-wider bg-teal-mid/50 hover:bg-teal-mid"
@@ -294,11 +306,11 @@ export default function Navbar() {
                     <span>WhatsApp</span>
                   </a>
                   <a
-                    href="tel:+94776219245"
+                    href={getTelUrl(phone)}
                     className="flex items-center justify-center gap-1.5 py-2.5 border border-sand/30 text-sand text-[11px] uppercase tracking-wider bg-teal-mid/50 hover:bg-teal-mid"
                   >
                     <Phone className="w-3.5 h-3.5" />
-                    <span>077 621 9245</span>
+                    <span className="truncate">{phone}</span>
                   </a>
                 </div>
 

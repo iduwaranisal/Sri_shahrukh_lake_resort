@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { MapPin, Phone, Mail, MessageCircle, Navigation } from "lucide-react";
+import { getWhatsAppUrl, getTelUrl } from "@/lib/whatsapp";
 
 const quickLinks = [
   { label: "About the Homestay", href: "/#about", targetBlank: false },
@@ -41,13 +42,10 @@ export default function Footer({
   ratingScore = "4.8",
 }: FooterProps = {}) {
   const currentYear = new Date().getFullYear();
-  const cleanWaNumber = whatsapp.replace(/[^0-9]/g, "").replace(/^0/, "94");
-  const cleanPhone = phone.replace(/[^0-9+]/g, "");
-
 
   return (
     <footer
-      className="relative overflow-hidden text-ivory pb-20 lg:pb-0"
+      className="relative overflow-hidden text-ivory pb-24 lg:pb-0"
       style={{ background: "var(--color-charcoal)" }}
       aria-label="Site footer"
     >
@@ -149,7 +147,7 @@ export default function Footer({
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-sand flex-shrink-0" />
                 <a
-                  href={`tel:${cleanPhone.startsWith("+") ? cleanPhone : "+94" + cleanPhone.replace(/^0/, "")}`}
+                  href={getTelUrl(phone)}
                   className="text-ivory/80 hover:text-sand transition-colors"
                 >
                   {phone}
@@ -158,7 +156,7 @@ export default function Footer({
               <li className="flex items-center gap-2.5">
                 <MessageCircle className="w-4 h-4 text-sand flex-shrink-0" />
                 <a
-                  href={`https://wa.me/${cleanWaNumber}?text=Hello%20Sri%20Shahrukh%20Lake%20Resort`}
+                  href={getWhatsAppUrl(whatsapp, "Hello Sri Shahrukh Lake Resort")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-ivory/80 hover:text-sand transition-colors"

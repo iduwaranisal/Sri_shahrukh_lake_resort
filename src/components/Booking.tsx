@@ -16,6 +16,7 @@ import {
   Star,
   ExternalLink,
 } from "lucide-react";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 const roomOptions = [
   "Homestay Stay",
@@ -122,14 +123,15 @@ export default function Booking() {
     }
   };
 
-  const whatsAppUrl = `https://wa.me/94757273416?text=${encodeURIComponent(
+  const whatsAppUrl = getWhatsAppUrl(
+    "94757273416",
     "Hello Sri Shahrukh Lake Resort, I would like to check room availability for:\n• Room: " +
     ((submittedData?.villa || villaSelected) || "Any Room") +
     "\n• Check-in: " +
     ((submittedData?.checkIn || checkInDate) || "Upcoming") +
     "\n• Guests: " +
     ((submittedData?.guests || guestsCount) || "2 Guests")
-  )}`;
+  );
 
   return (
     <section
@@ -534,7 +536,7 @@ export default function Booking() {
                     className="text-sand underline underline-offset-4 hover:text-sand-light inline-flex items-center gap-1 font-medium"
                   >
                     <MessageCircle className="w-3.5 h-3.5" />
-                    <span>WhatsApp 0757273416</span>
+                    <span>Chat on WhatsApp (0757273416)</span>
                   </a>
                 </div>
 

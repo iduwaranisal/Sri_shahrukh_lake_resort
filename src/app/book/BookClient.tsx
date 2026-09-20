@@ -15,6 +15,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { createBooking } from "@/app/actions/bookingActions";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 const schema = z
   .object({
@@ -103,13 +104,14 @@ export default function BookClient() {
   const currentCheckOut = watch("checkOut") || checkOutDate;
   const currentGuests = watch("guests") || "2 Guests";
 
-  const whatsAppUrl = `https://wa.me/94757273416?text=${encodeURIComponent(
+  const whatsAppUrl = getWhatsAppUrl(
+    "94757273416",
     `Hello Sri Shahrukh Lake Resort, I would like to book a stay:\n• Check-in: ${
       submittedData?.checkIn || currentCheckIn
     }\n• Check-out: ${submittedData?.checkOut || currentCheckOut}\n• Guests: ${
       submittedData?.guests || currentGuests
     }`
-  )}`;
+  );
 
   return (
     <div
@@ -411,7 +413,7 @@ export default function BookClient() {
                       className="text-[11px] text-sand underline underline-offset-4 hover:text-sand-light inline-flex items-center gap-1 font-medium"
                     >
                       <MessageCircle className="w-3.5 h-3.5" />
-                      <span>Chat directly: 0757273416</span>
+                      <span>Chat on WhatsApp (0757273416)</span>
                     </a>
                   </div>
                 </div>

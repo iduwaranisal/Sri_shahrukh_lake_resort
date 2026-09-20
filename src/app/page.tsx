@@ -34,7 +34,7 @@ export default async function Home() {
           fetchPriority="high"
         />
       )}
-      <Navbar />
+      <Navbar whatsapp={content.whatsapp} phone={content.phone} />
       <main id="main-content">
         <Hero
           heroTitle={content.heroTitle}
@@ -53,6 +53,7 @@ export default async function Home() {
           homestayDescription={content.homestayDescription}
           amenities={content.amenities}
           homestayImages={content.homestayImages}
+          whatsapp={content.whatsapp}
         />
         <Explore customImages={content.exploreImages} />
         <Gallery initialImages={content.galleryImages} />
@@ -78,7 +79,7 @@ export default async function Home() {
         mapUrl={content.mapUrl}
         ratingScore={content.ratingScore}
       />
-      <MobileBottomBar />
+      <MobileBottomBar whatsapp={content.whatsapp} phone={content.phone} />
     </>
   );
 }

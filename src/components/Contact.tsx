@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { MapPin, Phone, Mail, Clock, MessageCircle, Send, CheckCircle2, Sparkles, Navigation } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { getWhatsAppUrl, getTelUrl } from "@/lib/whatsapp";
 
 const schema = z.object({
   name: z.string().min(2, "Please enter your name"),
@@ -32,9 +33,6 @@ export default function Contact({
 }: ContactProps = {}) {
   const sectionRef = useScrollReveal<HTMLElement>();
 
-  const cleanWaNumber = whatsapp.replace(/[^0-9]/g, "").replace(/^0/, "94");
-  const cleanPhone = phone.replace(/[^0-9+]/g, "");
-
   const contactDetails = [
     {
       label: "Address",
@@ -51,13 +49,13 @@ export default function Contact({
     {
       label: "Contact Number",
       value: phone,
-      href: `tel:${cleanPhone.startsWith("+") ? cleanPhone : "+94" + cleanPhone.replace(/^0/, "")}`,
+      href: getTelUrl(phone),
       icon: Phone,
     },
     {
       label: "WhatsApp Number",
       value: whatsapp,
-      href: `https://wa.me/${cleanWaNumber}?text=Hello%20Sri%20Shahrukh%20Lake%20Resort`,
+      href: getWhatsAppUrl(whatsapp, "Hello Sri Shahrukh Lake Resort"),
       icon: MessageCircle,
     },
     {
@@ -179,12 +177,16 @@ export default function Contact({
                 or request airport pick-up from Mattala Airport (29 km).
               </p>
               <a
-                href={`https://wa.me/${cleanWaNumber}?text=Hello%20Sri%20Shahrukh%20Lake%20Resort,%20I%20have%20an%20inquiry%20regarding%20booking`}
+                href={getWhatsAppUrl(
+                  whatsapp,
+                  "Hello Sri Shahrukh Lake Resort, I have an inquiry regarding room booking and safari tours"
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider transition-transform hover:scale-105"
+                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider transition-all hover:bg-sand-light active:scale-98 shadow-md"
               >
-                <span>Message on WhatsApp</span>
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span>Chat on WhatsApp</span>
               </a>
             </div>
           </div>

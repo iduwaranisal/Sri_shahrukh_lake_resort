@@ -22,6 +22,7 @@ import {
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SmoothImage } from "@/components/ui/SmoothImage";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 const homestayPhotos = [
   {
@@ -116,11 +117,13 @@ export default function Villas({
   homestayDescription,
   amenities,
   homestayImages,
+  whatsapp = "0757273416",
 }: {
   homestayTitle?: string;
   homestayDescription?: string;
   amenities?: DynamicAmenity[];
   homestayImages?: DynamicHomestayImage[];
+  whatsapp?: string;
 }) {
   const activeAmenities = amenities && amenities.length > 0 ? amenities : homestayAmenities;
   const activePhotos = homestayImages && homestayImages.length > 0 ? homestayImages : homestayPhotos;
@@ -341,7 +344,10 @@ export default function Villas({
             </div>
 
             {/* Thumbnails with glowing active state & progress */}
-            <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none">
+            <div
+              className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none touch-pan-x overscroll-contain"
+              style={{ WebkitOverflowScrolling: "touch" }}
+            >
               {activePhotos.map((photo, i) => {
                 const isSelected = selectedPhotoIndex === i;
                 return (
@@ -438,14 +444,17 @@ export default function Villas({
               </Link>
 
               <a
-                href="https://wa.me/94757273416?text=Hello%20Sri%20Shahrukh%20Lake%20Resort,%20I%20would%20like%20to%20inquire%20about%20staying%20at%20the%20homestay."
+                href={getWhatsAppUrl(
+                  whatsapp,
+                  "Hello Sri Shahrukh Lake Resort, I would like to inquire about staying at the homestay."
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-3.5 px-5 border border-teal-deep/30 text-teal-deep hover:bg-teal-deep hover:text-sand transition-all text-xs uppercase tracking-wider font-light"
+                className="flex-1 flex items-center justify-center gap-2 py-3.5 px-5 border border-teal-deep/30 text-teal-deep hover:bg-teal-deep hover:text-sand transition-all text-xs uppercase tracking-wider font-medium"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
                 <MessageCircle className="w-4 h-4 text-teal-mist" />
-                <span>WhatsApp: 0757273416</span>
+                <span>Chat on WhatsApp</span>
               </a>
             </div>
           </div>
