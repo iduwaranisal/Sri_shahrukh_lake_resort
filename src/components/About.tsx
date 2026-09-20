@@ -5,6 +5,7 @@ import { motion, useInView, useScroll, useTransform, type Variants } from "frame
 import Image from "next/image";
 import Link from "next/link";
 import { Sparkles, Wifi, Car, Coffee, ShieldCheck, Bike, MapPin } from "lucide-react";
+import { optimizeImage } from "@/lib/imageOptimization";
 
 /* ─── Real Stat definitions ─────────────────────────────────────────── */
 const stats = [
@@ -265,9 +266,14 @@ export default function About({
                 className="absolute inset-0 w-full h-[112%] -top-[6%]"
               >
                 <Image
-                  src={activeImage.src}
+                  src={optimizeImage(activeImage.src, {
+                    width: 1000,
+                    quality: "auto",
+                    format: "auto",
+                  })}
                   alt={activeImage.alt}
                   fill
+                  loading="lazy"
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 42vw"
                 />

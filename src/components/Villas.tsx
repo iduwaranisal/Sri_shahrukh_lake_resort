@@ -16,6 +16,7 @@ import {
   TreePine,
   Compass,
 } from "lucide-react";
+import { optimizeImage } from "@/lib/imageOptimization";
 
 const homestayPhotos = [
   {
@@ -217,10 +218,13 @@ export default function Villas({
           >
             <div className="relative aspect-[16/10] w-full overflow-hidden border border-sand/30 shadow-xl bg-teal-deep">
               <Image
-                src={(activePhotos[selectedPhotoIndex] || activePhotos[0]).src}
+                src={optimizeImage(
+                  (activePhotos[selectedPhotoIndex] || activePhotos[0]).src,
+                  { width: 1200, quality: "auto", format: "auto" }
+                )}
                 alt={(activePhotos[selectedPhotoIndex] || activePhotos[0]).title}
                 fill
-                priority
+                loading="lazy"
                 className="object-cover transition-transform duration-700 hover:scale-105"
                 sizes="(max-width: 1024px) 100vw, 58vw"
               />
@@ -254,9 +258,16 @@ export default function Villas({
                   }`}
                 >
                   <Image
-                    src={photo.src}
+                    src={optimizeImage(photo.src, {
+                      width: 240,
+                      height: 160,
+                      crop: "fill",
+                      quality: "auto",
+                      format: "auto",
+                    })}
                     alt={photo.title}
                     fill
+                    loading="lazy"
                     className="object-cover"
                     sizes="96px"
                   />

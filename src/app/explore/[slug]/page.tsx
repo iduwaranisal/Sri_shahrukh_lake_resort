@@ -6,6 +6,7 @@ import { ArrowLeft, Clock, MapPin, Calendar, Sparkles, Compass } from "lucide-re
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { attractions } from "@/data/explore";
+import { optimizeImage } from "@/lib/imageOptimization";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -53,7 +54,11 @@ export default async function AttractionPage({ params }: Props) {
         {/* ── Hero Banner ── */}
         <div className="relative min-h-[55vh] lg:h-[65vh] w-full overflow-hidden flex flex-col justify-end bg-teal-deep">
           <Image
-            src={attraction.heroImage}
+            src={optimizeImage(attraction.heroImage, {
+              width: 1920,
+              quality: "auto",
+              format: "auto",
+            })}
             alt={attraction.name}
             fill
             priority
@@ -435,9 +440,14 @@ export default async function AttractionPage({ params }: Props) {
                 >
                   <div className="relative aspect-[16/10] overflow-hidden bg-teal-deep">
                     <Image
-                      src={other.heroImage}
+                      src={optimizeImage(other.heroImage, {
+                        width: 800,
+                        quality: "auto",
+                        format: "auto",
+                      })}
                       alt={other.name}
                       fill
+                      loading="lazy"
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, 33vw"
                     />

@@ -10,14 +10,30 @@ import MapSection from "@/components/MapSection";
 import Footer from "@/components/Footer";
 import MobileBottomBar from "@/components/MobileBottomBar";
 import { getSiteContent } from "@/app/actions/contentActions";
+import { optimizeImage } from "@/lib/imageOptimization";
 
 export const revalidate = 60;
 
 export default async function Home() {
   const content = await getSiteContent();
+  const firstHeroImage = content.heroImages?.[0]?.src
+    ? optimizeImage(content.heroImages[0].src, {
+        width: 1920,
+        quality: "auto",
+        format: "auto",
+      })
+    : null;
 
   return (
     <>
+      {firstHeroImage && (
+        <link
+          rel="preload"
+          as="image"
+          href={firstHeroImage}
+          fetchPriority="high"
+        />
+      )}
       <Navbar />
       <main id="main-content">
         <Hero

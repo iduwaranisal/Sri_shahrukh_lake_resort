@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Compass, MapPin, Clock, ArrowUpRight, Calendar } from "lucide-react";
 import { attractions } from "@/data/explore";
+import { optimizeImage } from "@/lib/imageOptimization";
 
 const categories = [
   "All Destinations",
@@ -163,9 +164,14 @@ export default function Explore({
                 {/* Image */}
                 <div className="relative aspect-[16/11] w-full overflow-hidden bg-teal-deep">
                   <Image
-                    src={place.heroImage}
+                    src={optimizeImage(place.heroImage, {
+                      width: 800,
+                      quality: "auto",
+                      format: "auto",
+                    })}
                     alt={place.name}
                     fill
+                    loading="lazy"
                     className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-106"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />

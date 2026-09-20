@@ -72,6 +72,7 @@ import {
   checkAdminAuth,
   changeAdminPassword,
 } from "@/app/actions/adminAuthActions";
+import { optimizeImage } from "@/lib/imageOptimization";
 
 export default function AdminClient() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -1419,8 +1420,9 @@ export default function AdminClient() {
                         <div className="relative aspect-[16/10] w-full bg-teal-deep group overflow-hidden">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
-                            src={slide.src}
+                            src={optimizeImage(slide.src, { width: 600, quality: "auto", format: "auto" })}
                             alt={slide.alt || `Hero slide ${index + 1}`}
+                            loading="lazy"
                             className="w-full h-full object-cover"
                           />
                           <div className="absolute inset-0 bg-teal-deep/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
@@ -1587,8 +1589,12 @@ export default function AdminClient() {
                     <div className="md:col-span-5 relative border border-sand/30 bg-teal-deep overflow-hidden aspect-[4/5] shadow-xl">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={content.aboutImage?.src || "https://res.cloudinary.com/znj9faa6/image/upload/v1789894712/srishahrukh/owner-srk.jpg"}
+                        src={optimizeImage(
+                          content.aboutImage?.src || "https://res.cloudinary.com/znj9faa6/image/upload/v1789894712/srishahrukh/owner-srk.jpg",
+                          { width: 600, quality: "auto", format: "auto" }
+                        )}
                         alt={content.aboutImage?.alt || "Founder Geeth with Shah Rukh Khan"}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                       />
                       {isUploading && uploadingTarget === "about" && (
@@ -1715,7 +1721,12 @@ export default function AdminClient() {
                       >
                         <div className="relative aspect-[16/10] w-full bg-teal-deep group overflow-hidden">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={photo.src} alt={photo.title} className="w-full h-full object-cover" />
+                          <img
+                            src={optimizeImage(photo.src, { width: 600, quality: "auto", format: "auto" })}
+                            alt={photo.title}
+                            loading="lazy"
+                            className="w-full h-full object-cover"
+                          />
                           <div className="absolute inset-0 bg-teal-deep/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
                             <label className="cursor-pointer px-3.5 py-2 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-lg">
                               <Upload className="w-3.5 h-3.5" />
@@ -1835,8 +1846,9 @@ export default function AdminClient() {
                           <div className="relative aspect-[4/3] w-full bg-teal-deep">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                              src={img.src}
+                              src={optimizeImage(img.src, { width: 500, quality: "auto", format: "auto" })}
                               alt={img.alt}
+                              loading="lazy"
                               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                             <span className="absolute top-2 left-2 px-2 py-0.5 bg-teal-deep/90 text-sand text-[9px] uppercase tracking-wider font-semibold border border-sand/30">
@@ -1885,8 +1897,9 @@ export default function AdminClient() {
                         <div className="relative aspect-[16/10] w-full bg-teal-deep group overflow-hidden">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
-                            src={attraction.src}
+                            src={optimizeImage(attraction.src, { width: 600, quality: "auto", format: "auto" })}
                             alt={attraction.name}
+                            loading="lazy"
                             className="w-full h-full object-cover"
                           />
                           <div className="absolute inset-0 bg-teal-deep/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">

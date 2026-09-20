@@ -4,6 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useInView, AnimatePresence, type Variants } from "framer-motion";
 import Image from "next/image";
 import { Sparkles, ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
+import { optimizeImage } from "@/lib/imageOptimization";
 
 interface GalleryImage {
   src: string;
@@ -194,9 +195,14 @@ export default function Gallery({
               className="group relative aspect-[4/3] w-full overflow-hidden border border-sand/20 bg-teal-deep focus:outline-none focus:ring-2 focus:ring-sand cursor-pointer"
             >
               <Image
-                src={img.src}
+                src={optimizeImage(img.src, {
+                  width: 600,
+                  quality: "auto",
+                  format: "auto",
+                })}
                 alt={img.alt}
                 fill
+                loading="lazy"
                 className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-108"
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               />
@@ -257,7 +263,11 @@ export default function Gallery({
               {/* Main Image Container */}
               <div className="relative aspect-[16/10] w-full max-h-[70vh] overflow-hidden border border-sand/30 shadow-2xl bg-teal-deep">
                 <Image
-                  src={filteredImages[lightboxIndex].src}
+                  src={optimizeImage(filteredImages[lightboxIndex].src, {
+                    width: 1600,
+                    quality: "auto",
+                    format: "auto",
+                  })}
                   alt={filteredImages[lightboxIndex].alt}
                   fill
                   className="object-contain"

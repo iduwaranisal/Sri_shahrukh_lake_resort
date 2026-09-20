@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import Image from "next/image";
 import Link from "next/link";
 import { Pause, Play, Calendar, Sparkles, MessageCircle, MapPin, Star } from "lucide-react";
+import { optimizeImage } from "@/lib/imageOptimization";
 
 const slides = [
   {
@@ -86,6 +87,15 @@ export default function Hero({
       <div className="absolute inset-0 w-full h-full overflow-hidden bg-teal-deep pointer-events-none">
         {slidesToRender.map((slide, idx) => {
           const isActive = idx === current;
+          const isNext = idx === (current + 1) % slidesToRender.length;
+          // Only render first, active, and next slide to avoid downloading all slides upfront on initial page load
+          const shouldRender = idx === 0 || isActive || isNext;
+          const optimizedSrc = optimizeImage(slide.src, {
+            width: 1920,
+            quality: "auto",
+            format: "auto",
+          });
+
           return (
             <motion.div
               key={`${slide.src}-${idx}`}
@@ -100,14 +110,17 @@ export default function Hero({
               }}
               className="absolute inset-0 w-full h-full"
             >
-              <Image
-                src={slide.src}
-                alt={slide.alt || "Sri Shahrukh Lake Resort"}
-                fill
-                priority={idx === 0 || idx === 1}
-                className="object-cover"
-                sizes="100vw"
-              />
+              {shouldRender && (
+                <Image
+                  src={optimizedSrc}
+                  alt={slide.alt || "Sri Shahrukh Lake Resort"}
+                  fill
+                  priority={idx === 0}
+                  loading={idx === 0 ? "eager" : "lazy"}
+                  className="object-cover"
+                  sizes="100vw"
+                />
+              )}
             </motion.div>
           );
         })}
