@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Clock, MapPin, Calendar, Sparkles, Compass } from "lucide-react";
+import { ArrowLeft, Clock, MapPin, Sparkles, Compass } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { attractions } from "@/data/explore";
@@ -168,13 +168,6 @@ export default async function AttractionPage({ params }: Props) {
                 <p className="font-semibold text-teal-deep mt-0.5">{attraction.bestTimeToVisit}</p>
               </div>
             </div>
-            <Link
-              href="/book"
-              className="flex items-center justify-center gap-2 w-full py-3.5 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-widest shadow-md hover:bg-sand-light transition-all"
-            >
-              <Calendar className="w-4 h-4" />
-              <span>Book Now</span>
-            </Link>
           </div>
         </div>
 
@@ -393,14 +386,6 @@ export default async function AttractionPage({ params }: Props) {
                         This destination is easy to visit while staying at Sri Shahrukh Lake Resort. You can visit independently or with local transport.
                       </p>
                     </div>
-
-                    <Link
-                      href="/book"
-                      className="flex items-center justify-center gap-2 w-full py-3.5 text-center text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.02] bg-sand text-teal-deep shadow-md hover:bg-sand-light"
-                    >
-                      <Calendar className="w-3.5 h-3.5" />
-                      <span>Book Now</span>
-                    </Link>
                   </div>
                 </div>
 

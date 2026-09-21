@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { MapPin, Phone, Mail, Clock, MessageCircle, Send, CheckCircle2, Sparkles, Navigation } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { getWhatsAppUrl, getTelUrl } from "@/lib/whatsapp";
+import { getTelUrl } from "@/lib/whatsapp";
 import SocialLinks from "@/components/ui/SocialLinks";
 
 const schema = z.object({
@@ -64,7 +64,7 @@ export default function Contact({
     {
       label: "WhatsApp Number",
       value: whatsapp,
-      href: getWhatsAppUrl(whatsapp, "Hello Sri Shahrukh Lake Resort"),
+      href: null,
       icon: MessageCircle,
     },
     {
@@ -174,30 +174,6 @@ export default function Contact({
                 );
               })}
             </ul>
-
-            {/* Direct WhatsApp Callout Card */}
-            <div className="p-5 border border-sand/30 bg-teal-deep text-ivory">
-              <div className="flex items-center gap-2 mb-2">
-                <MessageCircle className="w-5 h-5 text-sand" />
-                <h4 className="text-sm font-medium text-ivory">WhatsApp Quick Inquiries: {whatsapp}</h4>
-              </div>
-              <p className="text-xs text-ivory/80 font-light mb-3">
-                Chat directly on WhatsApp to check room availability, arrange Yala safari tours,
-                or request airport pick-up from Mattala Airport (29 km).
-              </p>
-              <a
-                href={getWhatsAppUrl(
-                  whatsapp,
-                  "Hello Sri Shahrukh Lake Resort, I have an inquiry regarding room booking and safari tours"
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider transition-all hover:bg-sand-light active:scale-98 shadow-md"
-              >
-                <MessageCircle className="w-3.5 h-3.5" />
-                <span>Chat on WhatsApp</span>
-              </a>
-            </div>
 
             {/* Social Media Profiles Card */}
             {(facebookUrl || instagramUrl || tiktokUrl || youtubeUrl) && (

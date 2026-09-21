@@ -2,14 +2,11 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import {
   Sparkles,
   Wifi,
   Car,
   Coffee,
-  Calendar,
-  MessageCircle,
   Wind,
   Droplets,
   TreePine,
@@ -20,7 +17,6 @@ import {
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SmoothImage } from "@/components/ui/SmoothImage";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 const homestayPhotos = [
   {
@@ -435,7 +431,7 @@ export default function Villas({
               </p>
 
               {/* Amenities Grid — responsive: 1 col mobile, 2 col tablet+ */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5 mb-6 sm:mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
                 {activeAmenities.map((item, i) => {
                   const Icon =
                     typeof item.icon === "string"
@@ -467,36 +463,6 @@ export default function Villas({
                   );
                 })}
               </div>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="pt-4 sm:pt-5 border-t border-sand/20 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
-              <Link
-                href="/book"
-                className="btn-shimmer flex-1 flex items-center justify-center gap-2 py-3 sm:py-3.5 px-5 text-[11px] sm:text-xs font-bold uppercase tracking-[0.18em] sm:tracking-[0.2em] rounded-md shadow-md shadow-black/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
-                style={{
-                  background: "var(--color-sand)",
-                  color: "var(--color-teal-deep)",
-                  fontFamily: "var(--font-sans)",
-                }}
-              >
-                <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span>Book Now</span>
-              </Link>
-
-              <a
-                href={getWhatsAppUrl(
-                  whatsapp,
-                  "Hello Sri Shahrukh Lake Resort, I would like to inquire about staying at the homestay."
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 py-3 sm:py-3.5 px-5 border border-teal-deep/25 text-teal-deep rounded-md hover:bg-teal-deep hover:text-sand transition-all text-[11px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-wider font-medium active:scale-[0.97]"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-mist" />
-                <span>Chat on WhatsApp</span>
-              </a>
             </div>
           </div>
         </div>

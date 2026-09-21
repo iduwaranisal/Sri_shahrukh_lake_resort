@@ -8,15 +8,12 @@ import Link from "next/link";
 import {
   Calendar,
   CheckCircle2,
-  MessageCircle,
   Sparkles,
   ShieldCheck,
   AlertCircle,
   RefreshCw,
   Star,
-  ExternalLink,
 } from "lucide-react";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 const roomOptions = [
   "Homestay Stay",
@@ -118,20 +115,10 @@ export default function Booking() {
     } catch (err: unknown) {
       const error = err as Error;
       setSubmissionError(
-        error.message || "Failed to send inquiry email. Please try again or reach us via WhatsApp."
+        error.message || "Failed to send inquiry email. Please try again or call us directly."
       );
     }
   };
-
-  const whatsAppUrl = getWhatsAppUrl(
-    "94757273416",
-    "Hello Sri Shahrukh Lake Resort, I would like to check room availability for:\n• Room: " +
-    ((submittedData?.villa || villaSelected) || "Any Room") +
-    "\n• Check-in: " +
-    ((submittedData?.checkIn || checkInDate) || "Upcoming") +
-    "\n• Guests: " +
-    ((submittedData?.guests || guestsCount) || "2 Guests")
-  );
 
   return (
     <section
@@ -266,23 +253,13 @@ export default function Booking() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <a
-                  href={whatsAppUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3 rounded-md bg-teal-deep text-ivory text-sm font-semibold shadow-md hover:bg-teal-mid transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Follow up on WhatsApp</span>
-                </a>
-
                 <button
                   type="button"
                   onClick={() => {
                     setIsSuccess(false);
                     setSubmittedData(null);
                   }}
-                  className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-md border border-teal-deep/25 text-teal-deep text-sm font-medium hover:bg-teal-deep/5 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand"
+                  className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3 rounded-md bg-teal-deep text-ivory text-sm font-semibold shadow-md hover:bg-teal-mid transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>Send another inquiry</span>
@@ -302,16 +279,7 @@ export default function Booking() {
                     <p className="font-semibold text-error">We couldn&apos;t send your inquiry</p>
                     <p className="text-teal-deep/80">{submissionError}</p>
                     <p className="text-xs pt-1 text-teal-deep/80">
-                      You can still reach us on WhatsApp at{" "}
-                      <a
-                        href={whatsAppUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-teal-deep font-medium underline underline-offset-2"
-                      >
-                        0757273416
-                      </a>{" "}
-                      or call 077 621 9245.
+                      You can also reach us directly by calling 077 621 9245.
                     </p>
                   </div>
                 </div>
@@ -530,19 +498,6 @@ export default function Booking() {
                     </>
                   )}
                 </button>
-
-                <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm text-teal-deep/70">
-                  <span>Prefer a faster answer?</span>
-                  <a
-                    href={whatsAppUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-teal-deep underline underline-offset-4 decoration-sand hover:text-teal-mid inline-flex items-center gap-1.5 font-medium"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>Chat on WhatsApp (0757273416)</span>
-                  </a>
-                </div>
 
                 <div className="flex items-center justify-center gap-2 w-full pt-5 mt-1 border-t border-teal-deep/10 text-xs text-teal-deep/60">
                   <ShieldCheck className="w-3.5 h-3.5 text-teal-mid" />

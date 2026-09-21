@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Compass, MapPin, Clock, ArrowUpRight, Calendar } from "lucide-react";
+import { Compass, MapPin, Clock, ArrowUpRight } from "lucide-react";
 import { attractions } from "@/data/explore";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -220,32 +220,17 @@ export default function Explore({
           ))}
         </div>
 
-        {/* Bottom Destination Info & Resort Booking Banner */}
-        <div className="scroll-reveal stagger-6 mt-14 sm:mt-18 p-8 sm:p-10 border border-sand/30 bg-teal-mid/80 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="text-center md:text-left">
-            <h4
-              className="text-2xl sm:text-3xl font-light text-ivory mb-2"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              Convenient Location to Explore Southern Sri Lanka
-            </h4>
-            <p className="text-sm font-light text-ivory/80 max-w-xl">
-              Sri Shahrukh Lake Resort offers a quiet, comfortable stay just minutes away from Tissa Wewa lake, ancient temples, and Yala National Park safari gates.
-            </p>
-          </div>
-
-          <Link
-            href="/book"
-            className="btn-shimmer inline-flex items-center justify-center gap-2 whitespace-nowrap w-full sm:w-auto min-h-[48px] px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-105 shadow-lg active:scale-95"
-            style={{
-              background: "var(--color-sand)",
-              color: "var(--color-teal-deep)",
-              fontFamily: "var(--font-sans)",
-            }}
+        {/* Bottom Destination Info Banner */}
+        <div className="scroll-reveal stagger-6 mt-14 sm:mt-18 p-8 sm:p-10 border border-sand/30 bg-teal-mid/80 text-center max-w-3xl mx-auto">
+          <h4
+            className="text-2xl sm:text-3xl font-light text-ivory mb-2"
+            style={{ fontFamily: "var(--font-serif)" }}
           >
-            <Calendar className="w-4 h-4" />
-            <span>Book Now</span>
-          </Link>
+            Convenient Location to Explore Southern Sri Lanka
+          </h4>
+          <p className="text-sm font-light text-ivory/80 leading-relaxed">
+            Sri Shahrukh Lake Resort offers a quiet, comfortable stay just minutes away from Tissa Wewa lake, ancient temples, and Yala National Park safari gates.
+          </p>
         </div>
       </div>
     </section>

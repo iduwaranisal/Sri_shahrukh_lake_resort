@@ -10,8 +10,6 @@ import {
   X,
   ZoomIn,
   Plus,
-  Calendar,
-  MessageCircle,
   Camera,
   CheckCircle2,
   ArrowUp,
@@ -19,7 +17,6 @@ import {
 import { optimizeImage } from "@/lib/imageOptimization";
 import { SmoothImage } from "@/components/ui/SmoothImage";
 import { defaultGalleryImages, galleryCategories, type GalleryImage } from "@/data/gallery";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 interface GalleryClientProps {
   initialImages?: GalleryImage[];
@@ -392,41 +389,12 @@ export default function GalleryClient({
               </h2>
 
               <p
-                className="text-xs sm:text-sm md:text-base font-light text-ivory/80 leading-relaxed mb-6 sm:mb-8"
+                className="text-xs sm:text-sm md:text-base font-light text-ivory/80 leading-relaxed max-w-xl mx-auto"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
                 Enjoy peaceful lake vistas, personalized homestay hospitality, delicious home breakfasts,
-                and custom 4x4 Yala safari jeep tours. Direct booking guarantees our best room rates.
+                and custom 4x4 Yala safari jeep tours during your stay.
               </p>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
-                <Link
-                  href="/book"
-                  className="btn-shimmer flex items-center justify-center gap-2.5 w-full sm:w-auto min-h-[50px] px-8 py-3 text-xs font-bold uppercase tracking-[0.2em] rounded-md shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98]"
-                  style={{
-                    background: "var(--color-sand)",
-                    color: "var(--color-teal-deep)",
-                    fontFamily: "var(--font-sans)",
-                  }}
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span>Book Your Stay</span>
-                </Link>
-
-                <a
-                  href={getWhatsAppUrl(
-                    whatsapp,
-                    "Hello Sri Shahrukh Lake Resort, I loved your photo gallery and would like to inquire about room availability."
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2.5 w-full sm:w-auto min-h-[50px] px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] border border-ivory/30 text-ivory rounded-md hover:bg-white/10 active:scale-[0.98] transition-all"
-                  style={{ fontFamily: "var(--font-sans)" }}
-                >
-                  <MessageCircle className="w-4 h-4 text-sand-light" />
-                  <span>Chat on WhatsApp</span>
-                </a>
-              </div>
             </div>
           </div>
         </div>

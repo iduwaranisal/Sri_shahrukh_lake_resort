@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { MapPin, Phone, Mail, MessageCircle } from "lucide-react";
-import { getWhatsAppUrl, getTelUrl } from "@/lib/whatsapp";
+import { MapPin, Phone, Mail } from "lucide-react";
+import { getTelUrl } from "@/lib/whatsapp";
 import SocialLinks from "@/components/ui/SocialLinks";
 
 const quickLinks = [
@@ -10,18 +10,9 @@ const quickLinks = [
   { label: "The Homestay", href: "/#homestay" },
   { label: "Amenities & Services", href: "/#amenities" },
   { label: "Nearby Attractions", href: "/#explore" },
-  { label: "Photo Gallery", href: "/#gallery" },
+  { label: "Photo Gallery", href: "/gallery" },
   { label: "Guest Reviews", href: "/#reviews" },
   { label: "Contact & Location", href: "/#contact" },
-];
-
-const nearbyPlaces = [
-  { label: "Tissamaharama Stupa", dist: "2.2 km" },
-  { label: "Tissa Wewa Lake", dist: "2.5 km" },
-  { label: "Ranminitenna Cinema Village", dist: "7.5 km" },
-  { label: "Kirinda Temple & Beach", dist: "14 km" },
-  { label: "Bundala Bird Sanctuary", dist: "28 km" },
-  { label: "Mattala Airport (HRI)", dist: "29 km" },
 ];
 
 const headingClass = "mb-5 text-sm font-medium tracking-wide text-sand";
@@ -44,7 +35,6 @@ interface FooterProps {
 
 export default function Footer({
   phone = "077 621 9245",
-  whatsapp = "0757273416",
   email = "lakeresortsrishahrukh@gmail.com",
   address = "135/1 Suduwella Tikiri udanapura, Tissamaharama",
   mapUrl = "https://www.google.com/maps/search/?api=1&query=77VQ%2BX6+Tissamaharama",
@@ -72,10 +62,10 @@ export default function Footer({
       />
 
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-10">
-        {/* Main content */}
-        <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-12 lg:gap-10 lg:py-16">
+        {/* Main content — Clean 3-column layout without distance column or CTA buttons */}
+        <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-12 lg:gap-12 lg:py-16">
           {/* Brand */}
-          <div className="sm:col-span-2 lg:col-span-4">
+          <div className="sm:col-span-2 lg:col-span-5">
             <Link
               href="/#home"
               aria-label="Sri Shahrukh Lake Resort — back to top"
@@ -95,18 +85,10 @@ export default function Footer({
               </span>
             </Link>
 
-            <p className="mt-5 max-w-sm text-sm font-light leading-relaxed text-ivory/75">
-              A peaceful homestay in Tissamaharama with free Wi-Fi, private
-              parking and warm Sri Lankan hospitality.
+            <p className="mt-5 max-w-md text-sm font-light leading-relaxed text-ivory/75">
+              A peaceful homestay in Tissamaharama with tranquil garden surroundings, free Wi-Fi, private
+              parking, and warm Sri Lankan hospitality.
             </p>
-
-            <Link
-              href="/book"
-              className="mt-6 inline-flex items-center justify-center rounded-md bg-sand px-6 py-2.5 text-sm font-medium transition-colors hover:bg-sand-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sand/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-charcoal)]"
-              style={{ color: "var(--color-charcoal)" }}
-            >
-              Book Now
-            </Link>
 
             <div className="mt-8">
               <SocialLinks
@@ -119,7 +101,7 @@ export default function Footer({
           </div>
 
           {/* Explore */}
-          <nav className="lg:col-span-2" aria-label="Footer navigation">
+          <nav className="lg:col-span-3" aria-label="Footer navigation">
             <h2 className={headingClass}>Explore</h2>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
@@ -133,7 +115,7 @@ export default function Footer({
           </nav>
 
           {/* Contact */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-4">
             <h2 className={headingClass}>Contact</h2>
             <ul className="space-y-4 text-sm font-light">
               <li className="flex items-start gap-3">
@@ -163,20 +145,6 @@ export default function Footer({
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <MessageCircle
-                  className="h-4 w-4 flex-shrink-0 text-sand"
-                  aria-hidden="true"
-                />
-                <a
-                  href={getWhatsAppUrl(whatsapp, "Hello Sri Shahrukh Lake Resort")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={linkClass}
-                >
-                  WhatsApp {whatsapp}
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
                 <Mail
                   className="h-4 w-4 flex-shrink-0 text-sand"
                   aria-hidden="true"
@@ -188,24 +156,6 @@ export default function Footer({
                   {email}
                 </a>
               </li>
-            </ul>
-          </div>
-
-          {/* Nearby */}
-          <div className="lg:col-span-3">
-            <h2 className={headingClass}>Nearby</h2>
-            <ul className="divide-y divide-sand/15">
-              {nearbyPlaces.map((place) => (
-                <li
-                  key={place.label}
-                  className="flex items-center justify-between gap-4 py-2.5 text-sm font-light text-ivory/75 first:pt-0"
-                >
-                  <span>{place.label}</span>
-                  <span className="flex-shrink-0 tabular-nums text-sand">
-                    {place.dist}
-                  </span>
-                </li>
-              ))}
             </ul>
           </div>
         </div>

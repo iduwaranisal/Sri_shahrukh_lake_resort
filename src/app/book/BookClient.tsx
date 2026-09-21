@@ -8,14 +8,12 @@ import { z } from "zod";
 import {
   Calendar,
   CheckCircle2,
-  MessageCircle,
   Star,
   ArrowLeft,
   RefreshCw,
   AlertCircle,
 } from "lucide-react";
 import { createBooking } from "@/app/actions/bookingActions";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 const schema = z
   .object({
@@ -104,15 +102,6 @@ export default function BookClient() {
   const currentCheckOut = watch("checkOut") || checkOutDate;
   const currentGuests = watch("guests") || "2 Guests";
 
-  const whatsAppUrl = getWhatsAppUrl(
-    "94757273416",
-    `Hello Sri Shahrukh Lake Resort, I would like to book a stay:\n• Check-in: ${
-      submittedData?.checkIn || currentCheckIn
-    }\n• Check-out: ${submittedData?.checkOut || currentCheckOut}\n• Guests: ${
-      submittedData?.guests || currentGuests
-    }`
-  );
-
   return (
     <div
       className="min-h-screen flex flex-col justify-between"
@@ -198,15 +187,12 @@ export default function BookClient() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <a
-                  href={whatsAppUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/"
                   className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-wider shadow-md hover:scale-105 transition-all"
                 >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Open WhatsApp to Confirm</span>
-                </a>
+                  <span>Return to Home</span>
+                </Link>
                 <button
                   type="button"
                   onClick={() => setIsSuccess(false)}
@@ -399,22 +385,10 @@ export default function BookClient() {
                     ) : (
                       <>
                         <Calendar className="w-4 h-4" />
-                        <span>Book Now</span>
+                        <span>Submit Reservation Request</span>
                       </>
                     )}
                   </button>
-
-                  <div className="text-center pt-1">
-                    
-                    <a
-                      href={whatsAppUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[11px] text-sand underline underline-offset-4 hover:text-sand-light inline-flex items-center gap-1 font-medium"
-                    ><span className="text-[11px] text-ivory/60"> Send a message on WhatsApp </span>
-                      <MessageCircle className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
                 </div>
               </form>
             </div>

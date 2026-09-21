@@ -4,8 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Calendar, Phone, MessageCircle, MapPin } from "lucide-react";
-import { getWhatsAppUrl, getTelUrl } from "@/lib/whatsapp";
+import { X } from "lucide-react";
 
 const navLinks = [
   { label: "About", href: "/#about", id: "about" },
@@ -149,23 +148,6 @@ export default function Navbar({
             })}
           </ul>
 
-          {/* Desktop Primary CTA Button */}
-          <div className="hidden lg:flex items-center">
-            <Link
-              href="/book"
-              id="nav-book-now"
-              className="btn-shimmer inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-md shadow-black/25"
-              style={{
-                background: "var(--color-sand)",
-                color: "var(--color-teal-deep)",
-                fontFamily: "var(--font-sans)",
-              }}
-            >
-              <Calendar className="w-3.5 h-3.5" />
-              <span>Book Now</span>
-            </Link>
-          </div>
-
           {/* Mobile Menu Toggle Button */}
           <div className="flex lg:hidden items-center">
             <button
@@ -270,36 +252,6 @@ export default function Navbar({
                   );
                 })}
               </ul>
-
-              {/* Bottom Quick Action Strip — Clean and focused */}
-              <div className="space-y-3 pt-6 border-t border-sand/15">
-                <Link
-                  href="/book"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-3.5 text-xs font-semibold uppercase tracking-[0.22em] shadow-lg shadow-black/30 transition-all active:scale-[0.98]"
-                  style={{
-                    background: "var(--color-sand)",
-                    color: "var(--color-teal-deep)",
-                    fontFamily: "var(--font-sans)",
-                  }}
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span>Book Now</span>
-                </Link>
-
-                <a
-                  href={getWhatsAppUrl(
-                    whatsapp,
-                    "Hello Sri Shahrukh Lake Resort, I would like to inquire about room availability."
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-3 border border-sand/30 text-sand text-xs uppercase tracking-wider bg-teal-mid/50 hover:bg-teal-mid transition-all active:scale-[0.98]"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Chat on WhatsApp</span>
-                </a>
-              </div>
             </div>
           </motion.div>
         )}
