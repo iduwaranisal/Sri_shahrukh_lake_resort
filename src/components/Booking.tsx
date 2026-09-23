@@ -12,7 +12,6 @@ import {
   ShieldCheck,
   AlertCircle,
   RefreshCw,
-  Star,
 } from "lucide-react";
 
 const roomOptions = [
@@ -150,11 +149,6 @@ export default function Booking() {
               >
                 3 private rooms
               </p>
-            </div>
-            <span className="hidden sm:inline text-sand/40">|</span>
-            <div className="flex items-center gap-1.5 text-xs text-sand font-medium">
-              <Star className="w-3.5 h-3.5 fill-sand text-sand" />
-              <span>Rated 4.8/5 across booking platforms</span>
             </div>
           </div>
 
@@ -501,7 +495,7 @@ export default function Booking() {
 
                 <div className="flex items-center justify-center gap-2 w-full pt-5 mt-1 border-t border-teal-deep/10 text-xs text-teal-deep/60">
                   <ShieldCheck className="w-3.5 h-3.5 text-teal-mid" />
-                  <span>Rated 4.8/5 across booking platforms · Free Wi-Fi &amp; parking</span>
+                  <span>Free Wi-Fi &amp; on-site private parking</span>
                 </div>
               </div>
             </form>

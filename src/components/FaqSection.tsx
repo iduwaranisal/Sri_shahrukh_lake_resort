@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, HelpCircle, MapPin, Compass, ShieldCheck, Sparkles } from "lucide-react";
+import { ChevronDown, HelpCircle, Compass, ShieldCheck, Sparkles } from "lucide-react";
 
 interface FaqItem {
   question: string;
@@ -14,7 +14,7 @@ const faqs: FaqItem[] = [
     category: "Resort & Location",
     question: "Why is Sri Shahrukh Lake Resort considered the top resort choice in Tissamaharama?",
     answer:
-      "Sri Shahrukh Lake Resort offers a unique combination of peaceful lakeside tranquility, 4.8★ rated hospitality, and close proximity to major Southern Province highlights. Located just 2.5 km from the historic Tissa Wewa reservoir and minutes from the town center, guests enjoy spacious air-conditioned rooms, lush tropical gardens, authentic Sri Lankan home-cooked meals, and personalized 24/7 concierge service.",
+      "Sri Shahrukh Lake Resort offers a unique combination of peaceful lakeside tranquility, warm hospitality, and close proximity to major Southern Province highlights. Located just 2.5 km from the historic Tissa Wewa reservoir and minutes from the town center, guests enjoy spacious air-conditioned rooms, lush tropical gardens, authentic Sri Lankan home-cooked meals, and personalized 24/7 concierge service.",
   },
   {
     category: "Yala & Safaris",
@@ -141,32 +141,6 @@ export default function FaqSection() {
               </div>
             );
           })}
-        </div>
-
-        {/* Local Highlights Callout Banner */}
-        <div className="mt-12 sm:mt-16 p-6 sm:p-8 rounded-xl bg-teal-mid/40 border border-sand/30 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6 backdrop-blur-md">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-sand/15 border border-sand/40 flex items-center justify-center text-sand flex-shrink-0">
-              <MapPin className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="text-base sm:text-lg font-medium text-ivory">
-                Looking for tailored Yala Safari or Airport Transfers?
-              </h4>
-              <p className="text-xs sm:text-sm text-ivory/70 mt-1">
-                We organize custom itineraries across Tissamaharama, Bundala, Kirinda, and Hambantota.
-              </p>
-            </div>
-          </div>
-
-          <a
-            href="https://wa.me/94757273416?text=Hi%20Sri%20Shahrukh%20Lake%20Resort,%20I%20would%20like%20to%20inquire%20about%20room%20availability%20and%20safari%20packages%20in%20Tissamaharama."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-shrink-0 px-6 py-3 rounded text-xs uppercase tracking-widest font-semibold bg-sand text-teal-deep hover:bg-sand-light transition-all shadow-lg shadow-sand/20"
-          >
-            Direct Inquiry
-          </a>
         </div>
       </div>
     </section>

@@ -186,7 +186,7 @@ export default function GalleryClient({
             <span className="text-sand/30">|</span>
             <span>4 Unique Categories</span>
             <span className="text-sand/30">|</span>
-            <span className="text-sand font-medium">4.8★ Rated Homestay</span>
+            <span className="text-sand font-medium">Tissamaharama</span>
           </div>
         </div>
       </section>

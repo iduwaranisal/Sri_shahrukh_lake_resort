@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | Sri Shahrukh Lake Resort Tissamaharama",
   },
   description:
-    "Discover Sri Shahrukh Lake Resort — top-rated tranquil resort & homestay in Tissamaharama, Hambantota near Yala National Park. Rated 4.8★ with deluxe rooms, lake views, authentic dining, and direct 4x4 safari excursions.",
+    "Discover Sri Shahrukh Lake Resort — top-rated tranquil resort & homestay in Tissamaharama, Hambantota near Yala National Park. Deluxe rooms, lake views, authentic dining, and direct 4x4 safari excursions.",
   keywords: [
     "Sri Shahrukh Lake Resort",
     "resort in Tissamaharama",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Sri Shahrukh Lake Resort | Best Resort & Homestay in Tissamaharama, Hambantota",
     description:
-      "A peaceful boutique resort & homestay in Tissamaharama rated 4.8/5 across platforms. Deluxe rooms, lake views, private parking, and tailored Yala safari tours.",
+      "A peaceful boutique resort & homestay in Tissamaharama with deluxe rooms, lake views, private parking, and tailored Yala safari tours.",
     url: "https://srishahrukhlakeresort.com",
     siteName: "Sri Shahrukh Lake Resort",
     locale: "en_US",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sri Shahrukh Lake Resort | Best Resort in Tissamaharama, Hambantota",
     description:
-      "Top-rated tranquil resort & homestay in Tissamaharama near Yala National Park. 4.8★ rated hospitality.",
+      "Tranquil resort & homestay in Tissamaharama near Yala National Park. Warm personalized hospitality.",
     images: ["https://res.cloudinary.com/znj9faa6/image/upload/v1789894691/srishahrukh/img2.jpg"],
   },
   robots: {
@@ -102,7 +102,7 @@ const jsonLdData = {
         "Sri Shahrukh Lake Resort Hambantota",
       ],
       description:
-        "Sri Shahrukh Lake Resort is a tranquil boutique resort and homestay located in Tissamaharama, Hambantota District near Yala National Park and Tissa Wewa. Offering luxury rooms, lake views, private 4x4 Yala safari tours, authentic dining, and 4.8★ rated hospitality.",
+        "Sri Shahrukh Lake Resort is a tranquil boutique resort and homestay located in Tissamaharama, Hambantota District near Yala National Park and Tissa Wewa. Offering luxury rooms, lake views, private 4x4 Yala safari tours, authentic dining, and warm hospitality.",
       url: "https://srishahrukhlakeresort.com",
       telephone: "+94776219245",
       email: "lakeresortsrishahrukh@gmail.com",
@@ -167,7 +167,7 @@ const jsonLdData = {
           name: "Why is Sri Shahrukh Lake Resort the best resort in Tissamaharama?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Sri Shahrukh Lake Resort is rated 4.8/5 across platforms. Situated just 2.5 km from the ancient Tissa Wewa reservoir and 28 km from Yala National Park, it offers peaceful garden surroundings, deluxe air-conditioned rooms, warm personalized hospitality, and direct safari jeep arrangements.",
+            text: "Situated just 2.5 km from the ancient Tissa Wewa reservoir and 28 km from Yala National Park, Sri Shahrukh Lake Resort offers peaceful garden surroundings, deluxe air-conditioned rooms, warm personalized hospitality, and direct safari jeep arrangements.",
           },
         },
         {

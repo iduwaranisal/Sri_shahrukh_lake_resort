@@ -8,7 +8,6 @@ import { z } from "zod";
 import {
   Calendar,
   CheckCircle2,
-  Star,
   ArrowLeft,
   RefreshCw,
   AlertCircle,
@@ -127,9 +126,8 @@ export default function BookClient() {
             </h1>
           </Link>
 
-          <div className="flex items-center gap-1 text-xs text-sand font-medium">
-            <Star className="w-3.5 h-3.5 fill-sand text-sand" />
-            <span>4.8 / 5.0</span>
+          <div className="text-xs text-sand/80 font-light">
+            <span>Tissamaharama</span>
           </div>
         </div>
       </header>

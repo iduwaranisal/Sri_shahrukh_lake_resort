@@ -165,7 +165,7 @@ export default function Footer({
           <p>
             &copy; {currentYear} Sri Shahrukh Lake Resort. All rights reserved.
           </p>
-          <p>Guest rating {ratingScore}/5</p>
+          <p>Tissamaharama, Southern Province, Sri Lanka</p>
         </div>
       </div>
     </footer>

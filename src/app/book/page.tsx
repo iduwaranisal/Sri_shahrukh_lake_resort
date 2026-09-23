@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Reserve Your Stay | Sri Shahrukh Lake Resort, Tissamaharama",
     description:
-      "Direct room reservations for Sri Shahrukh Lake Resort in Tissamaharama near Yala National Park. 4.8★ rated hospitality.",
+      "Direct room reservations for Sri Shahrukh Lake Resort in Tissamaharama near Yala National Park. Warm Sri Lankan homestay hospitality.",
     url: "https://srishahrukhlakeresort.com/book",
   },
 };

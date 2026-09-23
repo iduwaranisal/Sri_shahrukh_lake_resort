@@ -12,7 +12,7 @@ const stats = [
   { numeric: 2.5, suffix: " km", label: "From Tissa Wewa", symbol: null },
   { numeric: 2.2, suffix: " km", label: "To Tissa Sacred Stupa", symbol: null },
   { numeric: 28, suffix: " km", label: "To Bundala & Yala Safari", symbol: null },
-  { numeric: null, suffix: "", label: "Rating Across Platforms", symbol: "4.8★" },
+  { numeric: 29, suffix: " km", label: "To Mattala Airport (HRI)", symbol: null },
 ];
 
 /* ─── Founder portrait ─────────────────────────────────────────────── */
@@ -112,7 +112,7 @@ export default function About({
     { numeric: 2.5, suffix: " km", label: "From Tissa Wewa", symbol: null },
     { numeric: 2.2, suffix: " km", label: "To Tissa Sacred Stupa", symbol: null },
     { numeric: 28, suffix: " km", label: "To Bundala & Yala Safari", symbol: null },
-    { numeric: null, suffix: "", label: ratingLabel, symbol: `${ratingScore}★` },
+    { numeric: 29, suffix: " km", label: "To Mattala Airport (HRI)", symbol: null },
   ];
 
   const sectionRef = useScrollReveal<HTMLElement>();

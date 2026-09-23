@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Sparkles, MessageCircle, MapPin, Star } from "lucide-react";
+import { Calendar, Sparkles, MessageCircle, MapPin } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -158,9 +158,6 @@ export default function Hero({
           <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-ivory/90 font-normal drop-shadow">
             <Sparkles className="w-3 h-3 text-sand animate-twinkle" />
             <span>Homestay in Tissamaharama</span>
-            <span className="text-sand/30">·</span>
-            <Star className="w-3 h-3 fill-sand text-sand" />
-            <strong className="font-semibold text-sand">4.8 / 5.0</strong>
           </span>
         </div>
 
