@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   description:
     "Reserve your direct homestay or luxury room at Sri Shahrukh Lake Resort in Tissamaharama, Hambantota. Best rates guaranteed, free Wi-Fi, breakfast, and Yala safari arrangements.",
   alternates: {
-    canonical: "https://srishahrukhlakeresort.com/book",
+    canonical: "https://srishahrukhlakeresort.hotel.lk/book",
   },
   openGraph: {
     title: "Reserve Your Stay | Sri Shahrukh Lake Resort, Tissamaharama",
     description:
       "Direct room reservations for Sri Shahrukh Lake Resort in Tissamaharama near Yala National Park. Warm Sri Lankan homestay hospitality.",
-    url: "https://srishahrukhlakeresort.com/book",
+    url: "https://srishahrukhlakeresort.hotel.lk/book",
   },
 };
 

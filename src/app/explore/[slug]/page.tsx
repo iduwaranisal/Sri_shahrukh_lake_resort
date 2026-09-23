@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const attraction = attractions.find((a) => a.slug === slug);
   if (!attraction) return {};
 
-  const pageUrl = `https://srishahrukhlakeresort.com/explore/${attraction.slug}`;
+  const pageUrl = `https://srishahrukhlakeresort.hotel.lk/explore/${attraction.slug}`;
 
   return {
     title: `${attraction.name} Guide | Near Sri Shahrukh Lake Resort Tissamaharama`,

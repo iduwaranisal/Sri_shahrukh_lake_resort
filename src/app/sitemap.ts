@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { attractions } from "@/data/explore";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://srishahrukhlakeresort.com";
+  const baseUrl = "https://srishahrukhlakeresort.hotel.lk";
 
   // Static core routes
   const staticRoutes: MetadataRoute.Sitemap = [

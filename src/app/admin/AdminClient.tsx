@@ -19,7 +19,6 @@ import {
   X,
   ExternalLink,
   ShieldCheck,
-  Key,
   LogOut,
   RefreshCw,
   Sparkles,
@@ -72,7 +71,6 @@ import {
   loginAdmin,
   logoutAdmin,
   checkAdminAuth,
-  changeAdminPassword,
 } from "@/app/actions/adminAuthActions";
 import { optimizeImage } from "@/lib/imageOptimization";
 
@@ -80,7 +78,7 @@ export default function AdminClient() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
-  const [activeTab, setActiveTab] = useState<"bookings" | "content" | "media" | "reviews" | "amenities" | "security">("bookings");
+  const [activeTab, setActiveTab] = useState<"bookings" | "content" | "media" | "reviews" | "amenities">("bookings");
   const [mediaSection, setMediaSection] = useState<"hero" | "about" | "homestay" | "gallery" | "explore">("hero");
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingTarget, setUploadingTarget] = useState<string | null>(null);
@@ -162,12 +160,6 @@ export default function AdminClient() {
     desc: "",
     icon: "Sparkles",
   });
-
-  // Password state
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
 
   const showToast = (msg: string, type: ToastType = "success") => {
     const id = Date.now();
@@ -410,29 +402,6 @@ export default function AdminClient() {
       },
       "Delete Amenity"
     );
-  };
-
-  // Change Password Handler
-  const handleChangePassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setPasswordError("");
-    if (newPassword.length < 8) {
-      setPasswordError("New password must be at least 8 characters long");
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setPasswordError("New passwords do not match");
-      return;
-    }
-    const res = await changeAdminPassword(oldPassword, newPassword);
-    if (res.success) {
-      showToast("Admin password updated successfully!");
-      setOldPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-    } else {
-      setPasswordError(res.error || "Failed to update password");
-    }
   };
 
   // ── Media Handlers ──
@@ -977,18 +946,6 @@ export default function AdminClient() {
           >
             <Sparkles className="w-4 h-4" />
             <span>Amenities</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("security")}
-            className={`flex items-center gap-2 px-4 py-3 text-xs uppercase tracking-wider font-medium border-b-2 transition-all cursor-pointer whitespace-nowrap ${
-              activeTab === "security"
-                ? "border-sand text-sand bg-teal-deep/50"
-                : "border-transparent text-ivory/70 hover:text-ivory hover:bg-teal-deep/30"
-            }`}
-          >
-            <Key className="w-4 h-4" />
-            <span>Admin Password</span>
           </button>
         </div>
       </div>
@@ -2208,77 +2165,6 @@ export default function AdminClient() {
                   </div>
                 ))}
               </div>
-            </div>
-          )}
-
-          {/* ═════════════════════════════════════════════════════════════════ */}
-          {/* TAB 5: SECURITY (CHANGE PASSWORD) */}
-          {/* ═════════════════════════════════════════════════════════════════ */}
-          {activeTab === "security" && (
-            <div className="max-w-md p-6 border border-sand/30 bg-teal-mid space-y-4">
-              <h3
-                className="text-lg font-light uppercase gold-text-gradient"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                Change Admin Password
-              </h3>
-
-              {passwordError && (
-                <div className="p-3 border border-error/50 bg-error/15 text-ivory text-xs flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-error flex-shrink-0" />
-                  <span>{passwordError}</span>
-                </div>
-              )}
-
-              <form onSubmit={handleChangePassword} className="space-y-4">
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-sand font-medium mb-1">
-                    Current Password
-                  </label>
-                  <input
-                    type="password"
-                    required
-                    value={oldPassword}
-                    onChange={(e) => setOldPassword(e.target.value)}
-                    className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-sand font-medium mb-1">
-                    New Password (Min 8 chars)
-                  </label>
-                  <input
-                    type="password"
-                    required
-                    minLength={8}
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-sand font-medium mb-1">
-                    Confirm New Password
-                  </label>
-                  <input
-                    type="password"
-                    required
-                    minLength={8}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full border border-sand/30 bg-teal-deep px-3 py-2 text-xs text-ivory outline-none focus:border-sand"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-2.5 px-4 bg-sand text-teal-deep text-xs font-semibold uppercase tracking-[0.2em] shadow-md hover:bg-sand-light transition-all cursor-pointer"
-                >
-                  Update Admin Password
-                </button>
-              </form>
             </div>
           )}
         </div>

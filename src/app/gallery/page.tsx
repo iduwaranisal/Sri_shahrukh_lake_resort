@@ -13,13 +13,13 @@ export const metadata: Metadata = {
   description:
     "Explore the photo gallery of Sri Shahrukh Lake Resort in Tissamaharama. View our comfortable air-conditioned rooms, peaceful garden grounds, authentic breakfast, and wildlife from nearby Yala National Park.",
   alternates: {
-    canonical: "https://srishahrukhlakeresort.com/gallery",
+    canonical: "https://srishahrukhlakeresort.hotel.lk/gallery",
   },
   openGraph: {
     title: "Photo Gallery | Sri Shahrukh Lake Resort Tissamaharama",
     description:
       "Take a visual tour of Sri Shahrukh Lake Resort in Tissamaharama, Hambantota. Clean comfortable rooms, scenic lake nature, and direct Yala safari adventures.",
-    url: "https://srishahrukhlakeresort.com/gallery",
+    url: "https://srishahrukhlakeresort.hotel.lk/gallery",
     images: [
       {
         url: "https://res.cloudinary.com/znj9faa6/image/upload/v1789894691/srishahrukh/img2.jpg",

@@ -9,7 +9,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://srishahrukhlakeresort.com"),
+  metadataBase: new URL("https://srishahrukhlakeresort.hotel.lk"),
   title: {
     default: "Sri Shahrukh Lake Resort | Best Resort & Homestay in Tissamaharama, Hambantota",
     template: "%s | Sri Shahrukh Lake Resort Tissamaharama",
@@ -18,6 +18,8 @@ export const metadata: Metadata = {
     "Discover Sri Shahrukh Lake Resort — top-rated tranquil resort & homestay in Tissamaharama, Hambantota near Yala National Park. Deluxe rooms, lake views, authentic dining, and direct 4x4 safari excursions.",
   keywords: [
     "Sri Shahrukh Lake Resort",
+    "srishahrukhlakeresort.hotel.lk",
+    "hotel in Tissamaharama",
     "resort in Tissamaharama",
     "resorts around Tissamaharama",
     "resort in Hambantota",
@@ -33,8 +35,10 @@ export const metadata: Metadata = {
     "Suduwella Tikiri Udanapura resort",
     "luxury homestay Hambantota",
     "Southern Province Sri Lanka resort",
+    "hotel lk Tissamaharama",
+    "Sri Lanka hotel resort",
   ],
-  authors: [{ name: "Sri Shahrukh Lake Resort", url: "https://srishahrukhlakeresort.com" }],
+  authors: [{ name: "Sri Shahrukh Lake Resort", url: "https://srishahrukhlakeresort.hotel.lk" }],
   creator: "Sri Shahrukh Lake Resort",
   publisher: "Sri Shahrukh Lake Resort",
   formatDetection: {
@@ -43,13 +47,13 @@ export const metadata: Metadata = {
     email: true,
   },
   alternates: {
-    canonical: "https://srishahrukhlakeresort.com",
+    canonical: "https://srishahrukhlakeresort.hotel.lk",
   },
   openGraph: {
     title: "Sri Shahrukh Lake Resort | Best Resort & Homestay in Tissamaharama, Hambantota",
     description:
       "A peaceful boutique resort & homestay in Tissamaharama with deluxe rooms, lake views, private parking, and tailored Yala safari tours.",
-    url: "https://srishahrukhlakeresort.com",
+    url: "https://srishahrukhlakeresort.hotel.lk",
     siteName: "Sri Shahrukh Lake Resort",
     locale: "en_US",
     type: "website",
@@ -93,7 +97,7 @@ const jsonLdData = {
   "@graph": [
     {
       "@type": ["Resort", "Hotel", "LodgingBusiness", "BedAndBreakfast"],
-      "@id": "https://srishahrukhlakeresort.com/#resort",
+      "@id": "https://srishahrukhlakeresort.hotel.lk/#resort",
       name: "Sri Shahrukh Lake Resort",
       alternateName: [
         "Sri Shahrukh Lake Resort Tissamaharama",
@@ -103,7 +107,7 @@ const jsonLdData = {
       ],
       description:
         "Sri Shahrukh Lake Resort is a tranquil boutique resort and homestay located in Tissamaharama, Hambantota District near Yala National Park and Tissa Wewa. Offering luxury rooms, lake views, private 4x4 Yala safari tours, authentic dining, and warm hospitality.",
-      url: "https://srishahrukhlakeresort.com",
+      url: "https://srishahrukhlakeresort.hotel.lk",
       telephone: "+94776219245",
       email: "lakeresortsrishahrukh@gmail.com",
       image: [
@@ -160,7 +164,7 @@ const jsonLdData = {
     },
     {
       "@type": "FAQPage",
-      "@id": "https://srishahrukhlakeresort.com/#faq",
+      "@id": "https://srishahrukhlakeresort.hotel.lk/#faq",
       mainEntity: [
         {
           "@type": "Question",
