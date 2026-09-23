@@ -116,7 +116,7 @@ export default function Gallery({
             }}
           >
             <Camera className="w-4 h-4" />
-            <span>View Complete Photo Gallery ({images.length}+ Photos)</span>
+            <span>View Complete Photo Gallery</span>
             <ArrowRight className="w-4 h-4 ml-0.5" />
           </Link>
         </div>

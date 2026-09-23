@@ -9,7 +9,6 @@ import {
   ChevronRight,
   X,
   ZoomIn,
-  Plus,
   Camera,
   CheckCircle2,
   ArrowUp,
@@ -25,9 +24,6 @@ interface GalleryClientProps {
   phone?: string;
 }
 
-const INITIAL_BATCH_SIZE = 8;
-const BATCH_INCREMENT = 8;
-
 export default function GalleryClient({
   initialImages,
   whatsapp = "0757273416",
@@ -38,24 +34,14 @@ export default function GalleryClient({
   );
 
   const [selectedCategory, setSelectedCategory] = useState<string>("All Views");
-  const [visibleCount, setVisibleCount] = useState<number>(INITIAL_BATCH_SIZE);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
   const gridTopRef = useRef<HTMLDivElement>(null);
 
-  // Compute filtered images based on active category
+  // Compute filtered images based on active category — all load immediately
   const filteredImages = useMemo(() => {
     if (selectedCategory === "All Views") return images;
     return images.filter((img) => img.category === selectedCategory);
   }, [images, selectedCategory]);
-
-  // Sliced images for load-balanced rendering
-  const visibleImages = useMemo(() => {
-    return filteredImages.slice(0, visibleCount);
-  }, [filteredImages, visibleCount]);
-
-  const hasMore = visibleCount < filteredImages.length;
-  const remainingCount = Math.max(0, filteredImages.length - visibleCount);
 
   // Calculate category counts
   const categoryCounts = useMemo(() => {
@@ -66,20 +52,10 @@ export default function GalleryClient({
     return counts;
   }, [images]);
 
-  // Handle category change: reset visible batch
+  // Handle category change
   const handleCategoryChange = (cat: string) => {
     setSelectedCategory(cat);
-    setVisibleCount(INITIAL_BATCH_SIZE);
     setLightboxIndex(null);
-  };
-
-  // Load more images in balanced batches
-  const handleLoadMore = () => {
-    setIsLoadingMore(true);
-    setTimeout(() => {
-      setVisibleCount((prev) => Math.min(prev + BATCH_INCREMENT, filteredImages.length));
-      setIsLoadingMore(false);
-    }, 250);
   };
 
   const scrollToTop = () => {
@@ -110,9 +86,6 @@ export default function GalleryClient({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [lightboxIndex, handleNext, handlePrev]);
-
-  // Progress percentage
-  const progressPercent = Math.min(100, Math.round((visibleImages.length / filteredImages.length) * 100));
 
   return (
     <div className="min-h-screen" style={{ background: "var(--color-ivory)" }}>
@@ -237,28 +210,11 @@ export default function GalleryClient({
                 );
               })}
             </div>
-
-            {/* Load Balance Progress Indicator */}
-            <div className="mt-5 max-w-xs mx-auto text-center">
-              <div className="flex items-center justify-between text-[11px] text-stone font-medium mb-1.5">
-                <span>
-                  Showing <strong className="text-teal-deep">{visibleImages.length}</strong> of{" "}
-                  <strong className="text-teal-deep">{filteredImages.length}</strong> photos
-                </span>
-                <span className="text-sand-dark font-semibold">{progressPercent}%</span>
-              </div>
-              <div className="h-1.5 w-full bg-sand/20 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-sand transition-all duration-500 ease-out rounded-full"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
-            </div>
           </div>
 
-          {/* ── Responsive Load-Balanced Image Grid ── */}
+          {/* ── Responsive Image Grid — Loads All Images Directly ── */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
-            {visibleImages.map((img, i) => (
+            {filteredImages.map((img, i) => (
               <div
                 key={`${img.src}-${i}`}
                 className="group relative aspect-[4/3] w-full overflow-hidden rounded-lg sm:rounded-xl border border-sand/25 bg-teal-deep shadow-md transition-all duration-300 hover:shadow-xl hover:border-sand/60 focus-within:ring-2 focus-within:ring-sand"
@@ -276,7 +232,7 @@ export default function GalleryClient({
                     })}
                     alt={img.alt}
                     fill
-                    loading={i < 4 ? "eager" : "lazy"}
+                    loading={i < 8 ? "eager" : "lazy"}
                     className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-108"
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   />
@@ -311,60 +267,15 @@ export default function GalleryClient({
             ))}
           </div>
 
-          {/* ── Load Balancing Controls (Load More / All Caught Up) ── */}
-          <div className="mt-10 sm:mt-14 text-center">
-            {hasMore ? (
-              <div className="flex flex-col items-center gap-3">
-                <button
-                  onClick={handleLoadMore}
-                  disabled={isLoadingMore}
-                  className="btn-shimmer inline-flex items-center justify-center gap-2.5 min-h-[50px] px-8 py-3 text-xs font-bold uppercase tracking-[0.2em] rounded-md shadow-lg shadow-black/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-75"
-                  style={{
-                    background: "var(--color-sand)",
-                    color: "var(--color-teal-deep)",
-                    fontFamily: "var(--font-sans)",
-                  }}
-                >
-                  {isLoadingMore ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-teal-deep border-t-transparent rounded-full animate-spin" />
-                      <span>Loading More Photos…</span>
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="w-4 h-4" />
-                      <span>
-                        Load More Photos ({remainingCount} remaining)
-                      </span>
-                    </>
-                  )}
-                </button>
-                <p className="text-[11px] text-stone font-light">
-                  Batched for maximum speed and smooth browsing on mobile.
-                </p>
-              </div>
-            ) : (
-              <div className="inline-flex flex-col items-center gap-2.5 p-6 rounded-xl border border-sand/25 bg-ivory shadow-sm max-w-md mx-auto">
-                <div className="h-9 w-9 rounded-full bg-sand/15 flex items-center justify-center text-sand-dark">
-                  <CheckCircle2 className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-teal-deep">
-                    You have viewed all {filteredImages.length} photos
-                  </p>
-                  <p className="text-xs text-stone font-light mt-0.5">
-                    in {selectedCategory}
-                  </p>
-                </div>
-                <button
-                  onClick={scrollToTop}
-                  className="mt-1 inline-flex items-center gap-1.5 text-xs text-sand-dark hover:text-sand font-medium uppercase tracking-wider underline underline-offset-4"
-                >
-                  <ArrowUp className="w-3.5 h-3.5" />
-                  <span>Back to top</span>
-                </button>
-              </div>
-            )}
+          {/* ── Scroll to Top Action ── */}
+          <div className="mt-10 sm:mt-12 text-center">
+            <button
+              onClick={scrollToTop}
+              className="inline-flex items-center gap-2 text-xs text-sand-dark hover:text-sand font-semibold uppercase tracking-wider underline underline-offset-4 transition-colors"
+            >
+              <ArrowUp className="w-4 h-4" />
+              <span>Back to top</span>
+            </button>
           </div>
 
           {/* ── Bottom Booking Card ── */}
