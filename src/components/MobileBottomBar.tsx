@@ -69,6 +69,11 @@ export default function MobileBottomBar({
         {/* Inquire / Book Room */}
         <Link
           href="/book"
+          onClick={() => {
+            if (typeof window !== "undefined") {
+              sessionStorage.setItem("resort_scroll_pos", window.scrollY.toString());
+            }
+          }}
           className="flex-1 flex items-center justify-center gap-2 h-11 px-4 text-xs font-semibold uppercase tracking-[0.18em] shadow-lg shadow-black/20 transition-transform active:scale-95"
           style={{
             background: "var(--color-sand)",
@@ -77,7 +82,7 @@ export default function MobileBottomBar({
           }}
         >
           <Calendar className="w-3.5 h-3.5" />
-          <span>Book Now</span>
+          <span>Reserve Stay</span>
         </Link>
       </div>
     </div>

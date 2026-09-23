@@ -111,7 +111,7 @@ export default function Contact({
               className="text-xs uppercase tracking-[0.3em] font-medium"
               style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
             >
-              Contact &amp; Location
+              Connect &amp; Find Us
             </p>
           </div>
 
@@ -120,16 +120,15 @@ export default function Contact({
             className="scroll-reveal stagger-1 text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Get in Touch with Our{" "}
-            <span className="italic text-bronze-light">Homestay</span>
+            We Are Here to{" "}
+            <span className="italic text-bronze-light">Welcome You</span>
           </h2>
 
           <p
             className="scroll-reveal stagger-2 mt-2.5 text-sm sm:text-base font-light text-stone"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Contact Geeth and the team for room bookings, Yala safari jeep arrangements,
-            or directions to 135/1 Suduwella Tikiri Udanapura.
+            Connect with host Geeth and our dedicated team for personalized room reservations, bespoke Yala safari planning, or seamless arrival guidance.
           </p>
         </div>
 
@@ -309,11 +308,11 @@ export default function Contact({
                   }}
                 >
                   {isSubmitting ? (
-                    <span>Sending Message…</span>
+                    <span>Transmitting Inquiry…</span>
                   ) : (
                     <>
                       <Send className="w-3.5 h-3.5 text-sand" />
-                      <span>Send Message to Homestay</span>
+                      <span>Send Direct Inquiry</span>
                     </>
                   )}
                 </button>

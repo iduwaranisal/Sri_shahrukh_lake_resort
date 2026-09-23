@@ -152,12 +152,12 @@ export default function Hero({
         >
           <span className="flex items-center gap-1.5 text-[9px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-sand-light drop-shadow">
             <MapPin className="h-3 w-3 text-sand flex-shrink-0" />
-            <span className="truncate max-w-[220px] sm:max-w-none">135/1 Suduwella Tikiri Udanapura · Tissamaharama</span>
+            <span className="truncate max-w-[220px] sm:max-w-none">Tissamaharama · Southern Sri Lanka</span>
           </span>
           <span className="hidden sm:inline text-sand/30">|</span>
           <span className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-ivory/90 font-normal drop-shadow">
             <Sparkles className="w-3 h-3 text-sand animate-twinkle" />
-            <span>Homestay in Tissamaharama</span>
+            <span>Lakeside Sanctuary &amp; Yala Safari Gateway</span>
           </span>
         </div>
 
@@ -207,7 +207,7 @@ export default function Hero({
                 textShadow: "0 2px 10px rgba(0,0,0,0.9), 0 0 20px rgba(212,175,55,0.35)",
               }}
             >
-              Homestay in Tissamaharama
+              Lakeside Sanctuary · Tissamaharama
             </span>
             <span
               className={`h-[1px] w-6 sm:w-14 md:w-20 transition-all duration-700 ease-out origin-left ${
@@ -237,7 +237,7 @@ export default function Hero({
           }}
         >
           {heroSubtitle ||
-            "A peaceful, friendly homestay in Tissamaharama. Enjoy clean comfortable rooms, tranquil garden views, free Wi-Fi, free private parking, fresh daily breakfast, and Yala safari tour arrangements."}
+            "Immerse yourself in gentle lakeside tranquility in Tissamaharama. Enjoy serene garden vistas, wholesome morning breakfasts, attentive personal care, and seamlessly arranged Yala National Park safari expeditions."}
         </p>
 
         {/* CTA Buttons */}
@@ -250,6 +250,11 @@ export default function Hero({
           <Link
             href="/book"
             id="hero-cta-booking"
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                sessionStorage.setItem("resort_scroll_pos", window.scrollY.toString());
+              }
+            }}
             className="btn-shimmer flex items-center justify-center gap-2.5 w-full sm:w-auto min-h-[52px] sm:min-h-[54px] px-8 sm:px-10 py-3.5 text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] rounded-md transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-xl shadow-black/30"
             style={{
               background: "var(--color-sand)",
@@ -258,7 +263,7 @@ export default function Hero({
             }}
           >
             <Calendar className="w-4 h-4" />
-            <span>Book Now</span>
+            <span>Reserve Your Stay</span>
           </Link>
 
           <a
@@ -279,12 +284,10 @@ export default function Hero({
             }}
           >
             <MessageCircle className="w-4 h-4 text-sand-light" />
-            <span>Chat on WhatsApp</span>
+            <span>Inquire on WhatsApp</span>
           </a>
         </div>
       </div>
-
-
 
     </section>
   );

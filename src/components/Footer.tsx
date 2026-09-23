@@ -1,18 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { getTelUrl } from "@/lib/whatsapp";
 import SocialLinks from "@/components/ui/SocialLinks";
 
 const quickLinks = [
-  { label: "About", href: "/#about" },
-  { label: "The Homestay", href: "/#homestay" },
-  { label: "Amenities & Services", href: "/#amenities" },
-  { label: "Nearby Attractions", href: "/#explore" },
+  { label: "Our Story", href: "/#about" },
+  { label: "Accommodations", href: "/#homestay" },
+  { label: "Resort Amenities", href: "/#amenities" },
+  { label: "Safari & Excursions", href: "/#explore" },
   { label: "Photo Gallery", href: "/gallery" },
-  { label: "Guest Reviews", href: "/#reviews" },
-  { label: "Contact & Location", href: "/#contact" },
+  { label: "Guest Reflections", href: "/#reviews" },
+  { label: "Connect & Location", href: "/#contact" },
 ];
 
 const headingClass = "mb-5 text-sm font-medium tracking-wide text-sand";
@@ -44,7 +45,25 @@ export default function Footer({
   tiktokUrl,
   youtubeUrl,
 }: FooterProps = {}) {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  const handleFooterLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (pathname === "/" && href.startsWith("/#")) {
+      e.preventDefault();
+      if (href === "/#home") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.history.pushState(null, "", "/#home");
+        return;
+      }
+      const targetId = href.replace("/#", "");
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", href);
+      }
+    }
+  };
 
   return (
     <footer
@@ -68,6 +87,7 @@ export default function Footer({
           <div className="sm:col-span-2 lg:col-span-5">
             <Link
               href="/#home"
+              onClick={(e) => handleFooterLinkClick(e, "/#home")}
               aria-label="Sri Shahrukh Lake Resort — back to top"
               className="inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sand/60"
             >
@@ -86,8 +106,7 @@ export default function Footer({
             </Link>
 
             <p className="mt-5 max-w-md text-sm font-light leading-relaxed text-ivory/75">
-              A peaceful homestay in Tissamaharama with tranquil garden surroundings, free Wi-Fi, private
-              parking, and warm Sri Lankan hospitality.
+              A tranquil lakeside haven nestled in Tissamaharama. Offering intimate garden serenity, wholesome home-cooked breakfasts, bespoke Yala safari expeditions, and warm Southern hospitality.
             </p>
 
             <div className="mt-8">
@@ -106,7 +125,11 @@ export default function Footer({
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className={linkClass}>
+                  <Link
+                    href={link.href}
+                    onClick={(e) => handleFooterLinkClick(e, link.href)}
+                    className={linkClass}
+                  >
                     {link.label}
                   </Link>
                 </li>

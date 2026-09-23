@@ -41,7 +41,7 @@ export default function Gallery({
               className="text-[10px] sm:text-xs uppercase tracking-[0.3em] font-medium"
               style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
             >
-              Photo Showcase
+              Visual Journey
             </p>
           </div>
 
@@ -50,7 +50,7 @@ export default function Gallery({
             className="scroll-reveal stagger-1 text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Moments at{" "}
+            Capturing the Essence of{" "}
             <span className="italic text-bronze-light">Sri Shahrukh</span>
           </h2>
 
@@ -58,8 +58,7 @@ export default function Gallery({
             className="scroll-reveal stagger-2 mt-3 text-sm sm:text-base font-light text-stone leading-relaxed"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            A glimpse into our comfortable rooms, quiet gardens, authentic meals, and the
-            wild beauty of Tissamaharama &amp; Yala.
+            Immerse yourself in our serene rooms, lush tropical gardens, authentic Sri Lankan breakfasts, and breathtaking safari expeditions.
           </p>
         </div>
 
@@ -117,7 +116,7 @@ export default function Gallery({
             }}
           >
             <Camera className="w-4 h-4" />
-            <span>Explore Full Gallery ({images.length}+ Photos)</span>
+            <span>View Complete Photo Gallery ({images.length}+ Photos)</span>
             <ArrowRight className="w-4 h-4 ml-0.5" />
           </Link>
         </div>

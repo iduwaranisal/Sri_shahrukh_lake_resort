@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Sparkles,
   Wifi,
@@ -13,10 +14,13 @@ import {
   Compass,
   ChevronLeft,
   ChevronRight,
+  Calendar,
+  MessageCircle,
 } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { SmoothImage } from "@/components/ui/SmoothImage";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 const homestayPhotos = [
   {
@@ -224,7 +228,7 @@ export default function Villas({
               className="text-[10px] sm:text-xs uppercase tracking-[0.25em] sm:tracking-[0.3em] font-medium"
               style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
             >
-              The Homestay
+              Accommodations &amp; Living
             </p>
           </div>
 
@@ -250,7 +254,7 @@ export default function Villas({
             style={{ color: "var(--color-stone)", fontFamily: "var(--font-sans)" }}
           >
             {homestayDescription ||
-              "Sri Shahrukh Lake Resort welcomes you with peaceful garden surroundings, clean and comfortable rooms, and warm Sri Lankan hospitality right here in Tissamaharama."}
+              "Immerse yourself in gentle lakeside calm, featuring thoughtfully appointed rooms, tranquil garden verandahs, and sincere Southern Sri Lankan hospitality."}
           </p>
         </div>
 
@@ -462,6 +466,43 @@ export default function Villas({
                     </div>
                   );
                 })}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3">
+                <Link
+                  href="/book"
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      sessionStorage.setItem("resort_scroll_pos", window.scrollY.toString());
+                    }
+                  }}
+                  className="btn-shimmer inline-flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-bold uppercase tracking-[0.18em] rounded-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-black/10 min-h-[46px]"
+                  style={{
+                    background: "var(--color-teal-deep)",
+                    color: "var(--color-ivory)",
+                    fontFamily: "var(--font-sans)",
+                  }}
+                >
+                  <Calendar className="w-4 h-4 text-sand" />
+                  <span>Reserve Your Stay</span>
+                </Link>
+                <a
+                  href={getWhatsAppUrl(
+                    whatsapp,
+                    "Hello Sri Shahrukh Lake Resort, I would like to inquire about room availability and rates."
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] border border-sand/40 rounded-md transition-all duration-300 hover:border-sand hover:bg-sand/10 active:scale-[0.98] min-h-[46px]"
+                  style={{
+                    color: "var(--color-teal-deep)",
+                    fontFamily: "var(--font-sans)",
+                  }}
+                >
+                  <MessageCircle className="w-4 h-4 text-teal-deep" />
+                  <span>Inquire on WhatsApp</span>
+                </a>
               </div>
             </div>
           </div>

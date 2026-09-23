@@ -26,7 +26,7 @@ const schema = z
     villa: z.string().min(1, "Please select a preferred room"),
     name: z.string().min(2, "Please provide your full name"),
     email: z.string().email("Please enter a valid email address"),
-    phone: z.string().optional(),
+    phone: z.string().min(5, "Please provide your phone or WhatsApp number"),
     specialRequests: z.string().optional(),
   })
   .refine(
@@ -147,7 +147,7 @@ export default function Booking() {
                 className="text-xs tracking-wide text-sand-light font-medium"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                3 private rooms
+                Serene Lakeside Sanctuary · 3 Private Rooms
               </p>
             </div>
           </div>
@@ -157,17 +157,15 @@ export default function Booking() {
             className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-ivory"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Check room availability &amp;{" "}
-            <em className="not-italic text-sand">Yala safari packages</em>
+            Inquire Availability &amp;{" "}
+            <em className="not-italic text-sand">Bespoke Safari Experiences</em>
           </h2>
 
           <p
             className="mx-auto mt-4 max-w-xl text-sm sm:text-base font-light leading-relaxed text-ivory/80"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Tell us your dates and we&apos;ll confirm availability and help arrange your Yala safari.
-            Your request goes straight to our reservations team at{" "}
-            <strong className="font-medium text-ivory">lakeresortsrishahrukh@gmail.com</strong>.
+            Select your desired stay dates. Our team will verify immediate room availability and assist in tailoring your morning or afternoon Yala safari excursion.
           </p>
 
           <div
@@ -175,10 +173,15 @@ export default function Booking() {
           >
             <Link
               href="/book"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  sessionStorage.setItem("resort_scroll_pos", window.scrollY.toString());
+                }
+              }}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-sand text-teal-deep text-sm font-semibold shadow-lg shadow-black/20 hover:bg-sand-light transition-colors"
             >
               <Calendar className="w-4 h-4" />
-              <span>Book now</span>
+              <span>Reserve Your Stay</span>
             </Link>
           </div>
         </div>
@@ -439,16 +442,19 @@ export default function Booking() {
                     htmlFor="booking-phone"
                     className="text-sm font-medium text-teal-deep"
                   >
-                    Phone / WhatsApp{" "}
-                    <span className="font-normal text-teal-deep/50">(optional)</span>
+                    Phone / WhatsApp
                   </label>
                   <input
                     id="booking-phone"
                     type="tel"
+                    required
                     placeholder="+94 77 123 4567 or international"
                     {...register("phone")}
                     className="w-full rounded-md border border-teal-deep/20 bg-[#ffffff] px-4 py-3 text-sm text-teal-deep placeholder:text-teal-deep/40 outline-none transition-colors hover:border-teal-deep/40 focus:border-teal-mid focus:ring-2 focus:ring-sand/50"
                   />
+                  {errors.phone && (
+                    <p className="text-xs text-error font-medium">{errors.phone.message}</p>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -483,12 +489,12 @@ export default function Booking() {
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
                       <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                      Sending your inquiry…
+                      Transmitting your inquiry…
                     </span>
                   ) : (
                     <>
                       <Calendar className="w-4 h-4" />
-                      <span>Check availability</span>
+                      <span>Request Reservation Inquiry</span>
                     </>
                   )}
                 </button>

@@ -160,7 +160,7 @@ export default function About({
                 className="text-xs font-medium uppercase tracking-[0.3em]"
                 style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
               >
-                Property Overview
+                Our Story &amp; Heritage
               </p>
             </div>
 
@@ -171,7 +171,7 @@ export default function About({
             >
               Sri Shahrukh Lake Resort <br />
               <em className="not-italic text-bronze-light text-2xl sm:text-3xl md:text-4xl">
-                Warm Hospitality in Tissamaharama
+                A Peaceful Lakeside Sanctuary Rooted in Southern Care
               </em>
             </h2>
 
@@ -184,13 +184,13 @@ export default function About({
               ) : (
                 <>
                   <p>
-                    <strong>Sri Shahrukh Lake Resort</strong> is a peaceful homestay located at <strong>135/1 Suduwella Tikiri Udanapura in Tissamaharama</strong>. We offer a quiet and relaxing stay where every guest receives friendly personal care and warm Sri Lankan hospitality.
+                    <strong>Sri Shahrukh Lake Resort</strong> is a peaceful sanctuary located at <strong>135/1 Suduwella Tikiri Udanapura in Tissamaharama</strong>. We offer an intimate and restorative stay where every guest is welcomed with attentive personal care and authentic Sri Lankan warmth.
                   </p>
                   <p>
-                    Our story began in 2004, when our founder Geeth met Bollywood film star Shah Rukh Khan during his visit to Sri Lanka. Inspired by his kindness and warmth, Geeth named this homestay in his honor, welcoming travelers from all over the world.
+                    Our journey began in 2004, when our founder Geeth met Bollywood icon Shah Rukh Khan during his visit to Sri Lanka. Deeply touched by his genuine kindness and gracious spirit, Geeth named this homestay in his honor, opening our doors to travelers seeking rest, wonder, and discovery.
                   </p>
                   <p>
-                    We offer clean and comfortable rooms with garden views, free Wi-Fi, private attached bathrooms with hot water, free private parking, fresh daily breakfast, and safari arrangements to Yala and Bundala National Parks.
+                    Here, modern comforts blend seamlessly with tropical tranquility — from air-conditioned rooms with lush garden outlooks and en-suite hot-water showers, to wholesome home-cooked breakfasts and tailor-made safari expeditions into Yala and Bundala National Parks.
                   </p>
                 </>
               )}
@@ -204,10 +204,10 @@ export default function About({
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs text-stone">
                 <span className="flex items-center gap-1.5"><Wifi className="w-3.5 h-3.5 text-sand" /> Free Wi-Fi</span>
                 <span className="flex items-center gap-1.5"><Car className="w-3.5 h-3.5 text-sand" /> Free Parking</span>
-                <span className="flex items-center gap-1.5"><Coffee className="w-3.5 h-3.5 text-sand" /> Daily Breakfast</span>
+                <span className="flex items-center gap-1.5"><Coffee className="w-3.5 h-3.5 text-sand" /> Fresh Local Breakfast</span>
                 <span className="flex items-center gap-1.5"><Bike className="w-3.5 h-3.5 text-sand" /> Bicycle &amp; Car Rental</span>
                 <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-sand" /> Luggage Storage</span>
-                <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-sand" /> Yala Safari Help</span>
+                <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-sand" /> Bespoke Yala Safaris</span>
               </div>
             </div>
 
@@ -221,7 +221,7 @@ export default function About({
                   fontFamily: "var(--font-sans)",
                 }}
               >
-                The Homestay
+                Explore Rooms &amp; Suites
               </a>
             </div>
           </div>
@@ -275,7 +275,7 @@ export default function About({
                 className="text-xs sm:text-sm font-medium text-sand leading-tight"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                Budget Homestay
+                Lakeside Sanctuary
               </p>
               <p
                 className="text-[8px] uppercase tracking-[0.2em] text-ivory/80 mt-0.5"

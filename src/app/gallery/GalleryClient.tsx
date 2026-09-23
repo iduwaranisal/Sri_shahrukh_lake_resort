@@ -13,6 +13,7 @@ import {
   Camera,
   CheckCircle2,
   ArrowUp,
+  Calendar,
 } from "lucide-react";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { SmoothImage } from "@/components/ui/SmoothImage";
@@ -385,16 +386,30 @@ export default function GalleryClient({
                 className="text-2xl sm:text-3xl md:text-4xl font-light text-ivory mb-3"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                Plan Your Stay at Sri Shahrukh Lake Resort
+                Experience Sri Shahrukh Firsthand
               </h2>
 
               <p
                 className="text-xs sm:text-sm md:text-base font-light text-ivory/80 leading-relaxed max-w-xl mx-auto"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                Enjoy peaceful lake vistas, personalized homestay hospitality, delicious home breakfasts,
-                and custom 4x4 Yala safari jeep tours during your stay.
+                Immerse yourself in gentle lakeside tranquility, heartfelt host care, authentic Sri Lankan breakfasts, and bespoke Yala safari expeditions.
               </p>
+
+              <div className="mt-6 flex justify-center">
+                <Link
+                  href="/book"
+                  className="btn-shimmer inline-flex items-center justify-center gap-2 px-8 py-3.5 text-xs font-bold uppercase tracking-[0.2em] rounded-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-black/30"
+                  style={{
+                    background: "var(--color-sand)",
+                    color: "var(--color-teal-deep)",
+                    fontFamily: "var(--font-sans)",
+                  }}
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>Reserve Your Stay</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

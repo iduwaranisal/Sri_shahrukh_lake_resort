@@ -185,6 +185,7 @@ export default function MapSection({
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
+                tabIndex={-1}
                 referrerPolicy="no-referrer-when-downgrade"
                 className="w-full h-full"
               />

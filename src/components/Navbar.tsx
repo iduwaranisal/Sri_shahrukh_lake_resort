@@ -7,9 +7,9 @@ import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 
 const navLinks = [
-  { label: "About", href: "/#about", id: "about" },
-  { label: "The Homestay", href: "/#homestay", id: "homestay" },
-  { label: "Explore", href: "/#explore", id: "explore" },
+  { label: "Our Story", href: "/#about", id: "about" },
+  { label: "Accommodations", href: "/#homestay", id: "homestay" },
+  { label: "Safari & Excursions", href: "/#explore", id: "explore" },
   { label: "Gallery", href: "/gallery", id: "gallery" },
   { label: "Contact", href: "/#contact", id: "contact" },
 ];
@@ -75,6 +75,23 @@ export default function Navbar({
     }
   }, [menuOpen]);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, id?: string) => {
+    if (pathname === "/" && href.startsWith("/#")) {
+      e.preventDefault();
+      if (href === "/#home") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.history.pushState(null, "", "/#home");
+        return;
+      }
+      const targetId = id || href.replace("/#", "");
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", href);
+      }
+    }
+  };
+
   return (
     <>
       {/* Accessible Skip Link */}
@@ -98,6 +115,7 @@ export default function Navbar({
           {/* Brand Logo */}
           <Link
             href="/#home"
+            onClick={(e) => handleNavClick(e, "/#home")}
             id="nav-logo"
             className="flex flex-col leading-tight group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sand"
             aria-label="Sri Shahrukh Lake Resort — Back to top"
@@ -117,36 +135,52 @@ export default function Navbar({
           </Link>
 
           {/* Desktop Navigation Links — Clean, uncluttered 5 core items */}
-          <ul className="hidden lg:flex items-center gap-7 xl:gap-9" role="menubar">
-            {navLinks.map((link) => {
-              const isActive =
-                pathname === "/gallery" ? link.id === "gallery" : activeSection === link.id;
-              return (
-                <li key={link.href} role="none">
-                  <Link
-                    href={link.href}
-                    role="menuitem"
-                    className={`relative text-xs uppercase tracking-[0.2em] transition-colors duration-200 py-1 ${
-                      isActive
-                        ? "text-sand font-medium"
-                        : "text-ivory/80 hover:text-sand font-light"
-                    }`}
-                    style={{ fontFamily: "var(--font-sans)" }}
-                  >
-                    {link.label}
-                    {isActive && (
-                      <motion.span
-                        layoutId="activeNavIndicator"
-                        className="absolute -bottom-1 left-0 right-0 h-[1.5px]"
-                        style={{ background: "var(--color-sand)" }}
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          <div className="hidden lg:flex items-center gap-7 xl:gap-8">
+            <ul className="flex items-center gap-7 xl:gap-8" role="menubar">
+              {navLinks.map((link) => {
+                const isActive =
+                  pathname === "/gallery" ? link.id === "gallery" : activeSection === link.id;
+                return (
+                  <li key={link.href} role="none">
+                    <Link
+                      href={link.href}
+                      onClick={(e) => handleNavClick(e, link.href, link.id)}
+                      role="menuitem"
+                      className={`relative text-xs uppercase tracking-[0.2em] transition-colors duration-200 py-1 ${
+                        isActive
+                          ? "text-sand font-medium"
+                          : "text-ivory/80 hover:text-sand font-light"
+                      }`}
+                      style={{ fontFamily: "var(--font-sans)" }}
+                    >
+                      {link.label}
+                      {isActive && (
+                        <motion.span
+                          layoutId="activeNavIndicator"
+                          className="absolute -bottom-1 left-0 right-0 h-[1.5px]"
+                          style={{ background: "var(--color-sand)" }}
+                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <Link
+              href="/book"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  sessionStorage.setItem("resort_scroll_pos", window.scrollY.toString());
+                }
+              }}
+              className="btn-shimmer inline-flex items-center justify-center px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] rounded border border-sand/60 text-sand hover:bg-sand hover:text-teal-deep transition-all duration-300 shadow-sm"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              Reserve Stay
+            </Link>
+          </div>
 
           {/* Mobile Menu Toggle Button */}
           <div className="flex lg:hidden items-center">
@@ -204,7 +238,10 @@ export default function Navbar({
             <div className="flex items-center justify-between px-5 py-4 border-b border-sand/20">
               <Link
                 href="/#home"
-                onClick={() => setMenuOpen(false)}
+                onClick={(e) => {
+                  setMenuOpen(false);
+                  handleNavClick(e, "/#home");
+                }}
                 className="flex flex-col leading-tight"
               >
                 <span
@@ -239,7 +276,15 @@ export default function Navbar({
                     <li key={link.href} className="w-full">
                       <Link
                         href={link.href}
-                        onClick={() => setMenuOpen(false)}
+                        onClick={(e) => {
+                          setMenuOpen(false);
+                          if (pathname === "/" && link.href.startsWith("/#")) {
+                            e.preventDefault();
+                            setTimeout(() => {
+                              handleNavClick(e, link.href, link.id);
+                            }, 100);
+                          }
+                        }}
                         className="inline-flex items-center justify-center min-h-[48px] py-2 px-4 text-2xl font-light tracking-wide transition-colors hover:text-sand touch-manipulation"
                         style={{
                           color: isActive ? "var(--color-sand)" : "var(--color-ivory)",
@@ -252,6 +297,17 @@ export default function Navbar({
                   );
                 })}
               </ul>
+
+              <div className="pt-4 border-t border-sand/20">
+                <Link
+                  href="/book"
+                  onClick={() => setMenuOpen(false)}
+                  className="btn-shimmer flex items-center justify-center gap-2 w-full py-3.5 text-xs font-bold uppercase tracking-[0.2em] text-teal-deep bg-sand rounded-md shadow-lg"
+                  style={{ fontFamily: "var(--font-sans)" }}
+                >
+                  Reserve Your Stay
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}

@@ -22,7 +22,7 @@ const schema = z
     guests: z.string().min(1, "Please select guests"),
     name: z.string().min(2, "Please enter your name"),
     email: z.string().email("Please enter a valid email"),
-    phone: z.string().optional(),
+    phone: z.string().min(5, "Please enter your phone or WhatsApp number"),
     specialRequests: z.string().optional(),
   })
   .refine(
@@ -111,6 +111,7 @@ export default function BookClient() {
         <div className="mx-auto max-w-4xl flex items-center justify-between">
           <Link
             href="/"
+            scroll={true}
             className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider text-sand hover:text-sand-light font-medium transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -138,16 +139,16 @@ export default function BookClient() {
           {/* Title */}
           <div className="text-center mb-8">
             <p className="text-xs uppercase tracking-[0.25em] text-sand font-medium mb-1.5">
-              Homestay Booking
+              Direct Reservation Request
             </p>
             <h2
               className="text-2xl sm:text-4xl font-light text-ivory"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              Book Your Stay
+              Reserve Your Lakeside Getaway
             </h2>
             <p className="text-xs sm:text-sm text-ivory/80 mt-1 max-w-md mx-auto">
-              Please enter your details below. Host Geeth will confirm your reservation right away.
+              Complete your reservation details below. Host Geeth will personally verify availability and confirm your stay promptly.
             </p>
           </div>
 
@@ -339,15 +340,22 @@ export default function BookClient() {
                         htmlFor="booking-phone"
                         className="block text-xs uppercase tracking-wider text-sand font-medium mb-1.5"
                       >
-                        Phone / WhatsApp (Optional)
+                        Phone / WhatsApp
                       </label>
                       <input
                         id="booking-phone"
                         type="tel"
+                        required
                         placeholder="+94 7X XXX XXXX"
                         {...register("phone")}
                         className="w-full border border-sand/30 bg-teal-deep px-3.5 py-2.5 min-h-[46px] text-xs text-ivory placeholder:text-ivory/40 outline-none focus:border-sand touch-manipulation"
                       />
+                      {errors.phone && (
+                        <p className="mt-1 text-[11px] text-error flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          <span>{errors.phone.message}</span>
+                        </p>
+                      )}
                     </div>
 
                     <div>
@@ -378,12 +386,12 @@ export default function BookClient() {
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">
                         <RefreshCw className="w-4 h-4 animate-spin" />
-                        Sending Request…
+                        Transmitting Reservation Request…
                       </span>
                     ) : (
                       <>
                         <Calendar className="w-4 h-4" />
-                        <span>Submit Reservation Request</span>
+                        <span>Request Reservation Confirmation</span>
                       </>
                     )}
                   </button>

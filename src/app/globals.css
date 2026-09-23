@@ -39,13 +39,15 @@
 }
 
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: 5rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   max-width: 100%;
-  overflow-x: clip;
+}
+
+html[data-scroll-behavior="smooth"] {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -56,8 +58,13 @@ body {
   line-height: 1.65;
   letter-spacing: -0.01em;
   max-width: 100%;
-  overflow-x: clip;
+  overflow-x: hidden;
   position: relative;
+}
+
+/* Prevent unwanted browser scroll-anchor jumps */
+html, body {
+  overflow-anchor: auto;
 }
 
 /* ── Accessibility Skip Link ── */

@@ -148,7 +148,7 @@ export default function Reviews({
               className="text-xs uppercase tracking-[0.3em] font-medium"
               style={{ color: "var(--color-sand-dark)", fontFamily: "var(--font-sans)" }}
             >
-              Visitor Feedback
+              Stories From Our Guests
             </p>
           </div>
 
@@ -157,15 +157,15 @@ export default function Reviews({
             className="scroll-reveal stagger-1 text-3xl sm:text-4xl md:text-5xl font-light text-teal-deep"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Guest Experiences &amp;{" "}
-            <span className="italic text-bronze-light">Reviews</span>
+            Reflections of Genuine{" "}
+            <span className="italic text-bronze-light">Hospitality</span>
           </h2>
 
           <p
             className="scroll-reveal stagger-2 mt-2.5 text-sm sm:text-base font-light text-stone"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Rated <strong className="font-semibold text-teal-deep">{ratingScore} / 5.0 {ratingLabel}</strong>. Real reviews from guests who stayed with us in Tissamaharama.
+            Distinguished with a <strong className="font-semibold text-teal-deep">{ratingScore} / 5.0 rating {ratingLabel}</strong>. Authentic impressions from guests welcomed into our lakeside home.
           </p>
         </div>
 

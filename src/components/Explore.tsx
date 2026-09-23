@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Compass, MapPin, Clock, ArrowUpRight } from "lucide-react";
+import { Compass, MapPin, Clock, ArrowUpRight, Calendar } from "lucide-react";
 import { attractions } from "@/data/explore";
 import { optimizeImage } from "@/lib/imageOptimization";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -70,7 +70,7 @@ export default function Explore({
               className="text-xs uppercase tracking-[0.35em] text-sand font-medium"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Places to Visit Nearby
+              Excursions &amp; Regional Wonders
             </p>
           </div>
 
@@ -89,8 +89,7 @@ export default function Explore({
             className="scroll-reveal stagger-2 mt-4 text-sm sm:text-base font-light leading-relaxed text-ivory/80"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Conveniently situated near Tissa Wewa (2.5 km), Tissamaharama Stupa (2.2 km),
-            Ranminitenna Cinema Village (7.5 km), and the safari gates of Yala and Bundala.
+            Ideally stationed minutes from sacred ancient stupas, tranquil freshwater lakes, and the legendary wildlife reserves of Yala and Bundala.
           </p>
         </div>
 
@@ -208,7 +207,7 @@ export default function Explore({
                   {/* Action Link */}
                   <div className="pt-4 border-t border-sand/15 flex items-center justify-between">
                     <span className="text-[11px] uppercase tracking-[0.25em] text-sand font-medium group-hover:tracking-[0.3em] transition-all">
-                      View Details →
+                      Explore Destination
                     </span>
                     <span className="h-7 w-7 rounded-full flex items-center justify-center border border-sand/40 text-sand group-hover:bg-sand group-hover:text-teal-deep transition-all">
                       <ArrowUpRight className="w-3.5 h-3.5" />
@@ -226,11 +225,30 @@ export default function Explore({
             className="text-2xl sm:text-3xl font-light text-ivory mb-2"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Convenient Location to Explore Southern Sri Lanka
+            Begin Your Wilderness &amp; Heritage Journey
           </h4>
-          <p className="text-sm font-light text-ivory/80 leading-relaxed">
-            Sri Shahrukh Lake Resort offers a quiet, comfortable stay just minutes away from Tissa Wewa lake, ancient temples, and Yala National Park safari gates.
+          <p className="text-sm font-light text-ivory/80 leading-relaxed max-w-xl mx-auto">
+            Whether you&apos;re rising before dawn for a leopard safari in Yala or seeking evening solace by Tissa Wewa lake, our sanctuary provides the peaceful haven you return to.
           </p>
+          <div className="mt-6 flex justify-center">
+            <Link
+              href="/book"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  sessionStorage.setItem("resort_scroll_pos", window.scrollY.toString());
+                }
+              }}
+              className="btn-shimmer inline-flex items-center justify-center gap-2 px-7 py-3.5 text-xs font-bold uppercase tracking-[0.2em] rounded-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-black/30"
+              style={{
+                background: "var(--color-sand)",
+                color: "var(--color-teal-deep)",
+                fontFamily: "var(--font-sans)",
+              }}
+            >
+              <Calendar className="w-4 h-4" />
+              <span>Plan Your Stay &amp; Safari</span>
+            </Link>
+          </div>
         </div>
       </div>
     </section>
